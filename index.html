@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa da Discussão: Filosofia da Tecnologia</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+            --accent-color: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.4);
+            --card-bg: #1e293b;
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --alert-color: #f43f5e; /* Para os Problemas */
+            --question-color: #fbbf24; /* Para as Questões */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+        
+        body { background-color: var(--bg-color); color: var(--text-color); overflow: hidden; }
+
+        .slider-container { width: 100vw; height: 100vh; position: relative; perspective: 1000px; }
+
+        .slide {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; visibility: hidden; transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+            transform: scale(0.95); padding: 5%;
+        }
+
+        .slide.active { opacity: 1; visibility: visible; transform: scale(1); z-index: 10; }
+
+        h1 { font-size: 3.2rem; color: var(--accent-color); text-align: center; margin-bottom: 1rem; text-shadow: 0 0 20px var(--accent-glow); line-height: 1.2; }
+        h2 { font-size: 2.5rem; color: #fff; margin-bottom: 2rem; text-align: left; width: 100%; max-width: 1100px; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px;}
+        h3 { font-size: 1.6rem; color: #cbd5e1; text-align: center; margin-bottom: 2rem; font-weight: 300; line-height: 1.5; }
+        
+        p { font-size: 1.5rem; line-height: 1.6; max-width: 1100px; margin-bottom: 1.2rem; text-align: left; width: 100%; }
+        ul { margin-left: 3rem; width: 100%; max-width: 1100px; margin-bottom: 1.5rem; }
+        li { margin-bottom: 0.8rem; font-size: 1.5rem; line-height: 1.6; }
+
+        .highlight { color: var(--accent-color); font-weight: bold; }
+        
+        /* Map Flow - Slide 1 */
+        .map-flow { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; background-color: rgba(56, 189, 248, 0.1); padding: 20px; border-radius: 12px; border: 1px solid var(--accent-color); max-width: 1100px; font-size: 1.2rem; font-weight: bold; text-align: center;}
+        .map-flow span { color: var(--accent-color); font-size: 1.5rem;}
+
+        /* Componentes Visuais (Tabelas/Grids) */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; width: 100%; max-width: 1100px; margin-bottom: 2rem;}
+        .card { background: var(--card-bg); padding: 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-top: 4px solid var(--accent-color); }
+        .card h4 { color: var(--accent-color); margin-bottom: 1.5rem; font-size: 1.8rem; text-align: center;}
+        .card ul { margin-left: 1.5rem; width: 90%; }
+        .card li { font-size: 1.3rem; margin-bottom: 1rem; }
+
+        /* Caixas de Destaque */
+        .question-box { background-color: rgba(251, 191, 36, 0.1); border-left: 5px solid var(--question-color); padding: 1.5rem; border-radius: 0 8px 8px 0; width: 100%; max-width: 1100px; font-size: 1.6rem; margin-top: 1.5rem; font-style: italic; }
+        .problem-box { background-color: rgba(244, 63, 94, 0.1); border-left: 5px solid var(--alert-color); padding: 1.5rem; border-radius: 0 8px 8px 0; width: 100%; max-width: 1100px; font-size: 1.6rem; margin-top: 1.5rem; margin-bottom: 1.5rem; font-weight: bold;}
+        
+        .flux-center { text-align: center; font-size: 1.6rem; margin: 1.5rem 0; font-weight: bold; width: 100%;}
+        .flux-center span { color: var(--accent-color); }
+        .quote { font-size: 1.8rem; font-style: italic; color: #cbd5e1; border-left: 4px solid var(--accent-color); padding-left: 20px; margin: 2rem 0; text-align: left; width: 100%; max-width: 1100px; }
+
+        /* Controles */
+        .controls { position: absolute; bottom: 30px; right: 30px; z-index: 100; display: flex; gap: 15px; }
+        .btn { background: var(--card-bg); border: 1px solid var(--accent-color); color: var(--accent-color); padding: 12px 24px; font-size: 1.2rem; cursor: pointer; border-radius: 8px; transition: all 0.3s ease; }
+        .btn:hover { background: var(--accent-color); color: #fff; box-shadow: 0 0 15px var(--accent-glow); }
+
+        .progress-bar { position: absolute; bottom: 0; left: 0; height: 6px; background: var(--accent-color); transition: width 0.4s ease; z-index: 100; box-shadow: 0 0 15px var(--accent-glow);}
+        .slide-number { position: absolute; bottom: 35px; left: 35px; z-index: 100; font-size: 1.3rem; color: #94a3b8; font-weight: bold; }
+
+        /* Animações */
+        .fade-up { animation: fadeUp 1s ease forwards; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="slider-container" id="slider">
+        
+        <!-- Slide 1: Capa e Mapa -->
+        <div class="slide active">
+            <h1 class="fade-up">FILOSOFIA DA TECNOLOGIA</h1>
+            <h3 class="fade-up" style="animation-delay: 0.2s;">Texto: Mariana S. Versino. Filosofia da Tecnologia: uma disciplina em busca de seu objeto de estudo (1999)<!--[cite: 5] --></h3>
+            
+            <div class="fade-up" style="animation-delay: 0.4s; text-align: center; margin-top: 2rem;">
+                <p style="text-align: center;">Apresentação: Jean Cesar dos Reis Barbosa<!--[cite: 5] --></p>
+            </div>
+
+            <!-- Cabeçalho Acadêmico do Roteiro -->
+            <div class="fade-up" style="animation-delay: 0.5s; display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 3.5rem; margin-bottom: 1rem; width: 100%; max-width: 1100px;">
+                <div style="height: 1px; flex-grow: 1; background-color: rgba(56, 189, 248, 0.3);"></div>
+                <p style="font-size: 1.1rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; margin: 0;">
+                    Roteiro Sugerido para Discussão
+                </p>
+                <div style="height: 1px; flex-grow: 1; background-color: rgba(56, 189, 248, 0.3);"></div>
+            </div>
+
+            <!-- Fluxo do Mapa -->
+            <div class="map-flow fade-up" style="animation-delay: 0.6s; margin-top: 0;">
+                TÉCNICA <span>➔</span> REFLEXÃO TARDIA <span>➔</span> RAMOS DA FILOSOFIA <span>➔</span> ARISTÓTELES × HEIDEGGER <span>➔</span> HISTÓRIA + PRÁTICA <span>➔</span> OBJETO PRÓPRIO<!--[cite: 5] -->
+            </div>
+        </div>
+
+        <!-- Slide 2: Ponto 1 -->
+        <div class="slide">
+            <h2>1. A REFLEXÃO TARDIA SOBRE A TECNOLOGIA<!--[cite: 5] --></h2>
+            <div class="fade-up">
+                <p>Técnica antiga ➔ reflexão filosófica tardia<!--[cite: 5] --></p>
+                <p>Tradição platônico-aristotélica:<br> contemplação / teoria × técnica / produção<!--[cite: 5] --></p>
+                <p style="margin-top: 1.5rem;">Três tradições (Carl Mitcham):<!--[cite: 5] --></p>
+                <ul>
+                    <li>Tradição da engenharia<!--[cite: 5] --></li>
+                    <li>Filósofos profissionais<!--[cite: 5] --></li>
+                    <li>Tradição marxista<!--[cite: 5] --></li>
+                </ul>
+                <div class="question-box">
+                    <strong>Questão:</strong> Por que a Filosofia demorou a constituir a tecnologia como objeto próprio de reflexão?<!--[cite: 5] -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Ponto 2 -->
+        <div class="slide">
+            <h2>2. OS RAMOS DA FILOSOFIA E A TECNOLOGIA<!--[cite: 5] --></h2>
+            <div class="fade-up">
+                <p>O prefixo "tecno" como classificação das problemáticas:<!--[cite: 5] --></p>
+                <p style="text-align: center; font-size: 1.8rem; margin: 1.5rem 0; color: var(--accent-color);">
+                    Tecnometafísica • Tecnoepistemologia • Tecnopraxiologia<br>
+                    Tecnoaxiologia • Tecnoética • Tecnopolítica<!--[cite: 5] -->
+                </p>
+                
+                <div class="problem-box">
+                    Problema: Nova disciplina ou adaptação de problemas filosóficos tradicionais a uma nova problemática?<!--[cite: 5] -->
+                </div>
+
+                <p style="text-align: center; font-size: 1.8rem; font-weight: bold; margin: 2rem 0;">CIÊNCIA (conhecimento teórico) ➔ TECNOLOGIA (regras para a ação)<!--[cite: 5] --></p>
+                
+                <div class="question-box">
+                    <strong>Questão:</strong> Que racionalidade orienta a atividade tecnológica?<!--[cite: 5] -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Ponto 3 -->
+        <div class="slide">
+            <h2>3. ARISTÓTELES × HEIDEGGER<!--[cite: 5] --></h2>
+            <div class="grid-2 fade-up">
+                <div class="card">
+                    <h4>ARISTÓTELES<!--[cite: 5] --></h4>
+                    <ul>
+                        <li>Técnica como atividade produtiva<!--[cite: 5] --></li>
+                        <li>Finalidade externa<!--[cite: 5] --></li>
+                        <li>Meio para determinado fim<!--[cite: 5] --></li>
+                        <li>Neutralidade da técnica<!--[cite: 5] --></li>
+                        <li>Dimensão ôntica<!--[cite: 5] --></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>HEIDEGGER<!--[cite: 5] --></h4>
+                    <ul>
+                        <li>Técnica como estrutura existencial<!--[cite: 5] --></li>
+                        <li>Ser-no-mundo<!--[cite: 5] --></li>
+                        <li>Superação da visão instrumental<!--[cite: 5] --></li>
+                        <li>Crítica à neutralidade<!--[cite: 5] --></li>
+                        <li>Dimensão ontológica<!--[cite: 5] --></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="flux-center fade-up" style="animation-delay: 0.2s;">
+                MEIO <span>➔</span> FIM (Aristóteles)<br>
+                <span>↓</span><br>
+                deslocamento da perspectiva<br>
+                <span>↓</span><br>
+                SER-NO-MUNDO (Heidegger)<!--[cite: 5] -->
+            </div>
+
+            <div class="question-box fade-up" style="animation-delay: 0.3s; margin-top: 1rem;">
+                <strong>Questão:</strong> O que muda quando deixamos de compreender a técnica apenas como meio?<!--[cite: 5] -->
+            </div>
+        </div>
+
+        <!-- Slide 5: Ponto 4 -->
+        <div class="slide">
+            <h2>4. A DIMENSÃO HISTÓRICA DA TECNOLOGIA<!--[cite: 5] --></h2>
+            <div class="fade-up">
+                <p><strong>O limite de Heidegger:</strong><br>A fundamentação ontológica conduz a uma posição que Versino considera abstrata.<!--[cite: 5] --></p>
+                
+                <p style="margin-top: 1.5rem;"><strong>O desafio de Versino:</strong><!--[cite: 5] --></p>
+                <ul>
+                    <li>Recuperar a dimensão prática;<!--[cite: 5] --></li>
+                    <li>Considerar a historicidade;<!--[cite: 5] --></li>
+                    <li>Investigar as relações sociais;<!--[cite: 5] --></li>
+                    <li>Construir um objeto próprio para a Filosofia da Tecnologia.<!--[cite: 5] --></li>
+                </ul>
+                
+                <div class="problem-box">
+                    Problema central: Como construir esse objeto sem simplesmente reproduzir as disciplinas filosóficas tradicionais?<!--[cite: 5] -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Para a Discussão -->
+        <div class="slide">
+            <h2>PARA A DISCUSSÃO<!--[cite: 5] --></h2>
+            <div class="fade-up">
+                <div class="quote">
+                    "(...) o fenômeno técnico gera novos desafios para a reflexão e a uma velocidade nunca antes experimentada."<!--[cite: 5] -->
+                </div>
+                
+                <div class="question-box" style="margin-top: 3rem; font-style: normal; font-weight: bold; background-color: rgba(56, 189, 248, 0.1); border-color: var(--accent-color);">
+                    Que Filosofia precisamos continuar construindo para compreender a tecnologia, e as próprias ferramentas conceituais com que tentamos compreendê-la?<!--[cite: 5] -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Navegação e Progresso -->
+        <div class="slide-number"><span id="current">1</span> / <span id="total">6</span></div>
+        <div class="progress-bar" id="progress"></div>
+        <div class="controls">
+            <button class="btn" onclick="prevSlide()">❮ Anterior</button>
+            <button class="btn" onclick="nextSlide()">Próximo ❯</button>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progress');
+        const currentCounter = document.getElementById('current');
+        const totalCounter = document.getElementById('total');
+
+        totalCounter.innerText = slides.length;
+
+        function updateSlider() {
+            slides.forEach((slide, index) => {
+                if(index === currentSlide) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            progressBar.style.width = progress + '%';
+            currentCounter.innerText = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            if(currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlider();
+            }
+        }
+
+        function prevSlide() {
+            if(currentSlide > 0) {
+                currentSlide--;
+                updateSlider();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowRight' || e.key === 'Space') nextSlide();
+            if(e.key === 'ArrowLeft') prevSlide();
+        });
+
+        updateSlider();
+    </script>
+</body>
+</html>
