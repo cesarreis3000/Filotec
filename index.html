@@ -71,9 +71,6 @@
 </head>
 <body class="h-screen w-screen flex flex-col overflow-hidden">
 
-    <!-- O iframe oculto do YouTube que será controlado pela API -->
-    <div id="youtube-player" class="hidden w-full h-full object-cover absolute top-0 left-0 -z-10"></div>
-
     <!-- CONTAINER PRINCIPAL -->
     <div class="flex-1 flex flex-col max-w-[1500px] mx-auto w-full h-full p-4">
         
@@ -157,7 +154,10 @@
                     <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-8 w-full block">O Encontro com Marcuse (Entrevista)</h2>
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 w-full items-center">
                         <div class="midia-container lg:col-span-7">
-                            <div class="video-wrapper" id="player-inicio"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                            <div class="video-wrapper">
+                                <!-- Cada slide agora tem seu próprio ID para o YT substituir perfeitamente -->
+                                <div id="player-inicio" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                            </div>
                             <div class="legenda-box"><span class="legenda-texto">...</span></div>
                         </div>
                         <div class="flex flex-col lg:col-span-5">
@@ -260,7 +260,9 @@
                     <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-8 w-full block">A Ruptura Moral com Heidegger (Entrevista)</h2>
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 w-full items-center">
                         <div class="midia-container lg:col-span-7">
-                            <div class="video-wrapper" id="player-heidegger"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                            <div class="video-wrapper">
+                                <div id="player-heidegger" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                            </div>
                             <div class="legenda-box"><span class="legenda-texto">...</span></div>
                         </div>
                         <div class="flex flex-col lg:col-span-5">
@@ -335,7 +337,9 @@
                     <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-8 w-full block">Marx e o Controle Humano da História (Entrevista)</h2>
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 w-full items-center">
                         <div class="midia-container lg:col-span-7">
-                            <div class="video-wrapper" id="player-1"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                            <div class="video-wrapper">
+                                <div id="player-1" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                            </div>
                             <div class="legenda-box"><span class="legenda-texto">...</span></div>
                         </div>
                         <div class="flex flex-col lg:col-span-5">
@@ -484,7 +488,9 @@
                     <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-8 w-full block">A Racionalidade e a Ciência (Entrevista)</h2>
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 w-full items-center">
                         <div class="midia-container lg:col-span-7">
-                            <div class="video-wrapper" id="player-2"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                            <div class="video-wrapper">
+                                <div id="player-2" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                            </div>
                             <div class="legenda-box"><span class="legenda-texto">...</span></div>
                         </div>
                         <div class="flex flex-col lg:col-span-5">
@@ -566,7 +572,9 @@
                     <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-8 w-full block">Potencialidades Críticas do Senso Comum (Entrevista)</h2>
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 w-full items-center">
                         <div class="midia-container lg:col-span-7">
-                            <div class="video-wrapper" id="player-3"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                            <div class="video-wrapper">
+                                <div id="player-3" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                            </div>
                             <div class="legenda-box"><span class="legenda-texto">...</span></div>
                         </div>
                         <div class="flex flex-col lg:col-span-5">
@@ -643,40 +651,19 @@
 
     <!-- JAVASCRIPT: API do YouTube + Lógica da Apresentação -->
     <script>
-        // Variáveis globais para o player do YouTube
-        let player;
-        let isPlayerReady = false;
+        // Variável para sinalizar quando a API do YT está pronta
+        let isApiReady = false;
         
-        // Carrega a API do IFrame Player de forma assíncrona
+        function onYouTubeIframeAPIReady() {
+            isApiReady = true;
+        }
+
+        // Adiciona o script da API do YouTube na página
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // Esta função é chamada pela API do YouTube quando ela estiver pronta
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtube-player', {
-                height: '100%',
-                width: '100%',
-                videoId: 'Z9Ur0yMg7dQ', // O ID do vídeo da entrevista
-                playerVars: {
-                    'playsinline': 1,
-                    'controls': 0, // Esconde os controles para não atrapalhar
-                    'rel': 0,      // Não mostra vídeos relacionados no final
-                    'modestbranding': 1 // Remove o logo do YouTube tanto quanto possível
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            isPlayerReady = true;
-        }
-
-        // Lógica de apresentação (restante do código original adaptado)
         document.addEventListener('DOMContentLoaded', () => {
             const slides = document.querySelectorAll('.slide');
             const btnPrev = document.getElementById('btn-prev');
@@ -689,7 +676,11 @@
             let targetEnd = null;
             let currentLegendaText = null;
             let currentBtn = null;
-            let checkTimeInterval = null; // Intervalo para verificar o tempo do YouTube
+            
+            // Aqui guardamos os players de cada slide para não precisarmos movê-los ou recriá-los
+            let players = {}; 
+            let activePlayer = null;
+            let checkTimeInterval = null;
 
             // BASE DE LEGENDAS (PT-BR)
             const legendas = [
@@ -732,14 +723,13 @@
                 }
             }
 
-            // Função que roda constantemente (a cada 250ms) enquanto o vídeo está a reproduzir para atualizar legendas e parar no ponto certo
             function checkTime() {
-                if (!isPlayerReady || !player || typeof player.getCurrentTime !== 'function') return;
+                if (!activePlayer || typeof activePlayer.getCurrentTime !== 'function') return;
                 
-                const tempo = player.getCurrentTime();
+                const tempo = activePlayer.getCurrentTime();
                 
                 if (targetEnd && tempo >= targetEnd) {
-                    player.pauseVideo();
+                    activePlayer.pauseVideo();
                     if(currentBtn) currentBtn.innerText = "Reproduzir Trecho";
                     if(currentLegendaText) currentLegendaText.innerText = "Fim do trecho.";
                     targetEnd = null;
@@ -749,21 +739,21 @@
                 
                 if (currentLegendaText) {
                     const achou = legendas.find(l => tempo >= l.start && tempo <= l.end);
-                    if (achou) {
-                        currentLegendaText.innerText = achou.text;
-                    } else {
-                        currentLegendaText.innerText = "...";
-                    }
+                    currentLegendaText.innerText = achou ? achou.text : "...";
                 }
             }
 
             function atualizaSlides() {
-                // Pausa o vídeo se mudar de slide
-                if (isPlayerReady && player && typeof player.pauseVideo === 'function' && player.getPlayerState() === YT.PlayerState.PLAYING) {
-                    player.pauseVideo();
+                // Pausa o vídeo atual se mudar de slide
+                if (activePlayer && typeof activePlayer.pauseVideo === 'function') {
+                    if (activePlayer.getPlayerState() === YT.PlayerState.PLAYING) {
+                        activePlayer.pauseVideo();
+                    }
                 }
+                
                 stopCheckTimeInterval();
                 targetEnd = null;
+                
                 if(currentBtn) currentBtn.innerText = "Reproduzir Trecho";
                 if(currentLegendaText) currentLegendaText.innerText = "...";
 
@@ -792,75 +782,99 @@
 
             botoesPlay.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    if (!isPlayerReady) {
-                        alert("O player do YouTube ainda está a carregar. Por favor aguarde um momento.");
+                    if (!isApiReady) {
+                        alert("O YouTube ainda está a carregar, aguarde um segundo.");
                         return;
                     }
 
                     const boxId = btn.getAttribute('data-target');
-                    const wrapperVideo = document.getElementById(boxId);
-                    const containerMidia = wrapperVideo.parentElement; 
-                    const legendaTextoSpan = containerMidia.querySelector('.legenda-texto');
-                    const ytIframe = document.getElementById('youtube-player');
-                    
-                    // Se clicar no botão "Pausar Vídeo"
-                    if (currentBtn === btn && player.getPlayerState() === YT.PlayerState.PLAYING) {
-                        player.pauseVideo();
-                        btn.innerText = "Continuar Vídeo";
-                        stopCheckTimeInterval();
-                        return;
-                    }
-
-                    // Se estiver a retomar um vídeo pausado e for o mesmo botão
-                    if (currentBtn === btn && player.getPlayerState() === YT.PlayerState.PAUSED) {
-                        player.playVideo();
-                        btn.innerText = "Pausar Vídeo";
-                        checkTimeInterval = setInterval(checkTime, 250);
-                        return;
-                    }
-
-                    // Esconde o texto provisório (se houver)
-                    const placeholder = wrapperVideo.querySelector('.placeholder-box');
-                    if(placeholder) placeholder.style.display = 'none';
-                    
-                    // Move o Iframe do YouTube para dentro da caixa certa no slide atual
-                    ytIframe.classList.remove('hidden', 'absolute', 'top-0', 'left-0', '-z-10');
-                    ytIframe.classList.add('block');
-                    wrapperVideo.insertBefore(ytIframe, wrapperVideo.firstChild);
-                    
-                    currentLegendaText = legendaTextoSpan;
-                    currentBtn = btn;
-
                     const start = parseFloat(btn.getAttribute('data-start'));
                     targetEnd = parseFloat(btn.getAttribute('data-end'));
                     
-                    // Pula para o momento exato e dá play
-                    player.seekTo(start, true);
-                    player.playVideo();
+                    const wrapperElement = document.getElementById(boxId);
                     
-                    btn.innerText = "Pausar Vídeo";
-                    
-                    // Inicia a verificação de tempo para atualizar legendas e parar
-                    stopCheckTimeInterval();
-                    checkTimeInterval = setInterval(checkTime, 250);
+                    // Como a API substitui a div original por um iframe, pegamos sempre o pai (video-wrapper)
+                    currentLegendaText = wrapperElement.parentElement.querySelector('.legenda-texto');
+
+                    // Se estiver clicando no mesmo botão para Pausar/Continuar
+                    if (currentBtn === btn && players[boxId]) {
+                        activePlayer = players[boxId];
+                        if (activePlayer.getPlayerState() === YT.PlayerState.PLAYING) {
+                            activePlayer.pauseVideo();
+                            btn.innerText = "Continuar Vídeo";
+                            stopCheckTimeInterval();
+                            return;
+                        } else {
+                            activePlayer.playVideo();
+                            btn.innerText = "Pausar Vídeo";
+                            stopCheckTimeInterval();
+                            checkTimeInterval = setInterval(checkTime, 250);
+                            return;
+                        }
+                    }
+
+                    // Se clicou em um novo botão, pausa o anterior (se houver) e reseta o texto
+                    if (currentBtn && currentBtn !== btn) {
+                        currentBtn.innerText = "Reproduzir Trecho";
+                        if (activePlayer && typeof activePlayer.pauseVideo === 'function') {
+                            activePlayer.pauseVideo();
+                        }
+                    }
+
+                    currentBtn = btn;
+
+                    // Se é a PRIMEIRA vez que reproduz o vídeo neste slide, cria o player do zero
+                    if (!players[boxId]) {
+                        btn.innerText = "Carregando...";
+                        
+                        // Oculta o texto "O vídeo será carregado aqui"
+                        const placeholder = wrapperElement.querySelector('.placeholder-box');
+                        if(placeholder) placeholder.style.display = 'none';
+
+                        // Inicializa o player exatamente neste quadro e no minuto certo (start)
+                        players[boxId] = new YT.Player(boxId, {
+                            height: '100%',
+                            width: '100%',
+                            videoId: 'Z9Ur0yMg7dQ',
+                            playerVars: {
+                                'playsinline': 1,
+                                'controls': 0,
+                                'rel': 0,
+                                'modestbranding': 1,
+                                'start': Math.floor(start) // Variável que garante o tempo inicial correto
+                            },
+                            events: {
+                                'onReady': function(event) {
+                                    activePlayer = event.target;
+                                    activePlayer.playVideo();
+                                    btn.innerText = "Pausar Vídeo";
+                                    stopCheckTimeInterval();
+                                    checkTimeInterval = setInterval(checkTime, 250);
+                                },
+                                'onStateChange': function(event) {
+                                    // Sincroniza o texto do botão caso pause pelo teclado/controles
+                                    if (event.data == YT.PlayerState.PAUSED && currentBtn === btn) {
+                                        btn.innerText = "Continuar Vídeo";
+                                    } else if (event.data == YT.PlayerState.PLAYING && currentBtn === btn) {
+                                        btn.innerText = "Pausar Vídeo";
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        // Se o player já existe no slide, apenas damos um seekTo para o início do trecho
+                        activePlayer = players[boxId];
+                        activePlayer.seekTo(start, true);
+                        activePlayer.playVideo();
+                        btn.innerText = "Pausar Vídeo";
+                        stopCheckTimeInterval();
+                        checkTimeInterval = setInterval(checkTime, 250);
+                    }
                 });
             });
 
             atualizaSlides();
         });
-
-        // Esta função apenas serve para tratar o caso de o utilizador clicar nos próprios controlos do iframe, caso consiga aceder
-        function onPlayerStateChange(event) {
-            // Se o vídeo for pausado e tivermos um botão associado a ele
-            if (event.data == YT.PlayerState.PAUSED) {
-                 const botoesAtivos = document.querySelectorAll('.btn-play');
-                 botoesAtivos.forEach(btn => {
-                     if (btn.innerText === "Pausar Vídeo") {
-                         btn.innerText = "Continuar Vídeo";
-                     }
-                 });
-            }
-        }
     </script>
 </body>
 </html>
