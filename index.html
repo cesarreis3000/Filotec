@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Seminário: Filosofia da Tecnologia - Feenberg</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -81,7 +81,8 @@
         }
     </style>
 </head>
-<body class="h-screen w-screen flex flex-col overflow-hidden">
+<!-- O uso de 100dvh resolve o problema de botões escondidos pela barra do celular -->
+<body class="w-screen flex flex-col overflow-hidden bg-gray-100" style="height: 100dvh;">
 
     <!-- CONTAINER PRINCIPAL -->
     <div class="flex-1 flex flex-col max-w-[1500px] mx-auto w-full h-full p-2 md:p-4">
@@ -100,7 +101,7 @@
             </div>
 
             <!-- BARRA DE PROGRESSO -->
-            <div class="w-full bg-gray-200 h-1">
+            <div class="w-full bg-gray-200 h-1 shrink-0">
                 <div id="barra-progresso" class="bg-red-700 h-1 w-0 transition-all duration-300"></div>
             </div>
 
@@ -637,17 +638,17 @@
 
             </div>
 
-            <!-- CONTROLES FIXOS INFERIORES -->
-            <div class="bg-gray-100 p-3 md:p-5 flex justify-between items-center border-t border-gray-300 z-10 w-full shrink-0">
-                <button id="btn-prev" class="px-4 md:px-8 py-2 md:py-3 bg-white border border-gray-400 rounded shadow hover:bg-gray-200 font-bold w-28 md:w-32 text-sm md:text-base">Anterior</button>
-                <div class="text-gray-500 text-xs md:text-sm hidden md:block text-center flex-1">Use as setas (← e →) do teclado para navegar fluidamente</div>
-                <button id="btn-next" class="px-4 md:px-8 py-2 md:py-3 bg-gray-900 text-white rounded shadow hover:bg-gray-800 font-bold w-28 md:w-32 text-sm md:text-base">Próximo</button>
+            <!-- CONTROLES FIXOS INFERIORES: z-50 e relative adicionados -->
+            <div class="bg-gray-100 p-3 md:p-5 flex justify-between items-center border-t border-gray-300 z-50 relative w-full shrink-0">
+                <button id="btn-prev" class="px-4 md:px-8 py-3 md:py-3 bg-white border border-gray-400 rounded shadow hover:bg-gray-200 font-bold w-28 md:w-32 text-sm md:text-base">Anterior</button>
+                <div class="text-gray-500 text-xs md:text-sm hidden md:block text-center flex-1">Use as setas (← e →) do teclado para navegar</div>
+                <button id="btn-next" class="px-4 md:px-8 py-3 md:py-3 bg-gray-900 text-white rounded shadow hover:bg-gray-800 font-bold w-28 md:w-32 text-sm md:text-base">Próximo</button>
             </div>
             
         </div>
     </div>
 
-    <!-- JAVASCRIPT: API do YouTube + Lógica da Apresentação -->
+    <!-- JAVASCRIPT: API do YouTube + Lógica da Apresentação + Gestos Touch -->
     <script>
         let isApiReady = false;
         
@@ -763,11 +764,45 @@
 
             btnPrev.addEventListener('click', () => { if(current > 0) { current--; atualizaSlides(); } });
             btnNext.addEventListener('click', () => { if(current < slides.length - 1) { current++; atualizaSlides(); } });
+            
+            // Navegação por teclado
             window.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowRight' && current < slides.length - 1) { current++; atualizaSlides(); }
                 if (e.key === 'ArrowLeft' && current > 0) { current--; atualizaSlides(); }
             });
 
+            // ----------------------------------------------------
+            // NOVA LÓGICA DE SWIPE (DESLIZAR A TELA) PARA CELULARES
+            // ----------------------------------------------------
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            window.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            });
+
+            window.addEventListener('touchend', e => {
+                let touchEndX = e.changedTouches[0].screenX;
+                let touchEndY = e.changedTouches[0].screenY;
+                
+                let diffX = Math.abs(touchEndX - touchStartX);
+                let diffY = Math.abs(touchEndY - touchStartY);
+
+                // Só muda de slide se o movimento for mais horizontal do que vertical e tiver mais de 50px
+                // Isso evita mudar de slide sem querer enquanto se rola o texto para baixo
+                if (diffX > diffY && diffX > 50) {
+                    if (touchEndX < touchStartX) {
+                        // Deslizou para a Esquerda -> Próximo Slide
+                        if (current < slides.length - 1) { current++; atualizaSlides(); }
+                    } else {
+                        // Deslizou para a Direita -> Slide Anterior
+                        if (current > 0) { current--; atualizaSlides(); }
+                    }
+                }
+            });
+
+            // Lógica do Player
             botoesPlay.forEach(btn => {
                 btn.addEventListener('click', () => {
                     if (!isApiReady) {
@@ -780,7 +815,6 @@
                     targetEnd = parseFloat(btn.getAttribute('data-end'));
                     
                     const wrapperElement = document.getElementById(boxId);
-                    
                     currentLegendaText = wrapperElement.closest('.midia-container').querySelector('.legenda-texto');
 
                     if (currentBtn === btn && players[boxId]) {
