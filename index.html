@@ -155,7 +155,6 @@
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 w-full items-center">
                         <div class="midia-container lg:col-span-7">
                             <div class="video-wrapper">
-                                <!-- Cada slide agora tem seu próprio ID para o YT substituir perfeitamente -->
                                 <div id="player-inicio" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
                             </div>
                             <div class="legenda-box"><span class="legenda-texto">...</span></div>
@@ -422,7 +421,7 @@
                 <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="18">
                     <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-orange-600 pb-2 mb-8">Escolas e a Lógica Neoliberal</h2>
                     <p class="text-xl text-gray-700 leading-relaxed mb-6">
-                        Ao contrário do lucro corporativo, instituições públicas possuíam uma política "substantiva" — o imenso valor social imaterial de <em>educar o ser humano</em>, que dependia umbilicalmente da gestão colegiada viva dos professores.
+                        Ao contrário do lucro corporativo, institutions públicas possuíam uma política "substantiva" — o imenso valor social imaterial de <em>educar o ser humano</em>, que dependia umbilicalmente da gestão colegiada viva dos professores.
                     </p>
                     <div class="bg-white border-l-8 border-gray-800 p-8 rounded-xl shadow-lg w-full">
                         <h3 class="text-2xl font-bold text-gray-900 mb-4 border-b pb-2">A Reificação da Sala de Aula</h3>
@@ -651,14 +650,12 @@
 
     <!-- JAVASCRIPT: API do YouTube + Lógica da Apresentação -->
     <script>
-        // Variável para sinalizar quando a API do YT está pronta
         let isApiReady = false;
         
         function onYouTubeIframeAPIReady() {
             isApiReady = true;
         }
 
-        // Adiciona o script da API do YouTube na página
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -677,14 +674,11 @@
             let currentLegendaText = null;
             let currentBtn = null;
             
-            // Aqui guardamos os players de cada slide para não precisarmos movê-los ou recriá-los
             let players = {}; 
             let activePlayer = null;
             let checkTimeInterval = null;
 
-            // BASE DE LEGENDAS (PT-BR)
             const legendas = [
-                // IDA PARA SAN DIEGO
                 { start: 67, end: 77, text: "Eu queria estudar filosofia continental. Nos anos 60, quando eu estava na faculdade, não era fácil." },
                 { start: 77, end: 89, text: "A filosofia americana era quase toda analítica. Um amigo me disse: 'Você devia olhar a Universidade da Califórnia (San Diego)'" },
                 { start: 89, end: 101, text: "Eu disse 'Por quê?'. Ele respondeu: 'Lá tem Marcuse... um cara que escreve sobre Marx e Freud'." },
@@ -692,7 +686,6 @@
                 { start: 110, end: 119, text: "Imediatamente enviei minha inscrição, e eles me aceitaram. Fui pra San Diego estudar com esse cara louco." },
                 { start: 119, end: 135, text: "A primeira coisa que fiz foi pedir a ele um curso de leitura sobre o 'Ser e Tempo' de Heidegger. Foi assim que nossa relação começou." },
                 
-                // HEIDEGGER
                 { start: 7482, end: 7490, text: "Ele [Marcuse] tinha um sentimento muito ruim sobre Heidegger, que se tornara um Nazista..." },
                 { start: 7490, end: 7500, text: "...e que se recusou a se emendar do seu erro. Marcuse poderia ter perdoado o erro, mas não se ele se recusasse a pedir perdão." },
                 { start: 7500, end: 7511, text: "Depois da guerra houve uma troca de cartas. Marcuse, dos EUA, mandou suprimentos para ajudá-lo na Alemanha e pediu para que ele admitisse que cometeu um erro." },
@@ -700,18 +693,15 @@
                 { start: 7528, end: 7538, text: "Marcuse escreveu de volta e disse: 'Nenhum filósofo pode se permitir dizer uma coisa dessas'." },
                 { start: 7538, end: 7576, text: "Esse foi o fim. Ele nunca mais contatou Heidegger. É uma questão moral e histórica muito complicada." },
                 
-                // MARX
                 { start: 4134, end: 4140, text: "O problema básico com o qual Marx está lidando é como passar de uma fase da História para outra..." },
                 { start: 4140, end: 4148, text: "...e como passar de uma fase onde as leis naturais da economia prevalecem sobre os seres humanos..." },
                 { start: 4148, end: 4157, text: "...para um novo sistema no qual eles podem organizar sua própria existência de forma livre e consciente." },
                 { start: 4157, end: 4169, text: "Onde não estão sujeitos à Natureza ou às leis econômicas, mas organizam a vida de maneira melhor. Isso requer consciência." },
 
-                // CIÊNCIA
                 { start: 385, end: 390, text: "Não é que Marcuse esteja dizendo que a ciência é errada. Ele não é contra a ciência." },
                 { start: 390, end: 400, text: "É uma maneira de ver o mundo pela qual entendemos muitas coisas importantes, mas ela tem limitações." },
                 { start: 400, end: 413, text: "E essas limitações importam muito se você as retirar do laboratório e aplicar cegamente ao mundo cotidiano." },
 
-                // ARISTÓTELES
                 { start: 423, end: 433, text: "Aristóteles foi o primeiro a criar a ciência. Na ciência dele, objetos tinham potencialidades." },
                 { start: 433, end: 443, text: "Potencialidades são a característica normativa. Aquele aspecto em direção ao qual a coisa tende e quer se desenvolver." }
             ];
@@ -744,7 +734,6 @@
             }
 
             function atualizaSlides() {
-                // Pausa o vídeo atual se mudar de slide
                 if (activePlayer && typeof activePlayer.pauseVideo === 'function') {
                     if (activePlayer.getPlayerState() === YT.PlayerState.PLAYING) {
                         activePlayer.pauseVideo();
@@ -793,10 +782,10 @@
                     
                     const wrapperElement = document.getElementById(boxId);
                     
-                    // Como a API substitui a div original por um iframe, pegamos sempre o pai (video-wrapper)
-                    currentLegendaText = wrapperElement.parentElement.querySelector('.legenda-texto');
+                    // A CORREÇÃO ESTÁ AQUI: usamos .closest('.midia-container') para garantir 
+                    // que ele ache a legenda-texto subindo para a "caixa mestre" daquele slide
+                    currentLegendaText = wrapperElement.closest('.midia-container').querySelector('.legenda-texto');
 
-                    // Se estiver clicando no mesmo botão para Pausar/Continuar
                     if (currentBtn === btn && players[boxId]) {
                         activePlayer = players[boxId];
                         if (activePlayer.getPlayerState() === YT.PlayerState.PLAYING) {
@@ -813,7 +802,6 @@
                         }
                     }
 
-                    // Se clicou em um novo botão, pausa o anterior (se houver) e reseta o texto
                     if (currentBtn && currentBtn !== btn) {
                         currentBtn.innerText = "Reproduzir Trecho";
                         if (activePlayer && typeof activePlayer.pauseVideo === 'function') {
@@ -823,15 +811,13 @@
 
                     currentBtn = btn;
 
-                    // Se é a PRIMEIRA vez que reproduz o vídeo neste slide, cria o player do zero
                     if (!players[boxId]) {
                         btn.innerText = "Carregando...";
                         
-                        // Oculta o texto "O vídeo será carregado aqui"
-                        const placeholder = wrapperElement.querySelector('.placeholder-box');
+                        // Encontra e esconde o placeholder
+                        const placeholder = wrapperElement.parentElement.querySelector('.placeholder-box');
                         if(placeholder) placeholder.style.display = 'none';
 
-                        // Inicializa o player exatamente neste quadro e no minuto certo (start)
                         players[boxId] = new YT.Player(boxId, {
                             height: '100%',
                             width: '100%',
@@ -841,7 +827,7 @@
                                 'controls': 0,
                                 'rel': 0,
                                 'modestbranding': 1,
-                                'start': Math.floor(start) // Variável que garante o tempo inicial correto
+                                'start': Math.floor(start) 
                             },
                             events: {
                                 'onReady': function(event) {
@@ -852,7 +838,6 @@
                                     checkTimeInterval = setInterval(checkTime, 250);
                                 },
                                 'onStateChange': function(event) {
-                                    // Sincroniza o texto do botão caso pause pelo teclado/controles
                                     if (event.data == YT.PlayerState.PAUSED && currentBtn === btn) {
                                         btn.innerText = "Continuar Vídeo";
                                     } else if (event.data == YT.PlayerState.PLAYING && currentBtn === btn) {
@@ -862,7 +847,6 @@
                             }
                         });
                     } else {
-                        // Se o player já existe no slide, apenas damos um seekTo para o início do trecho
                         activePlayer = players[boxId];
                         activePlayer.seekTo(start, true);
                         activePlayer.playVideo();
