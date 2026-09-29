@@ -56,13 +56,25 @@
             justify-content: center;
             line-height: 1.4;
         }
+
+        /* Ajustes de legenda para Mobile */
+        @media (max-width: 768px) {
+            .legenda-box {
+                font-size: 1rem;
+                padding: 10px 15px;
+                min-height: 70px;
+            }
+            .placeholder-box {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+        }
         
         .long-text p {
             margin-bottom: 1.25rem;
             line-height: 1.7;
         }
         
-        /* Destaques Marxistas */
         .marx-highlight {
             color: #991b1b;
             font-weight: 800;
@@ -72,18 +84,18 @@
 <body class="h-screen w-screen flex flex-col overflow-hidden">
 
     <!-- CONTAINER PRINCIPAL -->
-    <div class="flex-1 flex flex-col max-w-[1500px] mx-auto w-full h-full p-4">
+    <div class="flex-1 flex flex-col max-w-[1500px] mx-auto w-full h-full p-2 md:p-4">
         
-        <div class="bg-white flex-1 rounded-2xl shadow-xl flex flex-col border border-gray-200 overflow-hidden relative z-10">
+        <div class="bg-white flex-1 rounded-xl md:rounded-2xl shadow-xl flex flex-col border border-gray-200 overflow-hidden relative z-10">
             
             <!-- HEADER -->
-            <div class="bg-gray-900 text-white p-5 flex justify-between items-center shadow-md">
+            <div class="bg-gray-900 text-white p-3 md:p-5 flex justify-between items-center shadow-md">
                 <div>
-                    <h1 class="text-xl font-bold uppercase tracking-wide">PPGET - CEFET-MG</h1>
-                    <span class="text-gray-400 text-sm">Disciplina: Filosofia da Técnica e da Tecnologia</span>
+                    <h1 class="text-base md:text-xl font-bold uppercase tracking-wide">PPGET - CEFET-MG</h1>
+                    <span class="text-gray-400 text-xs md:text-sm">Filosofia da Técnica e da Tecnologia</span>
                 </div>
-                <div class="text-right">
-                    <span id="slide-contador" class="text-lg font-bold">1 / 30</span>
+                <div class="text-right shrink-0 ml-4">
+                    <span id="slide-contador" class="text-base md:text-lg font-bold">1 / 30</span>
                 </div>
             </div>
 
@@ -93,24 +105,20 @@
             </div>
 
             <!-- ÁREA DOS SLIDES -->
-            <div id="slides-container" class="flex-1 overflow-y-auto p-10 flex flex-col items-center justify-center relative w-full">
+            <div id="slides-container" class="flex-1 overflow-y-auto p-5 md:p-10 flex flex-col items-center justify-center relative w-full">
                 
                 <!-- SLIDE 1: Capa -->
                 <div class="slide slide-visible flex-col items-center text-center w-full max-w-4xl" data-index="1">
-                    <h2 class="text-6xl font-bold text-gray-900 mb-4 tracking-tight">Construtivismo Crítico</h2>
-                    <h3 class="text-3xl text-gray-600 font-serif italic mb-10">Uma Filosofia da Tecnologia</h3>
-                    <div class="bg-gray-50 border border-gray-200 p-8 rounded-xl text-left w-full shadow-sm">
+                    <h2 class="text-4xl md:text-6xl font-bold text-gray-900 mb-2 md:mb-4 tracking-tight">Construtivismo Crítico</h2>
+                    <h3 class="text-xl md:text-3xl text-gray-600 font-serif italic mb-6 md:mb-10">Uma Filosofia da Tecnologia</h3>
+                    <div class="bg-gray-50 border border-gray-200 p-6 md:p-8 rounded-xl text-left w-full shadow-sm">
                         <div class="text-center mb-6">
-                            <p class="text-2xl text-gray-800">Texto-base de <strong>Andrew Feenberg</strong></p>
+                            <p class="text-lg md:text-2xl text-gray-800">Texto-base de <strong>Andrew Feenberg</strong></p>
                         </div>
-                        <div class="flex justify-between items-start border-t pt-6">
+                        <div class="flex flex-col md:flex-row justify-between items-start border-t pt-6 gap-4">
                             <div>
-                                <p class="text-lg text-gray-500 uppercase tracking-widest mb-1">Apresentação</p>
-                                <p class="text-2xl font-bold text-gray-800">Jean César dos Reis Barbosa<br>Gissele Quirino Herculano</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-lg text-gray-500 uppercase tracking-widest mb-1"></p>
-                                <p class="text-2xl font-bold text-red-800"></p>
+                                <p class="text-sm md:text-lg text-gray-500 uppercase tracking-widest mb-1">Apresentação</p>
+                                <p class="text-lg md:text-2xl font-bold text-gray-800">Jean César dos Reis Barbosa<br>Gissele Quirino Herculano</p>
                             </div>
                         </div>
                     </div>
@@ -118,9 +126,9 @@
 
                 <!-- SLIDE 2: Créditos da Obra -->
                 <div class="slide slide-hidden flex-col items-center justify-center w-full max-w-4xl text-center" data-index="2">
-                    <h2 class="text-4xl font-bold text-gray-800 mb-8 border-b pb-4">Sobre a Edição Analisada</h2>
-                    <div class="bg-white border shadow p-8 rounded-lg w-full max-w-3xl text-left mx-auto">
-                        <ul class="text-xl space-y-6">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 mb-6 md:mb-8 border-b pb-4">Sobre a Edição Analisada</h2>
+                    <div class="bg-white border shadow p-6 md:p-8 rounded-lg w-full max-w-3xl text-left mx-auto">
+                        <ul class="text-base md:text-xl space-y-4 md:space-y-6">
                             <li><strong class="text-red-800">Obra Principal:</strong> Construtivismo crítico: uma filosofia da tecnologia. (Capítulo 4: Exposição e defesa)</li>
                             <li><strong class="text-red-800">Autor Original:</strong> Andrew Feenberg</li>
                             <li><strong class="text-red-800">Tradução, Introdução e Notas:</strong> Luiz Henrique de Lacerda Abrahão & Cristiano Cordeiro Cruz</li>
@@ -131,14 +139,14 @@
 
                 <!-- SLIDE 3: Biografia c/ Foto -->
                 <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="3">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-8">Contextualização: Quem é Andrew Feenberg?</h2>
-                    <div class="flex gap-10 items-center">
-                        <div class="w-1/3 flex justify-center">
-                            <div class="w-64 h-64 bg-gray-200 rounded-full border-4 border-red-800 overflow-hidden shadow-xl">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8">Contextualização: Quem é Andrew Feenberg?</h2>
+                    <div class="flex flex-col md:flex-row gap-6 md:gap-10 items-center">
+                        <div class="w-full md:w-1/3 flex justify-center">
+                            <div class="w-48 h-48 md:w-64 md:h-64 bg-gray-200 rounded-full border-4 border-red-800 overflow-hidden shadow-xl shrink-0">
                                 <img src="foto.jpg" alt="Foto de Andrew Feenberg" class="w-full h-full object-cover">
                             </div>
                         </div>
-                        <div class="w-2/3 long-text text-xl text-gray-700">
+                        <div class="w-full md:w-2/3 long-text text-base md:text-xl text-gray-700 text-justify md:text-left">
                             <p>
                                 Filósofo estadunidense (nascido em 1943), é reconhecido internacionalmente como um dos maiores teóricos da Filosofia da Tecnologia. É o atual <em>Canada Research Chair</em> na Simon Fraser University (Canadá).
                             </p>
@@ -151,8 +159,8 @@
 
                 <!-- SLIDE 4: VÍDEO (A Ida para San Diego) -->
                 <div class="slide slide-hidden flex-col w-full max-w-[1300px]" data-index="4">
-                    <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-8 w-full block">O Encontro com Marcuse (Entrevista)</h2>
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 w-full items-center">
+                    <h2 class="text-xl md:text-3xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8 w-full block">O Encontro com Marcuse (Entrevista)</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 w-full items-center">
                         <div class="midia-container lg:col-span-7">
                             <div class="video-wrapper">
                                 <div id="player-inicio" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
@@ -160,104 +168,99 @@
                             <div class="legenda-box"><span class="legenda-texto">...</span></div>
                         </div>
                         <div class="flex flex-col lg:col-span-5">
-                            <div class="bg-gray-50 p-6 border-l-4 border-red-700 shadow-sm rounded-r-lg mb-6">
-                                <p class="text-lg font-bold text-gray-900 mb-2">Tony (One Dime Radio):</p>
-                                <p class="text-lg italic text-gray-700 mb-6">"Andrew, seria ótimo se você pudesse nos contar um pouco sobre sua relação com Herbert Marcuse."</p>
-                                <p class="text-lg font-bold text-red-900 mb-2">Andrew Feenberg:</p>
-                                <p class="text-lg font-serif italic text-gray-800 leading-relaxed text-justify">"A filosofia americana nos anos 60 era quase toda analítica. Um amigo me disse para olhar a Universidade da Califórnia porque lá tinha o Marcuse, 'um cara que escreve sobre Marx e Freud'. Eu disse: Qualquer cara louco o suficiente para fazer isso, é louco o suficiente pra mim."</p>
+                            <div class="bg-gray-50 p-4 md:p-6 border-l-4 border-red-700 shadow-sm rounded-r-lg mb-4 md:mb-6">
+                                <p class="text-base md:text-lg font-bold text-gray-900 mb-1 md:mb-2">Tony (One Dime Radio):</p>
+                                <p class="text-base md:text-lg italic text-gray-700 mb-4 md:mb-6">"Andrew, seria ótimo se você pudesse nos contar um pouco sobre sua relação com Herbert Marcuse."</p>
+                                <p class="text-base md:text-lg font-bold text-red-900 mb-1 md:mb-2">Andrew Feenberg:</p>
+                                <p class="text-base md:text-lg font-serif italic text-gray-800 leading-relaxed text-justify">"A filosofia americana nos anos 60 era quase toda analítica. Um amigo me disse para olhar a Universidade da Califórnia porque lá tinha o Marcuse, 'um cara que escreve sobre Marx e Freud'. Eu disse: Qualquer cara louco o suficiente para fazer isso, é louco o suficiente pra mim."</p>
                             </div>
-                            <button class="btn-play bg-red-700 text-white font-bold py-4 px-6 rounded-lg shadow-md hover:bg-red-800 w-full transition" 
+                            <button class="btn-play bg-red-700 text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-lg shadow-md hover:bg-red-800 w-full transition" 
                                     data-target="player-inicio" data-start="67" data-end="135">Reproduzir Trecho</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 5: A NUANCE DO CRAZY (NOVO SLIDE) -->
+                <!-- SLIDE 5: A NUANCE DO CRAZY -->
                 <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="5">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6">A Nuance do "Cara Louco" (Crazy)</h2>
-                    <p class="text-xl text-gray-700 mb-6 italic">
-                        Quando Feenberg usa a expressão <em>"crazy enough"</em> na entrevista, não há conotação pejorativa. Trata-se de um elogio profundo que revela o espírito da época:
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-4 md:mb-6">A Nuance do "Cara Louco" (Crazy)</h2>
+                    <p class="text-lg md:text-xl text-gray-700 mb-6 italic">
+                        Quando Feenberg usa a expressão <em>"crazy enough"</em> na entrevista, não há conotação pejorativa. Trata-se de um elogio profundo:
                     </p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-white border-t-8 border-red-700 p-6 rounded-lg shadow-md">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-3">1. Audácia e Coragem</h3>
-                            <p class="text-gray-700 text-[1.1rem] leading-relaxed">Nos EUA dos anos 60, a academia era engessada na tradição Analítica. Juntar Marx (revolução) e Freud (psicanálise) era considerado uma heresia acadêmica; exigia uma coragem beirando o "suicídio profissional" perante os conservadores.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                        <div class="bg-white border-t-8 border-red-700 p-4 md:p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">1. Audácia</h3>
+                            <p class="text-gray-700 text-sm md:text-[1.1rem] leading-relaxed">Juntar Marx e Freud era considerado uma heresia acadêmica; exigia uma coragem beirando o "suicídio profissional" nos EUA dos anos 60.</p>
                         </div>
-                        <div class="bg-white border-t-8 border-blue-700 p-6 rounded-lg shadow-md">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-3">2. Genialidade Disruptiva</h3>
-                            <p class="text-gray-700 text-[1.1rem] leading-relaxed">O termo evoca a ideia de um gênio subversivo. Significa ser brilhante a ponto de desafiar e quebrar totalmente as regras estabelecidas do que o mainstream considerava como a "filosofia séria".</p>
+                        <div class="bg-white border-t-8 border-blue-700 p-4 md:p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">2. Genialidade</h3>
+                            <p class="text-gray-700 text-sm md:text-[1.1rem] leading-relaxed">O termo evoca o gênio subversivo. Significa quebrar totalmente as regras do que o mainstream considerava como a "filosofia séria".</p>
                         </div>
-                        <div class="bg-white border-t-8 border-green-700 p-6 rounded-lg shadow-md">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-3">3. Identificação Pessoal</h3>
-                            <p class="text-gray-700 text-[1.1rem] leading-relaxed">A expressão idiomática <em>"is crazy enough for me"</em> demonstra alinhamento vital. Ele quis dizer: "Essa é exatamente a minha tribo e o nível de rebeldia epistemológica que busco num mestre".</p>
+                        <div class="bg-white border-t-8 border-green-700 p-4 md:p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">3. Identificação</h3>
+                            <p class="text-gray-700 text-sm md:text-[1.1rem] leading-relaxed">A expressão <em>"is crazy enough for me"</em> demonstra alinhamento vital. "Essa é exatamente a minha tribo e o nível de rebeldia que busco".</p>
                         </div>
-                    </div>
-                    <div class="bg-gray-100 border-l-4 border-gray-800 p-5 mt-6 rounded shadow-sm">
-                        <p class="text-[1.15rem] text-gray-800">
-                            <strong>Síntese:</strong> O "louco" representa o fascínio pela ruptura. Marcuse era a única figura com audácia para fundir a crítica estrutural do capitalismo com a libertação humana.
-                        </p>
                     </div>
                 </div>
 
-                <!-- SLIDE 6: Biografia (A Influência e o Ativismo) -->
+                <!-- SLIDE 6: Biografia (Ativismo) -->
                 <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="6">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-8">Pensamento, Ativismo e Pioneirismo</h2>
-                    <div class="grid grid-cols-2 gap-8 mt-4">
-                        <div class="bg-gray-50 border p-6 rounded-lg shadow-sm long-text text-lg text-gray-700">
-                            <h3 class="text-2xl font-bold text-red-900 mb-4">Ação Política e Maio de 68</h3>
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-4 md:mb-8">Pensamento, Ativismo e Pioneirismo</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 mt-2 md:mt-4">
+                        <div class="bg-gray-50 border p-5 md:p-6 rounded-lg shadow-sm long-text text-base md:text-lg text-gray-700">
+                            <h3 class="text-xl md:text-2xl font-bold text-red-900 mb-3">Ação Política e Maio de 68</h3>
                             <p>Envolto pela "Nova Esquerda", Feenberg participou ativamente das históricas manifestações estudantis de <strong>Maio de 1968, em Paris</strong>.</p>
-                            <p>Sua teoria não é puramente abstrata: ela é focada na materialidade da ação e na ideia real de que as massas e a resistência coletiva têm poder prático para alterar estruturas tecnológicas hegemônicas.</p>
+                            <p>Sua teoria não é puramente abstrata: ela foca na materialidade da ação e que as massas têm poder para alterar estruturas tecnológicas.</p>
                         </div>
-                        <div class="bg-gray-50 border p-6 rounded-lg shadow-sm long-text text-lg text-gray-700">
-                            <h3 class="text-2xl font-bold text-blue-900 mb-4">A Prática do Ensino Online</h3>
-                            <p>Feenberg atua também como desenvolvedor da técnica. Na década de 1980, foi um dos <strong>pioneiros globais da Educação Online e fóruns assíncronos</strong> (Projeto <em>TextWeaver</em>).</p>
-                            <p>Isso prova sua tese central: a tecnologia não possui um imperativo autônomo autoritário. Se projetada com valores democráticos de base, ela serve à emancipação.</p>
+                        <div class="bg-gray-50 border p-5 md:p-6 rounded-lg shadow-sm long-text text-base md:text-lg text-gray-700">
+                            <h3 class="text-xl md:text-2xl font-bold text-blue-900 mb-3">A Prática do Ensino Online</h3>
+                            <p>Feenberg atua também como desenvolvedor da técnica. Na década de 1980, foi um dos <strong>pioneiros globais da Educação Online e fóruns assíncronos</strong>.</p>
+                            <p>Isso prova sua tese central: a tecnologia não possui um imperativo autônomo autoritário. Se projetada com valores democráticos, serve à emancipação.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- SLIDE 7: O que é Construtivismo Crítico -->
                 <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="7">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-stone-600 pb-2 mb-8">1. O que é o Construtivismo Crítico?</h2>
-                    <p class="text-3xl text-gray-800 font-bold mb-6">Uma filosofia <strong>especificamente política</strong> da tecnologia.</p>
-                    <div class="long-text text-xl text-gray-700">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-600 pb-2 mb-6 md:mb-8">1. O que é o Construtivismo Crítico?</h2>
+                    <p class="text-xl md:text-3xl text-gray-800 font-bold mb-4 md:mb-6">Uma filosofia <strong>especificamente política</strong> da tecnologia.</p>
+                    <div class="long-text text-lg md:text-xl text-gray-700">
                         <p>
                             Muitas teorias veem a tecnologia como uma marcha inevitável e neutra, governada por princípios científicos inquestionáveis. Feenberg rompe com essa visão tecnocrática. 
                         </p>
                         <p>
-                            Sua filosofia orienta-se para o estudo de projetos técnicos locais e para as <strong>controvérsias públicas reais</strong> que a tecnologia desencadeia (Ex: impactos de uma indústria numa comunidade). A técnica não é um destino natural; é um campo de batalha político.
+                            Sua filosofia orienta-se para o estudo de projetos técnicos locais e para as <strong>controvérsias públicas reais</strong> que a tecnologia desencadeia. A técnica não é um destino natural; é um campo de batalha político.
                         </p>
                     </div>
                 </div>
 
                 <!-- SLIDE 8: Combinação Teórica -->
                 <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="8">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-stone-600 pb-2 mb-8">A Combinação Eclética de Fontes</h2>
-                    <p class="text-xl mb-6 text-gray-700">A teoria "desontologiza" grandes filosofias para resgatar a crítica da racionalidade perante a crise moderna:</p>
-                    <div class="grid grid-cols-2 gap-6 w-full">
-                        <div class="bg-gray-50 p-6 rounded-lg border-l-4 border-yellow-600 shadow-sm">
-                            <h3 class="font-bold text-xl mb-2 text-yellow-900">Escola de Frankfurt</h3>
-                            <p class="text-lg">Crítica ao cientificismo "unidimensional". Evidencia que as grandes resistências sempre nascem a partir da nossa "experiência cotidiana".</p>
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-600 pb-2 mb-6 md:mb-8">A Combinação Eclética de Fontes</h2>
+                    <p class="text-base md:text-xl mb-4 md:mb-6 text-gray-700">A teoria "desontologiza" grandes filosofias para resgatar a crítica da racionalidade:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full">
+                        <div class="bg-gray-50 p-4 md:p-6 rounded-lg border-l-4 border-yellow-600 shadow-sm">
+                            <h3 class="font-bold text-lg md:text-xl mb-2 text-yellow-900">Escola de Frankfurt</h3>
+                            <p class="text-base md:text-lg">Crítica ao cientificismo "unidimensional". Evidencia que as grandes resistências sempre nascem a partir da nossa "experiência cotidiana".</p>
                         </div>
-                        <div class="bg-white p-6 rounded-lg border-l-8 border-red-700 shadow-md">
-                            <h3 class="font-bold text-xl mb-2 text-red-800">O Marxismo Estrutural</h3>
-                            <p class="text-lg">Fornece o arcabouço insubstituível para entender como o <span class="marx-highlight">processo de trabalho</span> é forjado pelo capital para reificar, dominar e desqualificar a classe trabalhadora.</p>
+                        <div class="bg-white p-4 md:p-6 rounded-lg border-l-8 border-red-700 shadow-md">
+                            <h3 class="font-bold text-lg md:text-xl mb-2 text-red-800">O Marxismo Estrutural</h3>
+                            <p class="text-base md:text-lg">Fornece o arcabouço insubstituível para entender como o <span class="marx-highlight">processo de trabalho</span> é forjado pelo capital para dominar a classe trabalhadora.</p>
                         </div>
-                        <div class="bg-gray-50 p-6 rounded-lg border-l-4 border-green-600 shadow-sm">
-                            <h3 class="font-bold text-xl mb-2 text-green-900">Construtivismo Social (ESCT)</h3>
-                            <p class="text-lg">Comprova empiricamente que a técnica tem caminhos alternativos e é impulsionada pelos interesses dos atores sociais em disputa.</p>
+                        <div class="bg-gray-50 p-4 md:p-6 rounded-lg border-l-4 border-green-600 shadow-sm">
+                            <h3 class="font-bold text-lg md:text-xl mb-2 text-green-900">Construtivismo Social (ESCT)</h3>
+                            <p class="text-base md:text-lg">Comprova empiricamente que a técnica tem caminhos alternativos e é impulsionada pelos interesses dos atores sociais em disputa.</p>
                         </div>
-                        <div class="bg-gray-50 p-6 rounded-lg border-l-4 border-purple-600 shadow-sm">
-                            <h3 class="font-bold text-xl mb-2 text-purple-900">Heidegger</h3>
-                            <p class="text-lg">Resgate estritamente crítico da fenomenologia heideggeriana contra a redução do ser humano a mero "fundo de reserva" instrumental.</p>
+                        <div class="bg-gray-50 p-4 md:p-6 rounded-lg border-l-4 border-purple-600 shadow-sm">
+                            <h3 class="font-bold text-lg md:text-xl mb-2 text-purple-900">Heidegger</h3>
+                            <p class="text-base md:text-lg">Resgate estritamente crítico da fenomenologia heideggeriana contra a redução do ser humano a mero "fundo de reserva" instrumental.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 9: VÍDEO (A ambivalência com Heidegger) -->
+                <!-- SLIDE 9: VÍDEO (Heidegger) -->
                 <div class="slide slide-hidden flex-col w-full max-w-[1300px]" data-index="9">
-                    <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-8 w-full block">A Ruptura Moral com Heidegger (Entrevista)</h2>
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 w-full items-center">
+                    <h2 class="text-xl md:text-3xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-6 md:mb-8 w-full block">A Ruptura Moral com Heidegger (Entrevista)</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 w-full items-center">
                         <div class="midia-container lg:col-span-7">
                             <div class="video-wrapper">
                                 <div id="player-heidegger" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
@@ -265,76 +268,76 @@
                             <div class="legenda-box"><span class="legenda-texto">...</span></div>
                         </div>
                         <div class="flex flex-col lg:col-span-5">
-                            <div class="bg-gray-50 p-6 border-l-4 border-purple-700 shadow-sm rounded-r-lg mb-6">
-                                <p class="text-lg font-bold text-gray-900 mb-2">Tony (One Dime Radio):</p>
-                                <p class="text-lg italic text-gray-700 mb-6">"Gostaria que você fechasse com a relação de Marcuse com Heidegger. Claro, ele foi aluno dele, mas tinha uma relação muito ambivalente com ele."</p>
-                                <p class="text-lg font-bold text-purple-900 mb-2">Andrew Feenberg:</p>
-                                <p class="text-lg font-serif italic text-gray-800 leading-relaxed text-justify">"Ele tinha um sentimento ruim sobre Heidegger, que se tornara nazista. Marcuse perguntou a ele se admitiria que cometeu um erro. Quando Heidegger negou com desculpas cínicas, Marcuse respondeu: 'Nenhum filósofo pode se permitir dizer uma coisa dessas'. Ele nunca mais o contatou."</p>
+                            <div class="bg-gray-50 p-4 md:p-6 border-l-4 border-purple-700 shadow-sm rounded-r-lg mb-4 md:mb-6">
+                                <p class="text-base md:text-lg font-bold text-gray-900 mb-1 md:mb-2">Tony (One Dime Radio):</p>
+                                <p class="text-base md:text-lg italic text-gray-700 mb-4 md:mb-6">"Gostaria que você fechasse com a relação de Marcuse com Heidegger. Claro, ele foi aluno dele, mas tinha uma relação ambivalente."</p>
+                                <p class="text-base md:text-lg font-bold text-purple-900 mb-1 md:mb-2">Andrew Feenberg:</p>
+                                <p class="text-base md:text-lg font-serif italic text-gray-800 leading-relaxed text-justify">"Ele tinha um sentimento ruim sobre Heidegger, que se tornara nazista. Quando Heidegger negou seu erro com desculpas cínicas, Marcuse respondeu: 'Nenhum filósofo pode se permitir dizer uma coisa dessas'. Ele nunca mais o contatou."</p>
                             </div>
-                            <button class="btn-play bg-purple-700 text-white font-bold py-4 px-6 rounded-lg shadow-md hover:bg-purple-800 w-full transition" 
+                            <button class="btn-play bg-purple-700 text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-lg shadow-md hover:bg-purple-800 w-full transition" 
                                     data-target="player-heidegger" data-start="7482" data-end="7576">Reproduzir Trecho</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 10: Por que Marx? A Crítica a Latour e Foucault -->
+                <!-- SLIDE 10: Por que Marx? -->
                 <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="10">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-8">2. Por que Marx ainda importa?</h2>
-                    <p class="text-2xl italic text-gray-600 border-l-4 border-red-300 pl-6 py-2 mb-8 bg-gray-50">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8">2. Por que Marx ainda importa?</h2>
+                    <p class="text-xl md:text-2xl italic text-gray-600 border-l-4 border-red-300 pl-4 md:pl-6 py-2 mb-6 md:mb-8 bg-gray-50">
                         "Todo mundo acredita em 90% do marxismo; os marxistas são aqueles que também acreditam nos outros 10%".
                     </p>
-                    <div class="long-text text-xl text-gray-700">
+                    <div class="long-text text-lg md:text-xl text-gray-700">
                         <p>
-                            O construtivismo social e a Teoria Ator-Rede provaram que a técnica não tem "imperativos" naturais. Porém, <strong>falham grotescamente ao negar a existência do Poder de Classe como categoria estrutural</strong>.
+                            O construtivismo social provou que a técnica não tem imperativos naturais. Porém, <strong>falha grotescamente ao negar a existência do Poder de Classe como categoria estrutural</strong>.
                         </p>
                         <p>
-                            Feenberg critica abertamente Michel Foucault e Bruno Latour por diluírem o poder em "jogos de técnicas" ou meras "associações de rede". É preciso resgatar Marx porque o Capitalismo <span class="marx-highlight">é a macroestrutura social que condiciona e monopoliza as escolhas de projeto técnico na base da sociedade.</span>
+                            Feenberg critica Bruno Latour por diluir o poder em meras "associações de rede". É preciso resgatar Marx porque o Capitalismo <span class="marx-highlight">é a macroestrutura social que condiciona e monopoliza as escolhas de projeto técnico na base da sociedade.</span>
                         </p>
                     </div>
                 </div>
 
                 <!-- SLIDE 11: As Três Crises -->
                 <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="11">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-8">As Três Grandes Crises Contemporâneas</h2>
-                    <p class="text-xl mb-6 font-medium text-gray-700">Se ignorarmos a categoria do Poder Capitalista, é impossível explicar a gravidade de nossa época:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-white p-6 rounded shadow border-t-4 border-red-900 text-lg text-gray-700">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8">As Três Grandes Crises Contemporâneas</h2>
+                    <p class="text-base md:text-xl mb-4 md:mb-6 font-medium text-gray-700">Se ignorarmos a categoria do Poder Capitalista, é impossível explicar a gravidade de nossa época:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                        <div class="bg-white p-4 md:p-6 rounded shadow border-t-4 border-red-900 text-base md:text-lg text-gray-700">
                             <strong>1. A Crise Climática:</strong><br><br>
-                            O exercício desmedido do poder. A indústria fóssil concentra tanto capital que anula sistematicamente a ciência climática para blindar sua rentabilidade.
+                            A indústria fóssil concentra tanto capital que anula sistematicamente a ciência climática para blindar sua rentabilidade.
                         </div>
-                        <div class="bg-white p-6 rounded shadow border-t-4 border-red-700 text-lg text-gray-700">
+                        <div class="bg-white p-4 md:p-6 rounded shadow border-t-4 border-red-700 text-base md:text-lg text-gray-700">
                             <strong>2. A Captura da Internet:</strong><br><br>
-                            Uma tecnologia descentralizadora agora é dominada por poucas corporações gigantes, convertendo o debate público num imenso aparato de propaganda e vigilância.
+                            Uma tecnologia descentralizadora agora dominada por corporações gigantes, convertendo o debate público em propaganda e vigilância.
                         </div>
-                        <div class="bg-white p-6 rounded shadow border-t-4 border-red-500 text-lg text-gray-700">
+                        <div class="bg-white p-4 md:p-6 rounded shadow border-t-4 border-red-500 text-base md:text-lg text-gray-700">
                             <strong>3. A Desconfiança na Ciência:</strong><br><br>
-                            A desregulamentação neoliberal forçou simulacros da lógica de mercado em todas as esferas da vida. A desigualdade gerou um rancor distópico das massas contra a própria razão.
+                            A desregulamentação forçou lógicas de mercado em todas as esferas. A desigualdade gerou um rancor distópico das massas contra a razão.
                         </div>
                     </div>
                 </div>
 
                 <!-- SLIDE 12: Dominação Impessoal -->
                 <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="12">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-8">A Dominação "Impessoal" (A Estrutura do Capital)</h2>
-                    <div class="bg-red-50 border border-red-200 p-8 rounded shadow-sm mb-6 w-full text-center">
-                        <p class="text-2xl text-red-900 leading-relaxed font-serif italic">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8">A Dominação "Impessoal"</h2>
+                    <div class="bg-red-50 border border-red-200 p-6 md:p-8 rounded shadow-sm mb-6 w-full text-center">
+                        <p class="text-xl md:text-2xl text-red-900 leading-relaxed font-serif italic">
                             Para Marx, o capitalista é um <strong>"simples agente de estruturas anônimas"</strong>.
                         </p>
                     </div>
-                    <div class="long-text text-xl text-gray-700">
+                    <div class="long-text text-lg md:text-xl text-gray-700">
                         <p>
-                            Não se trata de apontar falhas de caráter (ganância individual). O capitalista é esmagado e impelido a agir de forma brutal por duas estruturas determinantes irrefreáveis: <strong>as pressões do mercado concorrencial e a constante ameaça da resistência trabalhista</strong>.
+                            Não se trata de apontar falhas de caráter. O capitalista é impelido a agir de forma brutal por estruturas irrefreáveis: <strong>as pressões do mercado concorrencial e a ameaça da resistência trabalhista</strong>.
                         </p>
                         <p>
-                            Isso explica a adoção ininterrupta de tecnologias focadas estritamente na <span class="marx-highlight">desqualificação do trabalho vivo e no esgotamento da natureza</span>, independentemente das intenções éticas do gestor.
+                            Isso explica a adoção ininterrupta de tecnologias focadas estritamente na <span class="marx-highlight">desqualificação do trabalho vivo e no esgotamento da natureza</span>, independentemente das intenções do gestor.
                         </p>
                     </div>
                 </div>
 
-                <!-- SLIDE 13: VÍDEO MARX (LADO A LADO) -->
+                <!-- SLIDE 13: VÍDEO MARX -->
                 <div class="slide slide-hidden flex-col w-full max-w-[1300px]" data-index="13">
-                    <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-8 w-full block">Marx e o Controle Humano da História (Entrevista)</h2>
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 w-full items-center">
+                    <h2 class="text-xl md:text-3xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8 w-full block">Marx e o Controle Humano da História (Entrevista)</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 w-full items-center">
                         <div class="midia-container lg:col-span-7">
                             <div class="video-wrapper">
                                 <div id="player-1" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
@@ -342,13 +345,13 @@
                             <div class="legenda-box"><span class="legenda-texto">...</span></div>
                         </div>
                         <div class="flex flex-col lg:col-span-5">
-                            <div class="bg-gray-50 p-6 border-l-4 border-red-700 shadow-sm rounded-r-lg mb-6">
-                                <p class="text-lg font-bold text-gray-900 mb-2">Tony (One Dime Radio):</p>
-                                <p class="text-lg italic text-gray-700 mb-6">"Críticos descartam Marx devido à 'teleologia'... se alguém é marxista, a conclusão lógica não seria que o socialismo é mecanicamente inevitável?"</p>
-                                <p class="text-lg font-bold text-red-900 mb-2">Andrew Feenberg:</p>
-                                <p class="text-lg font-serif italic text-gray-800 leading-relaxed text-justify">"O problema básico com o qual Marx está lidando é como passar de uma fase da História na qual as leis naturais da economia prevalecem sobre os seres humanos... para um novo sistema no qual as pessoas têm a capacidade de organizar sua própria existência, de forma livre e consciente."</p>
+                            <div class="bg-gray-50 p-4 md:p-6 border-l-4 border-red-700 shadow-sm rounded-r-lg mb-4 md:mb-6">
+                                <p class="text-base md:text-lg font-bold text-gray-900 mb-1 md:mb-2">Tony (One Dime Radio):</p>
+                                <p class="text-base md:text-lg italic text-gray-700 mb-4 md:mb-6">"Críticos descartam Marx devido à 'teleologia'... a conclusão não seria que o socialismo é mecanicamente inevitável?"</p>
+                                <p class="text-base md:text-lg font-bold text-red-900 mb-1 md:mb-2">Andrew Feenberg:</p>
+                                <p class="text-base md:text-lg font-serif italic text-gray-800 leading-relaxed text-justify">"O problema básico que Marx lida é como passar de uma fase onde as leis naturais da economia prevalecem sobre os humanos... para um novo sistema no qual as pessoas têm a capacidade de organizar sua existência de forma consciente."</p>
                             </div>
-                            <button class="btn-play bg-red-700 text-white font-bold py-4 px-6 rounded-lg shadow-md hover:bg-red-800 w-full transition" 
+                            <button class="btn-play bg-red-700 text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-lg shadow-md hover:bg-red-800 w-full transition" 
                                     data-target="player-1" data-start="4134" data-end="4169">Reproduzir Trecho</button>
                         </div>
                     </div>
@@ -356,136 +359,135 @@
 
                 <!-- SLIDE 14: Teoria Política e o Triplo Dilema -->
                 <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="14">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-stone-500 pb-2 mb-8">3. A Tecnologia na Teoria Política</h2>
-                    <p class="text-xl text-gray-700 mb-6">Durante séculos, empresas ignoraram os impactos locais de suas máquinas (as "externalidades"). Debater politicamente a tecnologia requer superar um triplo dilema contraditório nas ciências sociais:</p>
-                    <ul class="list-none pl-4 space-y-6 text-xl">
-                        <li class="p-4 bg-white shadow rounded border-l-8 border-blue-500"><strong>1. O Não determinismo:</strong> O desenvolvimento tecnológico não possui "imperativos" naturais inquestionáveis.</li>
-                        <li class="p-4 bg-white shadow rounded border-l-8 border-red-700"><strong>2. A Convergência:</strong> Se não há determinismo, por que o capitalismo fordista e o comunismo soviético <em>convergiram</em> gerando as exatas mesmas estruturas opressivas de controle gerencial?</li>
-                        <li class="p-4 bg-white shadow rounded border-l-8 border-green-500"><strong>3. A Racionalidade:</strong> As escolhas técnicas da gestão são baseadas na eficiência comprovada matematicamente pela Ciência. Como atacá-las moralmente?</li>
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-500 pb-2 mb-6 md:mb-8">3. A Tecnologia na Teoria Política</h2>
+                    <p class="text-lg md:text-xl text-gray-700 mb-6">Debater politicamente a tecnologia requer superar um triplo dilema nas ciências sociais:</p>
+                    <ul class="list-none pl-0 md:pl-4 space-y-4 md:space-y-6 text-base md:text-xl">
+                        <li class="p-4 bg-white shadow rounded border-l-8 border-blue-500"><strong>1. Não determinismo:</strong> O desenvolvimento tecnológico não possui "imperativos" naturais inquestionáveis.</li>
+                        <li class="p-4 bg-white shadow rounded border-l-8 border-red-700"><strong>2. Convergência:</strong> Por que o capitalismo e o comunismo soviético <em>convergiram</em> gerando as mesmas estruturas opressivas de controle gerencial?</li>
+                        <li class="p-4 bg-white shadow rounded border-l-8 border-green-500"><strong>3. Racionalidade:</strong> As escolhas da gestão são baseadas na eficiência da Ciência. Como atacá-las moralmente?</li>
                     </ul>
                 </div>
 
                 <!-- SLIDE 15: A Teoria do Processo de Trabalho -->
                 <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="15">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-8">A Teoria do Processo de Trabalho</h2>
-                    <div class="long-text text-xl text-gray-700">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8">A Teoria do Processo de Trabalho</h2>
+                    <div class="long-text text-lg md:text-xl text-gray-700">
                         <p>
-                            Como explicar a Convergência? A União Soviética importou a tecnologia capitalista e, junto com ela, importou os seus <strong>métodos brutais de controle e divisão do trabalho</strong> enraizados no hardware.
+                            A União Soviética importou a tecnologia capitalista e, junto com ela, os seus <strong>métodos brutais de controle e divisão do trabalho</strong> enraizados no hardware.
                         </p>
-                        <div class="bg-red-50 border border-red-200 p-6 rounded shadow-sm text-center mb-6">
-                            <p class="text-xl font-bold text-red-900">A Desqualificação da Força de Trabalho (Braverman/Marx)</p>
+                        <div class="bg-red-50 border border-red-200 p-4 md:p-6 rounded shadow-sm text-center mb-4 md:mb-6">
+                            <p class="text-lg md:text-xl font-bold text-red-900">A Desqualificação da Força de Trabalho</p>
                         </div>
                         <p>
-                            A tecnologia capitalista não foca em facilitar a vida; <span class="marx-highlight">ela é desenhada para roubar e materializar na máquina o conteúdo intelectual da produção</span> (que pertencia ao artesão). Isso garante que o trabalho seja executado mecanicamente por operários desqualificados e desmotivados, privando a classe trabalhadora da capacidade cultural de disputar o poder.
+                            A tecnologia capitalista não foca em facilitar a vida; <span class="marx-highlight">ela é desenhada para roubar e materializar na máquina o conteúdo intelectual da produção</span>. Isso garante que o trabalho seja executado mecanicamente por operários desqualificados, privando-os da capacidade cultural de disputar o poder.
                         </p>
                     </div>
                 </div>
 
                 <!-- SLIDE 16: Formas de Organização -->
                 <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="16">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-orange-600 pb-2 mb-8">4. Formas de Organização Cooperativa</h2>
-                    <p class="text-xl mb-6 font-medium text-gray-700">Feenberg distingue três "Tipos Ideais" de controle operacional de processos nas sociedades modernas:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-white border-t-8 border-orange-600 p-6 rounded shadow-md text-lg">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Controle "De Cima"</h3>
-                            <p class="text-gray-700">A coordenação é imposta de forma autoritária por acionistas e burocratas, totalmente isentos de responsabilidades humanas para com subordinados.</p>
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-orange-600 pb-2 mb-6 md:mb-8">4. Formas de Organização Cooperativa</h2>
+                    <p class="text-lg md:text-xl mb-6 font-medium text-gray-700">Três "Tipos Ideais" de controle operacional nas sociedades modernas:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                        <div class="bg-white border-t-8 border-orange-600 p-4 md:p-6 rounded shadow-md text-base md:text-lg">
+                            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">Controle "De Cima"</h3>
+                            <p class="text-gray-700">Imposto de forma autoritária por acionistas e burocratas, isentos de responsabilidades humanas para com subordinados.</p>
                         </div>
-                        <div class="bg-white border-t-8 border-green-600 p-6 rounded shadow-md text-lg">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Controle "De Base"</h3>
-                            <p class="text-gray-700">O pilar do socialismo democrático, no qual os próprios subordinados e afetados escolhem o rumo do projeto e controlam os processos.</p>
+                        <div class="bg-white border-t-8 border-green-600 p-4 md:p-6 rounded shadow-md text-base md:text-lg">
+                            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">Controle "De Base"</h3>
+                            <p class="text-gray-700">O pilar do socialismo, no qual os subordinados e afetados escolhem o rumo do projeto e controlam processos.</p>
                         </div>
-                        <div class="bg-white border-t-8 border-blue-600 p-6 rounded shadow-md text-lg">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Controle "Colegiado"</h3>
-                            <p class="text-gray-700">Tradicional na educação e medicina. Trabalhadores hiper-qualificados possuem profunda autonomia e votam as metas das instituições.</p>
+                        <div class="bg-white border-t-8 border-blue-600 p-4 md:p-6 rounded shadow-md text-base md:text-lg">
+                            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">Controle "Colegiado"</h3>
+                            <p class="text-gray-700">Trabalhadores hiper-qualificados (médicos, professores) possuem autonomia e votam as metas das instituições.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 17: Valor de Troca e o Falso Neutro -->
+                <!-- SLIDE 17: Valor de Troca -->
                 <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="17">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-orange-600 pb-2 mb-8">Autonomia Operacional e o Valor de Troca</h2>
-                    <div class="long-text text-xl text-gray-700">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-orange-600 pb-2 mb-6 md:mb-8">Autonomia Operacional e o Valor de Troca</h2>
+                    <div class="long-text text-lg md:text-xl text-gray-700">
                         <p>
-                            Na empresa capitalista (controle de cima), a finalidade primordial não é produzir coisas úteis (<span class="marx-highlight">Valor de Uso</span>), mas sim multiplicar o capital (<span class="marx-highlight">Valor de Troca</span>). O valor de uso social é rebaixado a mero subproduto.
+                            Na empresa capitalista, a finalidade não é produzir coisas úteis (<span class="marx-highlight">Valor de Uso</span>), mas multiplicar o capital (<span class="marx-highlight">Valor de Troca</span>).
                         </p>
                         <p>
-                            Essa alienação das obrigações comunitárias concede à gestão a <strong>Autonomia Operacional</strong>: gestores têm o passe livre para perseguir metodologias de pura eficiência matemática na máquina e descarte de rejeitos, blindados de qualquer responsabilização ética local.
+                            Essa alienação das obrigações comunitárias concede à gestão a <strong>Autonomia Operacional</strong>: passe livre para perseguir metodologias de pura eficiência matemática na máquina, blindados de responsabilização ética local.
                         </p>
-                        <div class="bg-orange-50 border-l-8 border-orange-600 p-6 rounded shadow mt-6">
-                            <p class="font-bold text-gray-900 italic text-center">"A neutralidade técnica do capitalismo não é absoluta. Ela é relativa e desenhada à força pela divisão social do trabalho".</p>
+                        <div class="bg-orange-50 border-l-8 border-orange-600 p-4 md:p-6 rounded shadow mt-6">
+                            <p class="font-bold text-base md:text-lg text-gray-900 italic text-center">"A neutralidade técnica do capitalismo não é absoluta. Ela é relativa e desenhada à força pela divisão social do trabalho".</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- SLIDE 18: Neoliberalismo na Escola -->
                 <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="18">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-orange-600 pb-2 mb-8">Escolas e a Lógica Neoliberal</h2>
-                    <p class="text-xl text-gray-700 leading-relaxed mb-6">
-                        Ao contrário do lucro corporativo, institutions públicas possuíam uma política "substantiva" — o imenso valor social imaterial de <em>educar o ser humano</em>, que dependia umbilicalmente da gestão colegiada viva dos professores.
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-orange-600 pb-2 mb-6 md:mb-8">Escolas e a Lógica Neoliberal</h2>
+                    <p class="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
+                        Instituições públicas possuíam o valor social imaterial de <em>educar o ser humano</em>, que dependia da gestão colegiada viva dos professores.
                     </p>
-                    <div class="bg-white border-l-8 border-gray-800 p-8 rounded-xl shadow-lg w-full">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4 border-b pb-2">A Reificação da Sala de Aula</h3>
-                        <p class="text-xl text-gray-700 leading-relaxed">
-                            No projeto Neoliberal, a educação é quantificada e redefinida puramente por rankings, índices e provas. A Autonomia Operacional da burocracia estatal aniquila o controle colegiado docente (<span class="marx-highlight">simulacro das métricas financeiras</span>), reduzindo professores a repassadores de apostilas e causando profunda desmoralização.
+                    <div class="bg-white border-l-8 border-gray-800 p-6 md:p-8 rounded-xl shadow-lg w-full">
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4 border-b pb-2">A Reificação da Sala de Aula</h3>
+                        <p class="text-base md:text-xl text-gray-700 leading-relaxed">
+                            No Neoliberalismo, a educação é quantificada por rankings e provas. A Autonomia Operacional da burocracia aniquila o controle colegiado docente (<span class="marx-highlight">simulacro das métricas financeiras</span>), reduzindo professores a repassadores de apostilas.
                         </p>
                     </div>
                 </div>
 
                 <!-- SLIDE 19: Consequências da Autonomia Operacional -->
                 <div class="slide slide-hidden flex-col w-full max-w-5xl text-center" data-index="19">
-                    <h2 class="text-4xl font-bold mb-8 border-b pb-4 text-gray-800">Consequências Atuais da Autonomia Operacional</h2>
-                    <div class="grid grid-cols-2 gap-8 text-left">
-                        <div class="bg-gray-100 p-8 rounded-lg shadow-sm border-t-4 border-gray-900">
-                            <h3 class="text-2xl font-bold mb-4">Caso: O Vale do Silício</h3>
-                            <p class="text-xl text-gray-700 leading-relaxed">As Big Techs são o paroxismo da Autonomia Operacional. O imperativo de maximizar "engajamento" varreu considerações sobre a saúde mental coletiva, erguendo a colossal máquina de vigilância privatizada da Internet.</p>
+                    <h2 class="text-2xl md:text-4xl font-bold mb-6 md:mb-8 border-b pb-4 text-gray-800">Consequências da Autonomia Operacional</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 text-left">
+                        <div class="bg-gray-100 p-6 md:p-8 rounded-lg shadow-sm border-t-4 border-gray-900">
+                            <h3 class="text-xl md:text-2xl font-bold mb-3">Caso: O Vale do Silício</h3>
+                            <p class="text-base md:text-xl text-gray-700 leading-relaxed">O imperativo de maximizar "engajamento" varreu considerações sobre saúde mental coletiva, erguendo a colossal máquina de vigilância privatizada da Internet.</p>
                         </div>
-                        <div class="bg-gray-100 p-8 rounded-lg shadow-sm border-t-4 border-green-700">
-                            <h3 class="text-2xl font-bold mb-4">Caso: Tragédias Ecológicas</h3>
-                            <p class="text-xl text-gray-700 leading-relaxed">Em termos de projeto técnico racional, o despejo de toxinas no rio é matematicamente o método "mais eficiente" para o lucro da mina. Os engenheiros não consultam os vizinhos. Resta à sociedade apenas a reação passiva judicial.</p>
+                        <div class="bg-gray-100 p-6 md:p-8 rounded-lg shadow-sm border-t-4 border-green-700">
+                            <h3 class="text-xl md:text-2xl font-bold mb-3">Caso: Tragédias Ecológicas</h3>
+                            <p class="text-base md:text-xl text-gray-700 leading-relaxed">Despejar toxinas no rio é o método matemático "mais eficiente" para o lucro da mina. Resta à sociedade apenas a reação passiva judicial a posteriori.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- SLIDE 20: Democratização Base -->
                 <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="20">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-8">5. A Democratização da Tecnologia</h2>
-                    <div class="bg-indigo-50 border border-indigo-200 p-8 rounded shadow-sm text-center mb-8">
-                        <p class="text-2xl text-indigo-900 font-bold italic">"Uma reinvindicação material, e não uma recusa cega ou niilista da expertise técnica."</p>
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-6 md:mb-8">5. A Democratização da Tecnologia</h2>
+                    <div class="bg-indigo-50 border border-indigo-200 p-4 md:p-8 rounded shadow-sm text-center mb-6 md:mb-8">
+                        <p class="text-xl md:text-2xl text-indigo-900 font-bold italic">"Uma reinvindicação material, e não uma recusa cega da expertise técnica."</p>
                     </div>
-                    <div class="long-text text-xl text-gray-700">
+                    <div class="long-text text-lg md:text-xl text-gray-700">
                         <p>
-                            Especialistas, historicamente pagos pelo capital para priorizar a eficiência mecânica, ignoraram sistemicamente a segurança ocupacional e a poluição atmosférica, tratando a vida como "externalidade". 
+                            Especialistas historicamente ignoraram a segurança ocupacional e a poluição, tratando a vida como "externalidade". 
                         </p>
                         <p>
-                            A democratização é o embate popular para forçar a modificação da tecnologia <strong>na prancheta do projeto</strong>, garantindo o direito à voz dos não-especialistas, dos sindicatos, e das vítimas ambientais.
+                            A democratização é o embate popular para forçar a modificação da tecnologia <strong>na prancheta do projeto</strong>, garantindo o direito à voz dos não-especialistas e das vítimas ambientais.
                         </p>
                     </div>
                 </div>
 
                 <!-- SLIDE 21: Traços da Ação Pública -->
                 <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="21">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-8">Traços Formais da Intervenção Popular</h2>
-                    <p class="text-xl mb-6 text-gray-700">Como a sociedade se mobiliza contra o código imposto pela autonomia operacional?</p>
-                    <ul class="space-y-6 text-xl">
-                        <li class="bg-white p-6 rounded-lg border shadow-sm flex items-center">
-                            <span class="text-indigo-700 text-4xl font-bold mr-6">1.</span>
-                            <div><strong>Ação Pontual:</strong> Protestos (A Posteriori) impulsionados por escândalos e mortes, que inflamam e unem a indignação do público latente.</div>
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-6 md:mb-8">Traços Formais da Intervenção Popular</h2>
+                    <ul class="space-y-4 md:space-y-6 text-base md:text-xl">
+                        <li class="bg-white p-4 md:p-6 rounded-lg border shadow-sm flex items-start md:items-center">
+                            <span class="text-indigo-700 text-2xl md:text-4xl font-bold mr-4 md:mr-6 mt-1 md:mt-0">1.</span>
+                            <div><strong>Ação Pontual:</strong> Protestos impulsionados por escândalos e mortes, que inflamam a indignação do público latente.</div>
                         </li>
-                        <li class="bg-white p-6 rounded-lg border shadow-sm flex items-center">
-                            <span class="text-indigo-700 text-4xl font-bold mr-6">2.</span>
-                            <div><strong>Discursividade Híbrida:</strong> Uma linguagem em que o jargão científico estrito tem que colidir violentamente com o senso comum aristotélico (a ética da vida).</div>
+                        <li class="bg-white p-4 md:p-6 rounded-lg border shadow-sm flex items-start md:items-center">
+                            <span class="text-indigo-700 text-2xl md:text-4xl font-bold mr-4 md:mr-6 mt-1 md:mt-0">2.</span>
+                            <div><strong>Discursividade Híbrida:</strong> O jargão científico estrito colidindo violentamente com o senso comum (a ética da vida).</div>
                         </li>
-                        <li class="bg-white p-6 rounded-lg border shadow-sm flex items-center">
-                            <span class="text-indigo-700 text-4xl font-bold mr-6">3.</span>
-                            <div><strong>Ruptura do Código:</strong> As críticas não buscam apenas indenizações; elas forçam os engenheiros a "reinventar" a própria máquina e o Código Técnico a longo prazo.</div>
+                        <li class="bg-white p-4 md:p-6 rounded-lg border shadow-sm flex items-start md:items-center">
+                            <span class="text-indigo-700 text-2xl md:text-4xl font-bold mr-4 md:mr-6 mt-1 md:mt-0">3.</span>
+                            <div><strong>Ruptura do Código:</strong> As críticas não buscam só indenizações; forçam os engenheiros a "reinventar" a própria máquina a longo prazo.</div>
                         </li>
                     </ul>
                 </div>
 
-                <!-- SLIDE 22: VÍDEO CIÊNCIA (LADO A LADO) -->
+                <!-- SLIDE 22: VÍDEO CIÊNCIA -->
                 <div class="slide slide-hidden flex-col w-full max-w-[1300px]" data-index="22">
-                    <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-8 w-full block">A Racionalidade e a Ciência (Entrevista)</h2>
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 w-full items-center">
+                    <h2 class="text-xl md:text-3xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-6 md:mb-8 w-full block">A Racionalidade e a Ciência (Entrevista)</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 w-full items-center">
                         <div class="midia-container lg:col-span-7">
                             <div class="video-wrapper">
                                 <div id="player-2" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
@@ -493,83 +495,83 @@
                             <div class="legenda-box"><span class="legenda-texto">...</span></div>
                         </div>
                         <div class="flex flex-col lg:col-span-5">
-                            <div class="bg-gray-50 p-6 border-l-4 border-indigo-600 shadow-sm rounded-r-lg mb-6">
-                                <p class="text-lg font-bold text-gray-900 mb-2">Tony (One Dime Radio):</p>
-                                <p class="text-lg italic text-gray-700 mb-6">"Qual é essa compreensão cotidiana do mundo nas sociedades capitalistas avançadas que a Escola de Frankfurt denuncia?"</p>
-                                <p class="text-lg font-bold text-indigo-900 mb-2">Andrew Feenberg:</p>
-                                <p class="text-lg font-serif italic text-gray-800 leading-relaxed text-justify">"Não é que Marcuse diga que a ciência é errada... mas ela tem limitações gravíssimas se você as tirar do reino restrito do laboratório e as aplicar de forma puramente matemática e unidimensional à complexidade do mundo cotidiano."</p>
+                            <div class="bg-gray-50 p-4 md:p-6 border-l-4 border-indigo-600 shadow-sm rounded-r-lg mb-4 md:mb-6">
+                                <p class="text-base md:text-lg font-bold text-gray-900 mb-1 md:mb-2">Tony (One Dime Radio):</p>
+                                <p class="text-base md:text-lg italic text-gray-700 mb-4 md:mb-6">"Qual é essa compreensão cotidiana do mundo nas sociedades capitalistas que a Escola de Frankfurt denuncia?"</p>
+                                <p class="text-base md:text-lg font-bold text-indigo-900 mb-1 md:mb-2">Andrew Feenberg:</p>
+                                <p class="text-base md:text-lg font-serif italic text-gray-800 leading-relaxed text-justify">"Não é que Marcuse diga que a ciência é errada... mas ela tem limitações gravíssimas se você a aplicar de forma puramente matemática e unidimensional à complexidade do mundo cotidiano."</p>
                             </div>
-                            <button class="btn-play bg-indigo-600 text-white font-bold py-4 px-6 rounded-lg shadow-md hover:bg-indigo-700 w-full transition" 
+                            <button class="btn-play bg-indigo-600 text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-lg shadow-md hover:bg-indigo-700 w-full transition" 
                                     data-target="player-2" data-start="385" data-end="413">Reproduzir Trecho</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 23: Objeto de Fronteira e Concretização -->
+                <!-- SLIDE 23: Objeto de Fronteira -->
                 <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="23">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-8">Tradução Dialética e "Objeto de Fronteira"</h2>
-                    <p class="text-xl text-gray-700 mb-6">A dialética da democratização no escândalo hídrico de Flint (EUA):</p>
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-6 md:mb-8">Tradução Dialética e "Objeto de Fronteira"</h2>
+                    <p class="text-lg md:text-xl text-gray-700 mb-6">A dialética da democratização no escândalo hídrico de Flint (EUA):</p>
                     
-                    <div class="flex justify-between gap-6 mb-8">
-                        <div class="w-1/2 p-6 bg-white border rounded shadow-sm">
-                            <h3 class="text-2xl font-bold text-blue-800 mb-2">Racionalidade Técnica:</h3>
-                            <p class="text-lg text-gray-600">O chumbo nos canos era um objeto de gestão. Custos logísticos e pesos atômicos baseados em orçamentos frios do estado neoliberal.</p>
+                    <div class="flex flex-col md:flex-row justify-between gap-4 md:gap-6 mb-6 md:mb-8">
+                        <div class="w-full md:w-1/2 p-5 md:p-6 bg-white border rounded shadow-sm">
+                            <h3 class="text-xl md:text-2xl font-bold text-blue-800 mb-2">Racionalidade Técnica:</h3>
+                            <p class="text-base md:text-lg text-gray-600">O chumbo nos canos era um objeto de gestão. Custos logísticos e pesos atômicos baseados em orçamentos frios.</p>
                         </div>
-                        <div class="w-1/2 p-6 bg-white border rounded shadow-sm">
-                            <h3 class="text-2xl font-bold text-red-800 mb-2">O Fato Traduzido (As Mães):</h3>
-                            <p class="text-lg text-gray-600">O chumbo é prova empírica do <span class="marx-highlight">racismo estrutural e abandono de classe</span> que danificou o sistema nervoso de uma geração.</p>
+                        <div class="w-full md:w-1/2 p-5 md:p-6 bg-white border rounded shadow-sm">
+                            <h3 class="text-xl md:text-2xl font-bold text-red-800 mb-2">O Fato Traduzido (As Mães):</h3>
+                            <p class="text-base md:text-lg text-gray-600">O chumbo é prova empírica do <span class="marx-highlight">racismo estrutural e abandono de classe</span> que danificou o sistema nervoso de uma geração.</p>
                         </div>
                     </div>
 
-                    <div class="bg-indigo-50 border p-6 rounded-lg shadow-sm text-center">
-                        <p class="text-2xl font-bold text-indigo-900 mb-2">A Concretização (A Superação / <em>Aufhebung</em>)</p>
-                        <p class="text-xl text-indigo-800">Na dialética, a luta resulta num projeto completamente reconfigurado que soluciona fisicamente os paradoxos do poder.</p>
+                    <div class="bg-indigo-50 border p-4 md:p-6 rounded-lg shadow-sm text-center">
+                        <p class="text-xl md:text-2xl font-bold text-indigo-900 mb-2">A Concretização (A Superação)</p>
+                        <p class="text-base md:text-xl text-indigo-800">A luta resulta num projeto físico reconfigurado que soluciona os paradoxos do poder.</p>
                     </div>
                 </div>
 
-                <!-- SLIDE 24: Teoria da Instrumentalização (A ponte final) -->
+                <!-- SLIDE 24: Teoria da Instrumentalização -->
                 <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="24">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-8">6. Teoria da Instrumentalização</h2>
-                    <div class="long-text text-xl text-gray-700">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-6 md:mb-8">6. Teoria da Instrumentalização</h2>
+                    <div class="long-text text-lg md:text-xl text-gray-700">
                         <p>
-                            Feenberg une as perspectivas para fornecer uma Teoria Crítica empiricamente viável: como unificar a visão mecanicista e causal da Engenharia Industrial com os vastos valores de uso defendidos pela Sociologia?
+                            Feenberg une as perspectivas: como unificar a visão causal da Engenharia com os valores de uso da Sociologia?
                         </p>
-                        <div class="bg-white p-6 border-l-8 border-purple-600 shadow my-8 rounded">
-                            <p class="text-2xl font-bold text-purple-900">A Tecnologia possui uma "Teoria de Duplo Aspecto".</p>
+                        <div class="bg-white p-4 md:p-6 border-l-8 border-purple-600 shadow my-6 md:my-8 rounded">
+                            <p class="text-xl md:text-2xl font-bold text-purple-900">A Tecnologia possui uma "Teoria de Duplo Aspecto".</p>
                         </div>
                         <p>
-                            Para a máquina existir, a técnica sofre simultaneamente uma brutal e violenta simplificação física da natureza combinada a uma imediata atribuição de significado ditada pelo mercado ou pela cultura.
+                            Para a máquina existir, a técnica sofre simultaneamente uma brutal simplificação física da natureza combinada a uma imediata atribuição de significado ditada pela cultura.
                         </p>
                     </div>
                 </div>
 
                 <!-- SLIDE 25: Funcionalização Causal e Cultural -->
                 <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="25">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-8">Os Dois Lados Simultâneos da Máquina</h2>
-                    <div class="grid grid-cols-2 gap-8 w-full mt-4 h-full">
-                        <div class="bg-white border-t-8 border-red-600 shadow-lg p-8 rounded-b-xl">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Funcionalização Causal</h3>
-                            <p class="text-gray-700 text-lg leading-relaxed">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-6 md:mb-8">Os Dois Lados da Máquina</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 w-full mt-2 md:mt-4 h-full">
+                        <div class="bg-white border-t-8 border-red-600 shadow-lg p-6 md:p-8 rounded-b-xl">
+                            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">Funcionalização Causal</h3>
+                            <p class="text-gray-700 text-base md:text-lg leading-relaxed">
                                 <span class="font-bold">Descontextualização e Redução.</span><br>
-                                Expressa o domínio frio da causalidade para extração. O objeto natural é violentamente arrancado do ecossistema e destituído do que não gera valor para o processo imediato.<br><br>
+                                Domínio frio da causalidade para extração. O objeto natural é arrancado e destituído do que não gera valor.<br><br>
                                 <em>Ex: A motosserra rasgando o caule para extração crua.</em>
                             </p>
                         </div>
-                        <div class="bg-white border-t-8 border-purple-600 shadow-lg p-8 rounded-b-xl">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Funcionalização Cultural</h3>
-                            <p class="text-gray-700 text-lg leading-relaxed">
+                        <div class="bg-white border-t-8 border-purple-600 shadow-lg p-6 md:p-8 rounded-b-xl">
+                            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">Funcionalização Cultural</h3>
+                            <p class="text-gray-700 text-base md:text-lg leading-relaxed">
                                 <span class="font-bold">Recontextualização Sociotécnica.</span><br>
-                                É a inserção e ordenação humana baseada nas exigências da divisão do trabalho, lucro e utilidade da época.<br><br>
-                                <em>Ex: O tronco sofre padronizações legais e vira a "tábua" viável para a linha de montagem da habitação urbana.</em>
+                                Inserção e ordenação humana baseada nas exigências da divisão do trabalho e lucro.<br><br>
+                                <em>Ex: O tronco vira a "tábua" viável para a linha de montagem da habitação.</em>
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 26: VÍDEO ARISTÓTELES (LADO A LADO) -->
+                <!-- SLIDE 26: VÍDEO ARISTÓTELES -->
                 <div class="slide slide-hidden flex-col w-full max-w-[1300px]" data-index="26">
-                    <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-8 w-full block">Potencialidades Críticas do Senso Comum (Entrevista)</h2>
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 w-full items-center">
+                    <h2 class="text-xl md:text-3xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-6 md:mb-8 w-full block">Potencialidades Críticas do Senso Comum</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 w-full items-center">
                         <div class="midia-container lg:col-span-7">
                             <div class="video-wrapper">
                                 <div id="player-3" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
@@ -577,13 +579,13 @@
                             <div class="legenda-box"><span class="legenda-texto">...</span></div>
                         </div>
                         <div class="flex flex-col lg:col-span-5">
-                            <div class="bg-gray-50 p-6 border-l-4 border-purple-700 shadow-sm rounded-r-lg mb-6">
-                                <p class="text-lg font-bold text-gray-900 mb-2">Tony (One Dime Radio):</p>
-                                <p class="text-lg italic text-gray-700 mb-6">"Por que a linguagem cotidiana contrasta tanto com as deduções científicas frias de positividade?"</p>
-                                <p class="text-lg font-bold text-purple-900 mb-2">Andrew Feenberg:</p>
-                                <p class="text-lg font-serif italic text-gray-800 leading-relaxed text-justify">"Porque o povo usa o pensamento no sentido de Aristóteles... para a sociedade, ao olhar os seres (uma criança, uma floresta), eles são dotados de 'potencialidades', daquela característica normativa, do devir ético que clama por se desenvolver na vida."</p>
+                            <div class="bg-gray-50 p-4 md:p-6 border-l-4 border-purple-700 shadow-sm rounded-r-lg mb-4 md:mb-6">
+                                <p class="text-base md:text-lg font-bold text-gray-900 mb-1 md:mb-2">Tony (One Dime Radio):</p>
+                                <p class="text-base md:text-lg italic text-gray-700 mb-4 md:mb-6">"Por que a linguagem cotidiana contrasta tanto com as deduções científicas frias de positividade?"</p>
+                                <p class="text-base md:text-lg font-bold text-purple-900 mb-1 md:mb-2">Andrew Feenberg:</p>
+                                <p class="text-base md:text-lg font-serif italic text-gray-800 leading-relaxed text-justify">"Porque o povo usa o pensamento no sentido de Aristóteles... para a sociedade, ao olhar os seres (uma criança, uma floresta), eles são dotados de 'potencialidades', daquela característica normativa, do devir ético que clama por se desenvolver na vida."</p>
                             </div>
-                            <button class="btn-play bg-purple-700 text-white font-bold py-4 px-6 rounded-lg shadow-md hover:bg-purple-800 w-full transition" 
+                            <button class="btn-play bg-purple-700 text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-lg shadow-md hover:bg-purple-800 w-full transition" 
                                     data-target="player-3" data-start="423" data-end="443">Reproduzir Trecho</button>
                         </div>
                     </div>
@@ -591,47 +593,44 @@
 
                 <!-- SLIDE 27: A Agência dos Não-Humanos -->
                 <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="27">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-stone-600 pb-2 mb-8">A Agência das Coisas</h2>
-                    <p class="text-xl text-gray-700 mb-6">Críticos acusam a teoria de "ignorar a força ativa" dos não-humanos. Feenberg discorda. As "coisas" interagem sim com a humanidade em três frentes vitais:</p>
-                    <div class="bg-gray-50 p-8 border border-gray-200 rounded-xl shadow-sm text-xl space-y-6">
-                        <p><strong>1. Co-Construção da Identidade:</strong> "A técnica forja o sujeito. O operário se torna classe operária ao submeter-se ao corpo da fábrica".</p>
-                        <p><strong>2. Configuração de Mundo:</strong> A infraestrutura física estabelece os limites lógicos totais da civilização.</p>
-                        <p><strong>3. Os Antiprogramas (A Fúria da Natureza):</strong> O capital cria externalidades (aquecimento global, doenças urbanas) que, como sujeitos ocultos, reagem violentamente e ameaçam a existência humana da sociedade que as concebeu.</p>
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-600 pb-2 mb-6 md:mb-8">A Agência das Coisas</h2>
+                    <p class="text-lg md:text-xl text-gray-700 mb-6">As "coisas" interagem com a humanidade em três frentes vitais:</p>
+                    <div class="bg-gray-50 p-6 md:p-8 border border-gray-200 rounded-xl shadow-sm text-base md:text-xl space-y-4 md:space-y-6">
+                        <p><strong>1. Co-Construção da Identidade:</strong> "A técnica forja o sujeito. O operário se torna classe operária ao submeter-se à fábrica".</p>
+                        <p><strong>2. Configuração de Mundo:</strong> A infraestrutura estabelece os limites lógicos da civilização.</p>
+                        <p><strong>3. Os Antiprogramas (A Fúria da Natureza):</strong> O capital cria externalidades (aquecimento global) que reagem violentamente e ameaçam a existência humana.</p>
                     </div>
                 </div>
 
                 <!-- SLIDE 28: A Ameaça Intencional -->
                 <div class="slide slide-hidden flex-col items-center justify-center text-center w-full max-w-4xl" data-index="28">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-8">A Engrenagem Autoritária</h2>
-                    <div class="bg-white p-10 border border-gray-300 rounded-xl shadow-lg w-full">
-                        <p class="text-3xl text-gray-900 leading-relaxed font-bold font-serif italic text-center">
-                            "A administração e a tecnologia corporativas modernas são desenhadas <span class="marx-highlight">intencionalmente</span> para suprimir a ação crítica, seja ela da natureza ou dos trabalhadores subordinados. Reduzindo todos a recursos controláveis rumo à alienação pacífica."
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8">A Engrenagem Autoritária</h2>
+                    <div class="bg-white p-6 md:p-10 border border-gray-300 rounded-xl shadow-lg w-full">
+                        <p class="text-xl md:text-3xl text-gray-900 leading-relaxed font-bold font-serif italic text-center">
+                            "A administração corporativa moderna é desenhada <span class="marx-highlight">intencionalmente</span> para suprimir a ação crítica. Reduzindo todos a recursos controláveis rumo à alienação pacífica."
                         </p>
                     </div>
                 </div>
 
                 <!-- SLIDE 29: Erros Cognitivos vs Estruturas -->
                 <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="29">
-                    <h2 class="text-4xl font-bold text-gray-800 border-b-2 border-stone-500 pb-2 mb-8">7. Consequências Filosófico-Políticas</h2>
-                    <div class="long-text text-xl text-gray-700">
-                        <p>
-                            Hoje vemos muitos acadêmicos culpando a "natureza desbravadora do ser humano" como um erro psíquico universal abstrato que nos trouxe à beira do desastre (Antropoceno).
-                        </p>
-                        <div class="bg-stone-100 p-6 rounded shadow-sm border-l-4 border-stone-700 mb-6">
-                            <p class="font-bold text-gray-900">Culpar "erros cognitivos universais" é uma armadilha ideológica covarde, pois inocenta a macroestrutura histórica do Capital.</p>
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-500 pb-2 mb-6 md:mb-8">7. Consequências Filosófico-Políticas</h2>
+                    <div class="long-text text-lg md:text-xl text-gray-700">
+                        <div class="bg-stone-100 p-4 md:p-6 rounded shadow-sm border-l-4 border-stone-700 mb-4 md:mb-6">
+                            <p class="font-bold text-gray-900">Culpar "erros cognitivos universais" pela crise ecológica é uma armadilha covarde, pois inocenta a macroestrutura do Capital.</p>
                         </div>
                         <p>
-                            A crise civilizacional tóxica e fossilizada não é fruto da "mente humana em geral", é exigência matemática da taxa de expansão de capital. Os manifestantes da crise climática acertam o alvo porque exigem <strong>a alteração da estrutura do código técnico da indústria</strong>, submetendo o mercado à força bruta da vida.
+                            A crise tóxica não é fruto da "mente humana em geral", é exigência matemática da taxa de expansão de capital. Os manifestantes climáticos exigem <strong>a alteração do código técnico da indústria</strong>, submetendo o mercado à força da vida.
                         </p>
                     </div>
                 </div>
 
                 <!-- SLIDE 30: Fechamento Magnífico -->
                 <div class="slide slide-hidden flex-col items-center justify-center text-center w-full max-w-5xl" data-index="30">
-                    <h2 class="text-5xl font-bold mb-10 text-gray-900">Considerações Finais</h2>
-                    <div class="bg-gray-900 text-white p-12 rounded-xl w-full shadow-2xl">
-                        <p class="text-4xl font-serif italic leading-relaxed text-center font-light">
-                            "A Filosofia não pode mais se abster. Expor e descobrir o viés das estruturas de dominação escondidas sob o manto sagrado do código tecnológico é a principal tarefa militante e intelectual em nossos dias."
+                    <h2 class="text-3xl md:text-5xl font-bold mb-6 md:mb-10 text-gray-900">Considerações Finais</h2>
+                    <div class="bg-gray-900 text-white p-8 md:p-12 rounded-xl w-full shadow-2xl">
+                        <p class="text-2xl md:text-4xl font-serif italic leading-relaxed text-center font-light">
+                            "A Filosofia não pode mais se abster. Expor as estruturas de dominação escondidas sob o manto do código tecnológico é a principal tarefa militante em nossos dias."
                         </p>
                     </div>
                 </div>
@@ -639,10 +638,10 @@
             </div>
 
             <!-- CONTROLES FIXOS INFERIORES -->
-            <div class="bg-gray-100 p-5 flex justify-between items-center border-t border-gray-300 z-10 w-full shrink-0">
-                <button id="btn-prev" class="px-8 py-3 bg-white border border-gray-400 rounded shadow hover:bg-gray-200 font-bold w-32">Anterior</button>
-                <div class="text-gray-500 text-sm hidden md:block text-center flex-1">Use as setas (← e →) do teclado para navegar fluidamente</div>
-                <button id="btn-next" class="px-8 py-3 bg-gray-900 text-white rounded shadow hover:bg-gray-800 font-bold w-32">Próximo</button>
+            <div class="bg-gray-100 p-3 md:p-5 flex justify-between items-center border-t border-gray-300 z-10 w-full shrink-0">
+                <button id="btn-prev" class="px-4 md:px-8 py-2 md:py-3 bg-white border border-gray-400 rounded shadow hover:bg-gray-200 font-bold w-28 md:w-32 text-sm md:text-base">Anterior</button>
+                <div class="text-gray-500 text-xs md:text-sm hidden md:block text-center flex-1">Use as setas (← e →) do teclado para navegar fluidamente</div>
+                <button id="btn-next" class="px-4 md:px-8 py-2 md:py-3 bg-gray-900 text-white rounded shadow hover:bg-gray-800 font-bold w-28 md:w-32 text-sm md:text-base">Próximo</button>
             </div>
             
         </div>
@@ -782,8 +781,6 @@
                     
                     const wrapperElement = document.getElementById(boxId);
                     
-                    // A CORREÇÃO ESTÁ AQUI: usamos .closest('.midia-container') para garantir 
-                    // que ele ache a legenda-texto subindo para a "caixa mestre" daquele slide
                     currentLegendaText = wrapperElement.closest('.midia-container').querySelector('.legenda-texto');
 
                     if (currentBtn === btn && players[boxId]) {
@@ -814,7 +811,6 @@
                     if (!players[boxId]) {
                         btn.innerText = "Carregando...";
                         
-                        // Encontra e esconde o placeholder
                         const placeholder = wrapperElement.parentElement.querySelector('.placeholder-box');
                         if(placeholder) placeholder.style.display = 'none';
 
