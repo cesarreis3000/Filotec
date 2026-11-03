@@ -9,9 +9,10 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
         .font-serif { font-family: 'Merriweather', serif; }
-        
+
+        /* margin auto centraliza o slide sem cortar o topo quando o conteúdo é maior que a tela */
         .slide-hidden { display: none; }
-        .slide-visible { display: flex; animation: fadeIn 0.4s ease-in-out; }
+        .slide-visible { display: flex; margin-top: auto; margin-bottom: auto; animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .midia-container {
@@ -23,7 +24,6 @@
             display: flex;
             flex-direction: column;
         }
-
         .video-wrapper {
             position: relative;
             width: 100%;
@@ -33,20 +33,13 @@
             align-items: center;
             justify-content: center;
         }
-        
-        .placeholder-box {
-            color: #666;
-            font-size: 1.2rem;
-            text-align: center;
-            padding: 20px;
-        }
-
+        .placeholder-box { color: #666; font-size: 1.2rem; text-align: center; padding: 20px; }
         .legenda-box {
             width: 100%;
             min-height: 90px;
             background-color: #1a1a1a;
             border-top: 2px solid #333;
-            color: #fbbf24; 
+            color: #fbbf24;
             padding: 15px 25px;
             text-align: center;
             font-size: 1.35rem;
@@ -56,47 +49,69 @@
             justify-content: center;
             line-height: 1.4;
         }
-
-        /* Ajustes de legenda para Mobile */
+        /* Modo calibração (tecla T): tempo exato do vídeo sobre o player */
+        .tempo-overlay {
+            display: none;
+            position: absolute; top: 10px; left: 10px; z-index: 5;
+            background: rgba(0, 0, 0, 0.78); color: #fff;
+            font: 600 13px/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            padding: 6px 9px; border-radius: 6px; pointer-events: none; max-width: calc(100% - 20px);
+        }
         @media (max-width: 768px) {
-            .legenda-box {
-                font-size: 1rem;
-                padding: 10px 15px;
-                min-height: 70px;
-            }
-            .placeholder-box {
-                font-size: 0.9rem;
-                padding: 10px;
-            }
+            .legenda-box { font-size: 1rem; padding: 10px 15px; min-height: 70px; }
+            .placeholder-box { font-size: 0.9rem; padding: 10px; }
         }
-        
-        .long-text p {
-            margin-bottom: 1.25rem;
-            line-height: 1.7;
+
+        .long-text p { margin-bottom: 1.1rem; line-height: 1.65; }
+        .marx-highlight { color: #991b1b; font-weight: 800; }
+
+        /* Citações diretas do texto: sempre com a página */
+        .citacao {
+            font-family: 'Merriweather', serif; font-style: italic; color: #1f2937;
+            background: #f8fafc; border-left: 5px solid #1d4ed8;
+            border-radius: 0 0.5rem 0.5rem 0; padding: 0.85rem 1.1rem; line-height: 1.6;
         }
-        
-        .marx-highlight {
-            color: #991b1b;
-            font-weight: 800;
+        .ref {
+            font-family: 'Inter', sans-serif; font-style: normal; font-weight: 700;
+            font-size: 0.78em; color: #1e40af; white-space: nowrap; margin-left: 0.3rem;
         }
+        .nota-nossa {
+            font-size: 0.9rem; color: #4b5563; border: 1px dashed #9ca3af;
+            background: #fafafa; border-radius: 0.5rem; padding: 0.6rem 0.9rem;
+        }
+        .tag-j, .tag-g { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 0.15rem 0.6rem; border-radius: 9999px; }
+        .tag-j { background: #dbeafe; color: #1e3a8a; }
+        .tag-g { background: #ede9fe; color: #4c1d95; }
+        .chip { display: inline-flex; align-items: center; font-size: 0.8rem; font-weight: 700; padding: 0.25rem 0.7rem; border-radius: 9999px; white-space: nowrap; }
+        .chip-p1 { background: #dbeafe; color: #1e3a8a; }
+        .chip-p2 { background: #ede9fe; color: #4c1d95; }
+        .chip-ambos { background: #e5e7eb; color: #111827; }
+        .chip-pag { background: #374151; color: #f9fafb; }
+        #aviso {
+            position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%);
+            background: rgba(17, 24, 39, 0.92); color: #fff; padding: 0.55rem 1rem;
+            border-radius: 0.5rem; font-size: 0.9rem; opacity: 0; transition: opacity 0.25s;
+            pointer-events: none; z-index: 100; text-align: center; max-width: 90vw;
+        }
+        #aviso.visivel { opacity: 1; }
     </style>
 </head>
 <!-- O uso de 100dvh resolve o problema de botões escondidos pela barra do celular -->
 <body class="w-screen flex flex-col overflow-hidden bg-gray-100" style="height: 100dvh;">
 
-    <!-- CONTAINER PRINCIPAL -->
     <div class="flex-1 flex flex-col max-w-[1500px] mx-auto w-full h-full p-2 md:p-4">
-        
         <div class="bg-white flex-1 rounded-xl md:rounded-2xl shadow-xl flex flex-col border border-gray-200 overflow-hidden relative z-10">
-            
+
             <!-- HEADER -->
-            <div class="bg-gray-900 text-white p-3 md:p-5 flex justify-between items-center shadow-md">
-                <div>
+            <div class="bg-gray-900 text-white p-3 md:p-5 flex justify-between items-center shadow-md gap-3">
+                <div class="min-w-0">
                     <h1 class="text-base md:text-xl font-bold uppercase tracking-wide">PPGET - CEFET-MG</h1>
                     <span class="text-gray-400 text-xs md:text-sm">Filosofia da Técnica e da Tecnologia</span>
                 </div>
-                <div class="text-right shrink-0 ml-4">
-                    <span id="slide-contador" class="text-base md:text-lg font-bold">1 / 30</span>
+                <div class="flex items-center gap-2 md:gap-3 shrink-0">
+                    <span id="chip-paginas" class="chip chip-pag hidden md:inline-flex"></span>
+                    <span id="chip-parte" class="chip chip-p1">Parte 1 · Jean</span>
+                    <span id="slide-contador" class="text-base md:text-lg font-bold">1 / 38</span>
                 </div>
             </div>
 
@@ -106,789 +121,1203 @@
             </div>
 
             <!-- ÁREA DOS SLIDES -->
-            <div id="slides-container" class="flex-1 overflow-y-auto p-5 md:p-10 flex flex-col items-center justify-center relative w-full">
-                
+            <div id="slides-container" class="flex-1 overflow-y-auto p-5 md:p-8 flex flex-col items-center relative w-full">
+
+<!-- ===================================================================== -->
+<!-- PARTE 1 · JEAN — slides 1 a 20 · texto pp. 147–165 (PDF pp. 2–20)      -->
+<!-- ===================================================================== -->
+
                 <!-- SLIDE 1: Capa -->
-                <div class="slide slide-visible flex-col items-center text-center w-full max-w-4xl" data-index="1">
+                <div class="slide slide-visible flex-col items-center text-center w-full max-w-4xl" data-index="1" data-parte="1" data-paginas="">
+                    <p class="text-xs md:text-sm uppercase tracking-[0.2em] text-gray-500 mb-3">Seminário · Capítulo 4 (pp. 147–185)</p>
                     <h2 class="text-4xl md:text-6xl font-bold text-gray-900 mb-2 md:mb-4 tracking-tight">Construtivismo Crítico</h2>
-                    <h3 class="text-xl md:text-3xl text-gray-600 font-serif italic mb-6 md:mb-10">Uma Filosofia da Tecnologia</h3>
+                    <h3 class="text-xl md:text-3xl text-gray-600 font-serif italic mb-6 md:mb-8">Uma Filosofia da Tecnologia</h3>
                     <div class="bg-gray-50 border border-gray-200 p-6 md:p-8 rounded-xl text-left w-full shadow-sm">
                         <div class="text-center mb-6">
                             <p class="text-lg md:text-2xl text-gray-800">Texto-base de <strong>Andrew Feenberg</strong></p>
+                            <p class="text-sm md:text-base text-gray-500 mt-1">“Construtivismo crítico: exposição e defesa”</p>
                         </div>
-                        <div class="flex flex-col md:flex-row justify-between items-start border-t pt-6 gap-4">
-                            <div>
-                                <p class="text-sm md:text-lg text-gray-500 uppercase tracking-widest mb-1">Apresentação</p>
-                                <p class="text-lg md:text-2xl font-bold text-gray-800">Jean César dos Reis Barbosa<br>Gissele Quirino Herculano</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t pt-6">
+                            <div class="rounded-lg border-l-4 border-blue-700 bg-white p-4 shadow-sm">
+                                <p class="text-xs md:text-sm uppercase tracking-widest text-blue-800 font-bold mb-1">Parte 1 · slides 1–20 · pp. 147–165</p>
+                                <p class="text-lg md:text-xl font-bold text-gray-900">Jean César dos Reis Barbosa</p>
+                                <p class="text-sm md:text-base text-gray-600 mt-1">O diagnóstico: poder, estrutura e autonomia operacional</p>
+                            </div>
+                            <div class="rounded-lg border-l-4 border-violet-700 bg-white p-4 shadow-sm">
+                                <p class="text-xs md:text-sm uppercase tracking-widest text-violet-800 font-bold mb-1">Parte 2 · slides 21–38 · pp. 165–185</p>
+                                <p class="text-lg md:text-xl font-bold text-gray-900">Gissele Quirino Herculano</p>
+                                <p class="text-sm md:text-base text-gray-600 mt-1">A resposta: democratização, instrumentalização e consequências</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 2: Créditos da Obra -->
-                <div class="slide slide-hidden flex-col items-center justify-center w-full max-w-4xl text-center" data-index="2">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 mb-6 md:mb-8 border-b pb-4">Sobre a Edição Analisada</h2>
-                    <div class="bg-white border shadow p-6 md:p-8 rounded-lg w-full max-w-3xl text-left mx-auto">
-                        <ul class="text-base md:text-xl space-y-4 md:space-y-6">
-                            <li><strong class="text-red-800">Obra Principal:</strong> Construtivismo crítico: uma filosofia da tecnologia. (Capítulo 4: Exposição e defesa)</li>
-                            <li><strong class="text-red-800">Autor Original:</strong> Andrew Feenberg</li>
-                            <li><strong class="text-red-800">Tradução, Introdução e Notas:</strong> Luiz Henrique de Lacerda Abrahão & Cristiano Cordeiro Cruz</li>
-                            <li><strong class="text-red-800">Editora:</strong> Associação Filosófica Scientiæ Studia (São Paulo, 2022)</li>
-                        </ul>
+                <!-- SLIDE 2: Edição + mapa do capítulo -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="2" data-parte="1" data-paginas="">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 mb-5 md:mb-6 border-b pb-3 text-center">Sobre a Edição Analisada</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6">
+                        <div class="bg-white border shadow p-5 md:p-7 rounded-lg">
+                            <ul class="text-base md:text-xl space-y-4 md:space-y-5">
+                                <li><strong class="text-blue-800">Obra Principal:</strong> Construtivismo crítico: uma filosofia da tecnologia. (Capítulo 4: Exposição e defesa)</li>
+                                <li><strong class="text-blue-800">Autor Original:</strong> Andrew Feenberg</li>
+                                <li><strong class="text-blue-800">Tradução, Introdução e Notas:</strong> Luiz Henrique de Lacerda Abrahão &amp; Cristiano Cordeiro Cruz</li>
+                                <li><strong class="text-blue-800">Editora:</strong> Associação Filosófica Scientiæ Studia (São Paulo, 2022)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white border shadow p-5 md:p-7 rounded-lg">
+                            <h3 class="text-lg md:text-xl font-bold text-blue-800 mb-3">Mapa do capítulo e divisão</h3>
+                            <table class="w-full text-sm md:text-base">
+                                <tbody>
+                                    <tr class="border-b"><td class="py-1.5 pr-2">Introdução</td><td class="py-1.5 pr-2 whitespace-nowrap text-gray-500">pp. 147–148</td><td class="py-1.5 text-right"><span class="tag-j">Jean</span></td></tr>
+                                    <tr class="border-b"><td class="py-1.5 pr-2">4.1 Por que Marx?</td><td class="py-1.5 pr-2 whitespace-nowrap text-gray-500">pp. 149–153</td><td class="py-1.5 text-right"><span class="tag-j">Jean</span></td></tr>
+                                    <tr class="border-b"><td class="py-1.5 pr-2">4.2 A tecnologia e a teoria política</td><td class="py-1.5 pr-2 whitespace-nowrap text-gray-500">pp. 153–159</td><td class="py-1.5 text-right"><span class="tag-j">Jean</span></td></tr>
+                                    <tr class="border-b"><td class="py-1.5 pr-2">4.3 A autonomia operacional</td><td class="py-1.5 pr-2 whitespace-nowrap text-gray-500">pp. 159–165</td><td class="py-1.5 text-right"><span class="tag-j">Jean</span></td></tr>
+                                    <tr class="border-b"><td class="py-1.5 pr-2">4.4 A democratização</td><td class="py-1.5 pr-2 whitespace-nowrap text-gray-500">pp. 165–176</td><td class="py-1.5 text-right"><span class="tag-g">Gissele</span></td></tr>
+                                    <tr class="border-b"><td class="py-1.5 pr-2">4.5 A teoria da instrumentalização</td><td class="py-1.5 pr-2 whitespace-nowrap text-gray-500">pp. 176–183</td><td class="py-1.5 text-right"><span class="tag-g">Gissele</span></td></tr>
+                                    <tr><td class="py-1.5 pr-2">4.6 Consequências</td><td class="py-1.5 pr-2 whitespace-nowrap text-gray-500">pp. 184–185</td><td class="py-1.5 text-right"><span class="tag-g">Gissele</span></td></tr>
+                                </tbody>
+                            </table>
+                            <p class="text-xs md:text-sm text-gray-500 mt-3">Páginas do livro. No PDF, subtraia 145 (p. 165 do livro = p. 20 do PDF).</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 3: Biografia c/ Foto -->
-                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="3">
+                <!-- SLIDE 3: Biografia c/ foto -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="3" data-parte="1" data-paginas="">
                     <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8">Contextualização: Quem é Andrew Feenberg?</h2>
                     <div class="flex flex-col md:flex-row gap-6 md:gap-10 items-center">
                         <div class="w-full md:w-1/3 flex justify-center">
-                            <div class="w-48 h-48 md:w-64 md:h-64 bg-gray-200 rounded-full border-4 border-red-800 overflow-hidden shadow-xl shrink-0">
-                                <img src="foto.jpg" alt="Foto de Andrew Feenberg" class="w-full h-full object-cover">
+                            <div class="relative w-48 h-48 md:w-64 md:h-64 bg-gray-200 rounded-full border-4 border-red-800 overflow-hidden shadow-xl shrink-0 flex items-center justify-center">
+                                <span class="text-5xl font-bold text-gray-400 select-none">AF</span>
+                                <img src="foto.jpg" alt="Foto de Andrew Feenberg" class="absolute inset-0 w-full h-full object-cover" onerror="this.remove()">
                             </div>
                         </div>
-                        <div class="w-full md:w-2/3 long-text text-base md:text-xl text-gray-700 text-justify md:text-left">
-                            <p>
-                                Filósofo estadunidense (nascido em 1943), é reconhecido internacionalmente como um dos maiores teóricos da Filosofia da Tecnologia. É o atual <em>Canada Research Chair</em> na Simon Fraser University (Canadá).
-                            </p>
-                            <p>
-                                Doutorou-se em Filosofia em 1972, época em que foi <strong>aluno direto e orientando de Herbert Marcuse</strong> (Escola de Frankfurt), herdando a profunda compreensão da dialética marxiana e da teoria crítica.
-                            </p>
+                        <div class="w-full md:w-2/3 long-text text-base md:text-xl text-gray-700">
+                            <p>Filósofo estadunidense (n. 1943), referência internacional da Filosofia da Tecnologia. É professor emérito da <strong>Simon Fraser University</strong> (Canadá), onde ocupou, a partir de 2003, a <em>Canada Research Chair in Philosophy of Technology</em>.</p>
+                            <p>Doutorou-se em Filosofia na Universidade da Califórnia, San Diego, em 1972, como <strong>aluno e orientando de Herbert Marcuse</strong> (Escola de Frankfurt) — daí sua leitura da dialética marxiana e da teoria crítica.</p>
+                            <p class="text-base md:text-lg text-gray-600">Obras-chave: <em>Critical Theory of Technology</em> (1991; revista como <em>Transforming Technology</em>, 2002), <em>Questioning Technology</em> (1999), <em>Heidegger and Marcuse</em> (2005) e <em>Technosystem</em> (2017).</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 4: VÍDEO (A Ida para San Diego) -->
-                <div class="slide slide-hidden flex-col w-full max-w-[1300px]" data-index="4">
-                    <h2 class="text-xl md:text-3xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8 w-full block">O Encontro com Marcuse (Entrevista)</h2>
+                <!-- SLIDE 4: VÍDEO (A ida para San Diego) -->
+                <div class="slide slide-hidden flex-col w-full max-w-[1300px]" data-index="4" data-parte="1" data-paginas="">
+                    <h2 class="text-xl md:text-3xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-5 md:mb-6 w-full block">O Encontro com Marcuse (Entrevista)</h2>
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 w-full items-center">
                         <div class="midia-container lg:col-span-7">
                             <div class="video-wrapper">
-                                <div id="player-inicio" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                                <div id="player-marcuse" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                                <div class="tempo-overlay"></div>
                             </div>
-                            <div class="legenda-box"><span class="legenda-texto">...</span></div>
+                            <div class="legenda-box" aria-live="polite"><span class="legenda-texto">...</span></div>
                         </div>
                         <div class="flex flex-col lg:col-span-5">
-                            <div class="bg-gray-50 p-4 md:p-6 border-l-4 border-red-700 shadow-sm rounded-r-lg mb-4 md:mb-6">
-                                <p class="text-base md:text-lg font-bold text-gray-900 mb-1 md:mb-2">Tony (One Dime Radio):</p>
-                                <p class="text-base md:text-lg italic text-gray-700 mb-4 md:mb-6">"Andrew, seria ótimo se você pudesse nos contar um pouco sobre sua relação com Herbert Marcuse."</p>
-                                <p class="text-base md:text-lg font-bold text-red-900 mb-1 md:mb-2">Andrew Feenberg:</p>
-                                <p class="text-base md:text-lg font-serif italic text-gray-800 leading-relaxed text-justify">"A filosofia americana nos anos 60 era quase toda analítica. Um amigo me disse para olhar a Universidade da Califórnia porque lá tinha o Marcuse, 'um cara que escreve sobre Marx e Freud'. Eu disse: Qualquer cara louco o suficiente para fazer isso, é louco o suficiente pra mim."</p>
+                            <div class="bg-gray-50 p-4 md:p-6 border-l-4 border-red-700 shadow-sm rounded-r-lg mb-4">
+                                <p class="text-sm md:text-base font-bold text-gray-900 mb-1">Contexto — pergunta de Tony (1Dime Radio), em paráfrase:</p>
+                                <p class="text-base md:text-lg italic text-gray-700 mb-4">Ele pede que Feenberg conte como foi sua relação com Herbert Marcuse.</p>
+                                <p class="text-sm md:text-base font-bold text-red-900 mb-1">Andrew Feenberg (tradução livre, condensada):</p>
+                                <p class="text-base md:text-lg font-serif italic text-gray-800 leading-relaxed">“Nos anos 60, a filosofia americana era quase toda analítica. Um amigo me sugeriu a Universidade da Califórnia: lá estava Marcuse, ‘um cara que escreve sobre Marx e Freud’. Eu disse: qualquer cara louco o suficiente para fazer isso é louco o suficiente pra mim.”</p>
                             </div>
-                            <button class="btn-play bg-red-700 text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-lg shadow-md hover:bg-red-800 w-full transition" 
-                                    data-target="player-inicio" data-start="67" data-end="135">Reproduzir Trecho</button>
+                            <button class="btn-play bg-red-700 text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-lg shadow-md hover:bg-red-800 w-full transition"
+                                    data-target="player-marcuse" data-clipe="marcuse" data-rotulo="Reproduzir trecho (1:07–2:15)">Reproduzir trecho (1:07–2:15)</button>
+                            <p class="text-xs text-gray-500 mt-2">Fonte: 1Dime Radio, “The Philosophy of Herbert Marcuse (Ft. Andrew Feenberg)”, 2024.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 5: A NUANCE DO CRAZY -->
-                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="5">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-4 md:mb-6">A Nuance do "Cara Louco" (Crazy)</h2>
-                    <p class="text-lg md:text-xl text-gray-700 mb-6 italic">
-                        Quando Feenberg usa a expressão <em>"crazy enough"</em> na entrevista, não há conotação pejorativa. Trata-se de um elogio profundo:
-                    </p>
+                <!-- SLIDE 5: A nuance do "crazy" -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="5" data-parte="1" data-paginas="">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-4 md:mb-6">A Nuance do “Louco o Suficiente” (<em>Crazy Enough</em>)</h2>
+                    <p class="text-lg md:text-xl text-gray-700 mb-6 italic">No vídeo, <em>“crazy enough”</em> não soa pejorativo — soa como elogio. Três leituras possíveis:</p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                         <div class="bg-white border-t-8 border-red-700 p-4 md:p-6 rounded-lg shadow-md">
                             <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">1. Audácia</h3>
-                            <p class="text-gray-700 text-sm md:text-[1.1rem] leading-relaxed">Juntar Marx e Freud era considerado uma heresia acadêmica; exigia uma coragem beirando o "suicídio profissional" nos EUA dos anos 60.</p>
+                            <p class="text-gray-700 text-sm md:text-[1.1rem] leading-relaxed">Unir Marx e Freud destoava da filosofia americana dos anos 60, então quase toda analítica — como o próprio Feenberg diz no trecho.</p>
                         </div>
                         <div class="bg-white border-t-8 border-blue-700 p-4 md:p-6 rounded-lg shadow-md">
                             <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">2. Genialidade</h3>
-                            <p class="text-gray-700 text-sm md:text-[1.1rem] leading-relaxed">O termo evoca o gênio subversivo. Significa quebrar totalmente as regras do que o mainstream considerava como a "filosofia séria".</p>
+                            <p class="text-gray-700 text-sm md:text-[1.1rem] leading-relaxed">“Louco” evoca o pensador heterodoxo, que atravessa as fronteiras do que o <em>mainstream</em> considerava filosofia “séria”.</p>
                         </div>
                         <div class="bg-white border-t-8 border-green-700 p-4 md:p-6 rounded-lg shadow-md">
                             <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">3. Identificação</h3>
-                            <p class="text-gray-700 text-sm md:text-[1.1rem] leading-relaxed">A expressão <em>"is crazy enough for me"</em> demonstra alinhamento vital. "Essa é exatamente a minha tribo e o nível de rebeldia que busco".</p>
+                            <p class="text-gray-700 text-sm md:text-[1.1rem] leading-relaxed">“Louco o suficiente pra mim”: Feenberg se reconhece no projeto — vai a San Diego e começa pedindo a Marcuse uma leitura de <em>Ser e Tempo</em>, de Heidegger.</p>
                         </div>
                     </div>
+                    <p class="nota-nossa mt-5">Leitura dos apresentadores sobre o tom da fala — não é uma tese do capítulo.</p>
                 </div>
 
-                <!-- SLIDE 6: Biografia (Ativismo) -->
-                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="6">
+                <!-- SLIDE 6: Ativismo e pioneirismo -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="6" data-parte="1" data-paginas="">
                     <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-4 md:mb-8">Pensamento, Ativismo e Pioneirismo</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 mt-2 md:mt-4">
                         <div class="bg-gray-50 border p-5 md:p-6 rounded-lg shadow-sm long-text text-base md:text-lg text-gray-700">
-                            <h3 class="text-xl md:text-2xl font-bold text-red-900 mb-3">Ação Política e Maio de 68</h3>
-                            <p>Envolto pela "Nova Esquerda", Feenberg participou ativamente das históricas manifestações estudantis de <strong>Maio de 1968, em Paris</strong>.</p>
-                            <p>Sua teoria não é puramente abstrata: ela foca na materialidade da ação e que as massas têm poder para alterar estruturas tecnológicas.</p>
+                            <h3 class="text-xl md:text-2xl font-bold text-red-900 mb-3">Maio de 68, em Paris</h3>
+                            <p>Feenberg participou dos acontecimentos de <strong>Maio de 1968, em Paris</strong>, e é coautor de um livro sobre eles: <em>When Poetry Ruled the Streets</em> (SUNY Press, 2001).</p>
+                            <p>Sua teoria valoriza quem sofre os efeitos da técnica e age sobre ela — o tema da democratização, na Parte 2.</p>
                         </div>
                         <div class="bg-gray-50 border p-5 md:p-6 rounded-lg shadow-sm long-text text-base md:text-lg text-gray-700">
-                            <h3 class="text-xl md:text-2xl font-bold text-blue-900 mb-3">A Prática do Ensino Online</h3>
-                            <p>Feenberg atua também como desenvolvedor da técnica. Na década de 1980, foi um dos <strong>pioneiros globais da Educação Online e fóruns assíncronos</strong>.</p>
-                            <p>Isso prova sua tese central: a tecnologia não possui um imperativo autônomo autoritário. Se projetada com valores democráticos, serve à emancipação.</p>
+                            <h3 class="text-xl md:text-2xl font-bold text-blue-900 mb-3">Pioneiro da Educação Online</h3>
+                            <p>Em 1982, no Western Behavioral Sciences Institute (Califórnia), participou do programa que ele descreve como o <strong>primeiro a usar o computador como principal meio de ensino</strong>, e ajudou a preparar professores para moderar debates online.</p>
+                            <p>A experiência ilustra a tese do livro: o desenho da técnica não é destino. O mesmo computador pode servir ao diálogo, não só ao controle.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 7: O que é Construtivismo Crítico -->
-                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="7">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-600 pb-2 mb-6 md:mb-8">1. O que é o Construtivismo Crítico?</h2>
-                    <p class="text-xl md:text-3xl text-gray-800 font-bold mb-4 md:mb-6">Uma filosofia <strong>especificamente política</strong> da tecnologia.</p>
-                    <div class="long-text text-lg md:text-xl text-gray-700">
-                        <p>
-                            Muitas teorias veem a tecnologia como uma marcha inevitável e neutra, governada por princípios científicos inquestionáveis. Feenberg rompe com essa visão tecnocrática. 
-                        </p>
-                        <p>
-                            Sua filosofia orienta-se para o estudo de projetos técnicos locais e para as <strong>controvérsias públicas reais</strong> que a tecnologia desencadeia. A técnica não é um destino natural; é um campo de batalha político.
-                        </p>
+                <!-- SLIDE 7: O que é o construtivismo crítico -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="7" data-parte="1" data-paginas="pp. 147–148">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-600 pb-2 mb-5 md:mb-6">1. O que é o Construtivismo Crítico?</h2>
+                    <p class="citacao text-xl md:text-3xl mb-5 md:mb-6">“<span class="cit">uma filosofia especificamente política da tecnologia</span>” <span class="ref">(p. 147)</span></p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 text-base md:text-lg">
+                        <div class="bg-gray-50 border rounded-lg p-4 md:p-5">
+                            <h3 class="font-bold text-gray-900 text-lg md:text-xl mb-2">Um duplo movimento (p. 147)</h3>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                <li>Estuda <strong>projetos técnicos determinados</strong> e as <strong>controvérsias públicas</strong> que eles desencadeiam.</li>
+                                <li>Reconstrói as críticas de <strong>Heidegger</strong> e da <strong>Escola de Frankfurt</strong> à razão instrumental.</li>
+                                <li>Reconhece a especificidade empírica da técnica <em>e</em> a crise geral da civilização tecnológica — por exemplo, as mudanças climáticas.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white border-l-8 border-stone-600 rounded-lg shadow-sm p-4 md:p-5">
+                            <h3 class="font-bold text-gray-900 text-lg md:text-xl mb-2">Chave de leitura do capítulo (p. 148)</h3>
+                            <p class="text-gray-700 mb-3">Acusado de privilegiar um lado de dilemas que pretende superar, Feenberg formula <strong>proposições aparentemente contraditórias</strong> e mostra como as reconcilia — é a estrutura das seções 4.2 e 4.5.</p>
+                            <p class="citacao">“<span class="cit">Neste capítulo pretendo menos persuadir do que aclarar minhas posições</span>” <span class="ref">(p. 148)</span></p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 8: Combinação Teórica -->
-                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="8">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-600 pb-2 mb-6 md:mb-8">A Combinação Eclética de Fontes</h2>
-                    <p class="text-base md:text-xl mb-4 md:mb-6 text-gray-700">A teoria "desontologiza" grandes filosofias para resgatar a crítica da racionalidade:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full">
-                        <div class="bg-gray-50 p-4 md:p-6 rounded-lg border-l-4 border-yellow-600 shadow-sm">
-                            <h3 class="font-bold text-lg md:text-xl mb-2 text-yellow-900">Escola de Frankfurt</h3>
-                            <p class="text-base md:text-lg">Crítica ao cientificismo "unidimensional". Evidencia que as grandes resistências sempre nascem a partir da nossa "experiência cotidiana".</p>
+                <!-- SLIDE 8: Fontes -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="8" data-parte="1" data-paginas="pp. 147–148">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-600 pb-2 mb-4 md:mb-5">Uma Combinação Eclética de Fontes</h2>
+                    <p class="text-base md:text-lg mb-4 text-gray-700">Quatro tradições, combinadas para dar conta da técnica concreta e da crise da civilização tecnológica (p. 147):</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 w-full text-sm md:text-base">
+                        <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-yellow-600 shadow-sm">
+                            <h3 class="font-bold text-base md:text-lg mb-1 text-yellow-900">Escola de Frankfurt (1ª geração) — a principal influência</h3>
+                            <p>Contrasta um cientificismo “unidimensional” com as potencialidades da experiência cotidiana, de onde nascem as resistências.</p>
                         </div>
-                        <div class="bg-white p-4 md:p-6 rounded-lg border-l-8 border-red-700 shadow-md">
-                            <h3 class="font-bold text-lg md:text-xl mb-2 text-red-800">O Marxismo Estrutural</h3>
-                            <p class="text-base md:text-lg">Fornece o arcabouço insubstituível para entender como o <span class="marx-highlight">processo de trabalho</span> é forjado pelo capital para dominar a classe trabalhadora.</p>
+                        <div class="bg-white p-4 rounded-lg border-l-8 border-red-700 shadow-md">
+                            <h3 class="font-bold text-base md:text-lg mb-1 text-red-800">Teoria marxista do processo de trabalho</h3>
+                            <p>Mostra como o capital molda as máquinas e a organização do trabalho — a <span class="marx-highlight">desqualificação</span> (cf. Noble, citado na p. 157).</p>
                         </div>
-                        <div class="bg-gray-50 p-4 md:p-6 rounded-lg border-l-4 border-green-600 shadow-sm">
-                            <h3 class="font-bold text-lg md:text-xl mb-2 text-green-900">Construtivismo Social (ESCT)</h3>
-                            <p class="text-base md:text-lg">Comprova empiricamente que a técnica tem caminhos alternativos e é impulsionada pelos interesses dos atores sociais em disputa.</p>
+                        <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-green-600 shadow-sm">
+                            <h3 class="font-bold text-base md:text-lg mb-1 text-green-900">Estudos sociais de ciência e tecnologia (ESCT)</h3>
+                            <p>O construtivismo social mostra projetos alternativos e atores em disputa. Tem papel essencial, mas Feenberg quer “<span class="cit">corrigir sua subestimação das características estruturais da sociedade moderna</span>” <span class="ref">(p. 148)</span>.</p>
                         </div>
-                        <div class="bg-gray-50 p-4 md:p-6 rounded-lg border-l-4 border-purple-600 shadow-sm">
-                            <h3 class="font-bold text-lg md:text-xl mb-2 text-purple-900">Heidegger</h3>
-                            <p class="text-base md:text-lg">Resgate estritamente crítico da fenomenologia heideggeriana contra a redução do ser humano a mero "fundo de reserva" instrumental.</p>
+                        <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-purple-600 shadow-sm">
+                            <h3 class="font-bold text-base md:text-lg mb-1 text-purple-900">Fenomenologia heideggeriana</h3>
+                            <p>Crítica da técnica moderna como razão instrumental. Feenberg aproveita a crítica, não a ontologia. <span class="text-xs md:text-sm text-gray-500">(O “fundo de reserva” é conceito de Heidegger em <em>A questão da técnica</em>, não deste capítulo.)</span></p>
                         </div>
                     </div>
+                    <p class="citacao text-base md:text-lg mt-4">“<span class="cit">O construtivismo crítico ‘desontologiza’ essas filosofias da tecnologia, conservando sua crítica da racionalidade</span>” <span class="ref">(p. 147)</span> <span class="not-italic font-sans text-gray-600 text-sm md:text-base">— e reconhece o valor da ciência e da tecnologia modernas, sem descartar a modernidade.</span></p>
                 </div>
 
                 <!-- SLIDE 9: VÍDEO (Heidegger) -->
-                <div class="slide slide-hidden flex-col w-full max-w-[1300px]" data-index="9">
-                    <h2 class="text-xl md:text-3xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-6 md:mb-8 w-full block">A Ruptura Moral com Heidegger (Entrevista)</h2>
+                <div class="slide slide-hidden flex-col w-full max-w-[1300px]" data-index="9" data-parte="1" data-paginas="">
+                    <h2 class="text-xl md:text-3xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-5 md:mb-6 w-full block">A Ruptura de Marcuse com Heidegger (Entrevista)</h2>
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 w-full items-center">
                         <div class="midia-container lg:col-span-7">
                             <div class="video-wrapper">
                                 <div id="player-heidegger" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                                <div class="tempo-overlay"></div>
                             </div>
-                            <div class="legenda-box"><span class="legenda-texto">...</span></div>
+                            <div class="legenda-box" aria-live="polite"><span class="legenda-texto">...</span></div>
                         </div>
                         <div class="flex flex-col lg:col-span-5">
-                            <div class="bg-gray-50 p-4 md:p-6 border-l-4 border-purple-700 shadow-sm rounded-r-lg mb-4 md:mb-6">
-                                <p class="text-base md:text-lg font-bold text-gray-900 mb-1 md:mb-2">Tony (One Dime Radio):</p>
-                                <p class="text-base md:text-lg italic text-gray-700 mb-4 md:mb-6">"Gostaria que você fechasse com a relação de Marcuse com Heidegger. Claro, ele foi aluno dele, mas tinha uma relação ambivalente."</p>
-                                <p class="text-base md:text-lg font-bold text-purple-900 mb-1 md:mb-2">Andrew Feenberg:</p>
-                                <p class="text-base md:text-lg font-serif italic text-gray-800 leading-relaxed text-justify">"Ele tinha um sentimento ruim sobre Heidegger, que se tornara nazista. Quando Heidegger negou seu erro com desculpas cínicas, Marcuse respondeu: 'Nenhum filósofo pode se permitir dizer uma coisa dessas'. Ele nunca mais o contatou."</p>
+                            <div class="bg-gray-50 p-4 md:p-6 border-l-4 border-purple-700 shadow-sm rounded-r-lg mb-4">
+                                <p class="text-sm md:text-base font-bold text-gray-900 mb-1">Contexto — pergunta de Tony, em paráfrase:</p>
+                                <p class="text-base md:text-lg italic text-gray-700 mb-4">Ele pede que Feenberg feche com a relação ambivalente de Marcuse com Heidegger, de quem foi aluno.</p>
+                                <p class="text-sm md:text-base font-bold text-purple-900 mb-1">Andrew Feenberg (tradução livre, condensada):</p>
+                                <p class="text-base md:text-lg font-serif italic text-gray-800 leading-relaxed">“Marcuse tinha um sentimento muito ruim sobre Heidegger, que se tornara nazista e se recusou a reconhecer o erro. Depois da guerra trocaram cartas; diante da resposta de Heidegger, Marcuse escreveu: ‘Nenhum filósofo pode se permitir dizer uma coisa dessas’. Nunca mais o procurou.”</p>
                             </div>
-                            <button class="btn-play bg-purple-700 text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-lg shadow-md hover:bg-purple-800 w-full transition" 
-                                    data-target="player-heidegger" data-start="7482" data-end="7576">Reproduzir Trecho</button>
+                            <button class="btn-play bg-purple-700 text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-lg shadow-md hover:bg-purple-800 w-full transition"
+                                    data-target="player-heidegger" data-clipe="heidegger" data-rotulo="Reproduzir trecho (2:04:42–2:06:16)">Reproduzir trecho (2:04:42–2:06:16)</button>
+                            <p class="text-xs md:text-sm text-gray-600 mt-2">Ponte com o slide 8: Heidegger é fonte do construtivismo crítico, mas lida de modo crítico — e “desontologizada”.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- SLIDE 10: Por que Marx? -->
-                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="10">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8">2. Por que Marx ainda importa?</h2>
-                    <p class="text-xl md:text-2xl italic text-gray-600 border-l-4 border-red-300 pl-4 md:pl-6 py-2 mb-6 md:mb-8 bg-gray-50">
-                        "Todo mundo acredita em 90% do marxismo; os marxistas são aqueles que também acreditam nos outros 10%".
-                    </p>
-                    <div class="long-text text-lg md:text-xl text-gray-700">
-                        <p>
-                            O construtivismo social provou que a técnica não tem imperativos naturais. Porém, <strong>falha grotescamente ao negar a existência do Poder de Classe como categoria estrutural</strong>.
-                        </p>
-                        <p>
-                            Feenberg critica Bruno Latour por diluir o poder em meras "associações de rede". É preciso resgatar Marx porque o Capitalismo <span class="marx-highlight">é a macroestrutura social que condiciona e monopoliza as escolhas de projeto técnico na base da sociedade.</span>
-                        </p>
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="10" data-parte="1" data-paginas="p. 149">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-5 md:mb-6">2. Por que Marx ainda importa?</h2>
+                    <p class="citacao text-lg md:text-2xl mb-1">“<span class="cit">Todo mundo acredita em 90% do marxismo; os marxistas são aqueles que também acreditam nos outros 10%</span>” <span class="ref">(p. 149)</span></p>
+                    <p class="text-xs md:text-sm text-gray-500 mb-5">Frase de um estudioso marxista, lembrada por Feenberg.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm md:text-base mb-5">
+                        <div class="bg-white border-t-4 border-red-900 rounded-lg shadow p-4">
+                            <h3 class="font-bold text-base md:text-lg mb-1">Os 90%</h3>
+                            <p class="text-gray-700">A grande descoberta de Marx: o papel fundamental da economia na história e na vida social.</p>
+                        </div>
+                        <div class="bg-white border-t-4 border-red-700 rounded-lg shadow p-4">
+                            <h3 class="font-bold text-base md:text-lg mb-1">Os 10% controversos</h3>
+                            <p class="text-gray-700">O socialismo como <strong>controle democrático da economia</strong>. Duas objeções: a ineficiência do planejamento e os “imperativos” da tecnologia — a gestão da técnica seria incompatível com a democracia.</p>
+                        </div>
+                        <div class="bg-white border-t-4 border-green-700 rounded-lg shadow p-4">
+                            <h3 class="font-bold text-base md:text-lg mb-1">A resposta construtivista</h3>
+                            <p class="text-gray-700">A noção de “atores” livrou o estudo da técnica do determinismo (Pinch &amp; Bijker, 1987): há projetos alternativos, com impactos sociais diferentes, disputados por interesses e ideologias.</p>
+                        </div>
                     </div>
+                    <p class="citacao text-base md:text-xl">“<span class="cit">Nenhum imperativo tecnológico suprime uma organização mais democrática da economia</span>” <span class="ref">(p. 149)</span></p>
                 </div>
 
-                <!-- SLIDE 11: As Três Crises -->
-                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="11">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8">As Três Grandes Crises Contemporâneas</h2>
-                    <p class="text-base md:text-xl mb-4 md:mb-6 font-medium text-gray-700">Se ignorarmos a categoria do Poder Capitalista, é impossível explicar a gravidade de nossa época:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                        <div class="bg-white p-4 md:p-6 rounded shadow border-t-4 border-red-900 text-base md:text-lg text-gray-700">
-                            <strong>1. A Crise Climática:</strong><br><br>
-                            A indústria fóssil concentra tanto capital que anula sistematicamente a ciência climática para blindar sua rentabilidade.
-                        </div>
-                        <div class="bg-white p-4 md:p-6 rounded shadow border-t-4 border-red-700 text-base md:text-lg text-gray-700">
-                            <strong>2. A Captura da Internet:</strong><br><br>
-                            Uma tecnologia descentralizadora agora dominada por corporações gigantes, convertendo o debate público em propaganda e vigilância.
-                        </div>
-                        <div class="bg-white p-4 md:p-6 rounded shadow border-t-4 border-red-500 text-base md:text-lg text-gray-700">
-                            <strong>3. A Desconfiança na Ciência:</strong><br><br>
-                            A desregulamentação forçou lógicas de mercado em todas as esferas. A desigualdade gerou um rancor distópico das massas contra a razão.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SLIDE 12: Dominação Impessoal -->
-                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="12">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8">A Dominação "Impessoal"</h2>
-                    <div class="bg-red-50 border border-red-200 p-6 md:p-8 rounded shadow-sm mb-6 w-full text-center">
-                        <p class="text-xl md:text-2xl text-red-900 leading-relaxed font-serif italic">
-                            Para Marx, o capitalista é um <strong>"simples agente de estruturas anônimas"</strong>.
-                        </p>
-                    </div>
-                    <div class="long-text text-lg md:text-xl text-gray-700">
-                        <p>
-                            Não se trata de apontar falhas de caráter. O capitalista é impelido a agir de forma brutal por estruturas irrefreáveis: <strong>as pressões do mercado concorrencial e a ameaça da resistência trabalhista</strong>.
-                        </p>
-                        <p>
-                            Isso explica a adoção ininterrupta de tecnologias focadas estritamente na <span class="marx-highlight">desqualificação do trabalho vivo e no esgotamento da natureza</span>, independentemente das intenções do gestor.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- SLIDE 13: VÍDEO MARX -->
-                <div class="slide slide-hidden flex-col w-full max-w-[1300px]" data-index="13">
-                    <h2 class="text-xl md:text-3xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8 w-full block">Marx e o Controle Humano da História (Entrevista)</h2>
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 w-full items-center">
-                        <div class="midia-container lg:col-span-7">
-                            <div class="video-wrapper">
-                                <div id="player-1" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
-                            </div>
-                            <div class="legenda-box"><span class="legenda-texto">...</span></div>
-                        </div>
-                        <div class="flex flex-col lg:col-span-5">
-                            <div class="bg-gray-50 p-4 md:p-6 border-l-4 border-red-700 shadow-sm rounded-r-lg mb-4 md:mb-6">
-                                <p class="text-base md:text-lg font-bold text-gray-900 mb-1 md:mb-2">Tony (One Dime Radio):</p>
-                                <p class="text-base md:text-lg italic text-gray-700 mb-4 md:mb-6">"Críticos descartam Marx devido à 'teleologia'... a conclusão não seria que o socialismo é mecanicamente inevitável?"</p>
-                                <p class="text-base md:text-lg font-bold text-red-900 mb-1 md:mb-2">Andrew Feenberg:</p>
-                                <p class="text-base md:text-lg font-serif italic text-gray-800 leading-relaxed text-justify">"O problema básico que Marx lida é como passar de uma fase onde as leis naturais da economia prevalecem sobre os humanos... para um novo sistema no qual as pessoas têm a capacidade de organizar sua existência de forma consciente."</p>
-                            </div>
-                            <button class="btn-play bg-red-700 text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-lg shadow-md hover:bg-red-800 w-full transition" 
-                                    data-target="player-1" data-start="4134" data-end="4169">Reproduzir Trecho</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SLIDE 14: Teoria Política e o Triplo Dilema -->
-                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="14">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-500 pb-2 mb-6 md:mb-8">3. A Tecnologia na Teoria Política</h2>
-                    <p class="text-lg md:text-xl text-gray-700 mb-6">Debater politicamente a tecnologia requer superar um triplo dilema nas ciências sociais:</p>
-                    <ul class="list-none pl-0 md:pl-4 space-y-4 md:space-y-6 text-base md:text-xl">
-                        <li class="p-4 bg-white shadow rounded border-l-8 border-blue-500"><strong>1. Não determinismo:</strong> O desenvolvimento tecnológico não possui "imperativos" naturais inquestionáveis.</li>
-                        <li class="p-4 bg-white shadow rounded border-l-8 border-red-700"><strong>2. Convergência:</strong> Por que o capitalismo e o comunismo soviético <em>convergiram</em> gerando as mesmas estruturas opressivas de controle gerencial?</li>
-                        <li class="p-4 bg-white shadow rounded border-l-8 border-green-500"><strong>3. Racionalidade:</strong> As escolhas da gestão são baseadas na eficiência da Ciência. Como atacá-las moralmente?</li>
+                <!-- SLIDE 11: O ponto cego: o poder -->
+                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="11" data-parte="1" data-paginas="pp. 149–151">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-5 md:mb-6">O Ponto Cego do Construtivismo: o Poder</h2>
+                    <ul class="list-disc pl-6 space-y-3 text-base md:text-lg text-gray-700 mb-5">
+                        <li>Avanço metodológico importante, mas o construtivismo não explica de forma convincente as <strong>diferenças de poder entre os atores</strong> (pp. 149–150).</li>
+                        <li><strong>Foucault</strong> reduz o poder ao jogo de técnicas disciplinares; a <strong>teoria ator-rede</strong> o explica pelo número de associações que os atores mobilizam (Latour, 1984).</li>
+                        <li>Fica sem solução o caso mais grave — a influência do capitalismo no projeto técnico: “<span class="cit">O capitalismo é uma estrutura social que condiciona o acesso dos atores ao poder</span>” <span class="ref">(p. 150)</span>. Logo, não se reduz a técnicas ou associações.</li>
+                        <li>A reação ao marxismo mira sua versão dominante (economia política e luta de classes), não o próprio Marx. Os “pós-marxistas” Laclau e Mouffe (1985) mantêm o antagonismo, mas no plano das diferenças simbólicas (pp. 150–151).</li>
                     </ul>
-                </div>
-
-                <!-- SLIDE 15: A Teoria do Processo de Trabalho -->
-                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="15">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8">A Teoria do Processo de Trabalho</h2>
-                    <div class="long-text text-lg md:text-xl text-gray-700">
-                        <p>
-                            A União Soviética importou a tecnologia capitalista e, junto com ela, os seus <strong>métodos brutais de controle e divisão do trabalho</strong> enraizados no hardware.
-                        </p>
-                        <div class="bg-red-50 border border-red-200 p-4 md:p-6 rounded shadow-sm text-center mb-4 md:mb-6">
-                            <p class="text-lg md:text-xl font-bold text-red-900">A Desqualificação da Força de Trabalho</p>
-                        </div>
-                        <p>
-                            A tecnologia capitalista não foca em facilitar a vida; <span class="marx-highlight">ela é desenhada para roubar e materializar na máquina o conteúdo intelectual da produção</span>. Isso garante que o trabalho seja executado mecanicamente por operários desqualificados, privando-os da capacidade cultural de disputar o poder.
-                        </p>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 md:p-6 text-center">
+                        <p class="text-sm md:text-base font-bold uppercase tracking-wider text-red-900 mb-2">Pergunta-guia</p>
+                        <p class="font-serif italic text-lg md:text-2xl text-red-900">“<span class="cit">A estrutura pode ser incorporada à teoria social sem uma vez mais reificar o poder?</span>” <span class="ref">(p. 150)</span></p>
                     </div>
                 </div>
 
-                <!-- SLIDE 16: Formas de Organização -->
-                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="16">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-orange-600 pb-2 mb-6 md:mb-8">4. Formas de Organização Cooperativa</h2>
-                    <p class="text-lg md:text-xl mb-6 font-medium text-gray-700">Três "Tipos Ideais" de controle operacional nas sociedades modernas:</p>
+                <!-- SLIDE 12: As três crises -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="12" data-parte="1" data-paginas="pp. 151–152">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-5 md:mb-6">As Três Grandes Crises do Nosso Tempo</h2>
+                    <p class="text-base md:text-lg text-gray-700 mb-5">Ainda é preciso descrever o poder capitalista. Cada crise está “<span class="cit">radicada no exercício desmedido do poder capitalista sobre a evolução do sistema técnico</span>” <span class="ref">(p. 151)</span>.</p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                        <div class="bg-white border-t-8 border-orange-600 p-4 md:p-6 rounded shadow-md text-base md:text-lg">
-                            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">Controle "De Cima"</h3>
-                            <p class="text-gray-700">Imposto de forma autoritária por acionistas e burocratas, isentos de responsabilidades humanas para com subordinados.</p>
+                        <div class="bg-white p-4 md:p-6 rounded shadow border-t-4 border-red-900 text-sm md:text-lg text-gray-700">
+                            <strong class="text-gray-900">1. A crise climática</strong>
+                            <p class="mt-2">A indústria de combustíveis fósseis tem poder tão imenso que nenhum conjunto de evidências científicas anulou, até agora, seu domínio sobre o sistema energético.</p>
                         </div>
-                        <div class="bg-white border-t-8 border-green-600 p-4 md:p-6 rounded shadow-md text-base md:text-lg">
-                            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">Controle "De Base"</h3>
-                            <p class="text-gray-700">O pilar do socialismo, no qual os subordinados e afetados escolhem o rumo do projeto e controlam processos.</p>
+                        <div class="bg-white p-4 md:p-6 rounded shadow border-t-4 border-red-700 text-sm md:text-lg text-gray-700">
+                            <strong class="text-gray-900">2. Ameaças à liberdade (informação)</strong>
+                            <p class="mt-2">A Internet, que ampliou o debate público, está sob controle de poucas grandes corporações e se incorpora ao aparato de propaganda de corporações e governos.</p>
                         </div>
-                        <div class="bg-white border-t-8 border-blue-600 p-4 md:p-6 rounded shadow-md text-base md:text-lg">
-                            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">Controle "Colegiado"</h3>
-                            <p class="text-gray-700">Trabalhadores hiper-qualificados (médicos, professores) possuem autonomia e votam as metas das instituições.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SLIDE 17: Valor de Troca -->
-                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="17">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-orange-600 pb-2 mb-6 md:mb-8">Autonomia Operacional e o Valor de Troca</h2>
-                    <div class="long-text text-lg md:text-xl text-gray-700">
-                        <p>
-                            Na empresa capitalista, a finalidade não é produzir coisas úteis (<span class="marx-highlight">Valor de Uso</span>), mas multiplicar o capital (<span class="marx-highlight">Valor de Troca</span>).
-                        </p>
-                        <p>
-                            Essa alienação das obrigações comunitárias concede à gestão a <strong>Autonomia Operacional</strong>: passe livre para perseguir metodologias de pura eficiência matemática na máquina, blindados de responsabilização ética local.
-                        </p>
-                        <div class="bg-orange-50 border-l-8 border-orange-600 p-4 md:p-6 rounded shadow mt-6">
-                            <p class="font-bold text-base md:text-lg text-gray-900 italic text-center">"A neutralidade técnica do capitalismo não é absoluta. Ela é relativa e desenhada à força pela divisão social do trabalho".</p>
+                        <div class="bg-white p-4 md:p-6 rounded shadow border-t-4 border-red-500 text-sm md:text-lg text-gray-700">
+                            <strong class="text-gray-900">3. O declínio da confiança na ciência</strong>
+                            <p class="mt-2">Desregulamentação neoliberal e políticas tributárias geraram desigualdades de renda e de poder — e hostilidade contra a própria racionalidade; a narrativa volta como teoria da conspiração distópica. Essa crise <strong>desarma a sociedade</strong> diante das outras duas.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 18: Neoliberalismo na Escola -->
-                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="18">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-orange-600 pb-2 mb-6 md:mb-8">Escolas e a Lógica Neoliberal</h2>
-                    <p class="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
-                        Instituições públicas possuíam o valor social imaterial de <em>educar o ser humano</em>, que dependia da gestão colegiada viva dos professores.
-                    </p>
-                    <div class="bg-white border-l-8 border-gray-800 p-6 md:p-8 rounded-xl shadow-lg w-full">
-                        <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4 border-b pb-2">A Reificação da Sala de Aula</h3>
-                        <p class="text-base md:text-xl text-gray-700 leading-relaxed">
-                            No Neoliberalismo, a educação é quantificada por rankings e provas. A Autonomia Operacional da burocracia aniquila o controle colegiado docente (<span class="marx-highlight">simulacro das métricas financeiras</span>), reduzindo professores a repassadores de apostilas.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- SLIDE 19: Consequências da Autonomia Operacional -->
-                <div class="slide slide-hidden flex-col w-full max-w-5xl text-center" data-index="19">
-                    <h2 class="text-2xl md:text-4xl font-bold mb-6 md:mb-8 border-b pb-4 text-gray-800">Consequências da Autonomia Operacional</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 text-left">
-                        <div class="bg-gray-100 p-6 md:p-8 rounded-lg shadow-sm border-t-4 border-gray-900">
-                            <h3 class="text-xl md:text-2xl font-bold mb-3">Caso: O Vale do Silício</h3>
-                            <p class="text-base md:text-xl text-gray-700 leading-relaxed">O imperativo de maximizar "engajamento" varreu considerações sobre saúde mental coletiva, erguendo a colossal máquina de vigilância privatizada da Internet.</p>
+                <!-- SLIDE 13: Dominação impessoal + legado -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="13" data-parte="1" data-paginas="pp. 152–153">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-5 md:mb-6">A Dominação “Impessoal” e o Legado de Marx</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 text-sm md:text-base">
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-4 md:p-6">
+                            <h3 class="font-bold text-lg md:text-xl text-red-900 mb-3">Dominação impessoal (pp. 152–153)</h3>
+                            <p class="citacao text-base md:text-lg mb-3">Marx concebia o capitalista como “<span class="cit">um simples agente de estruturas anônimas</span>” <span class="ref">(p. 152)</span></p>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                <li>Duas estruturas o determinam: as <strong>pressões irresistíveis do mercado</strong> e a <strong>resistência da força de trabalho</strong>.</li>
+                                <li>Não é preciso supor ganância, viés ideológico ou interesse pessoal: ou ele age como a estrutura exige, ou sai de cena.</li>
+                                <li>Na época de Marx: rápido progresso técnico, com <span class="marx-highlight">desqualificação do trabalho</span> e <span class="marx-highlight">esgotamento do solo</span>.</li>
+                                <li>Daí o capitalismo como dominação “impessoal”; só outras estruturas abririam formas mais humanas de ação — o “socialismo” de Marx.</li>
+                            </ul>
                         </div>
-                        <div class="bg-gray-100 p-6 md:p-8 rounded-lg shadow-sm border-t-4 border-green-700">
-                            <h3 class="text-xl md:text-2xl font-bold mb-3">Caso: Tragédias Ecológicas</h3>
-                            <p class="text-base md:text-xl text-gray-700 leading-relaxed">Despejar toxinas no rio é o método matemático "mais eficiente" para o lucro da mina. Resta à sociedade apenas a reação passiva judicial a posteriori.</p>
+                        <div class="bg-white border-l-8 border-red-700 rounded-lg shadow p-4 md:p-6">
+                            <h3 class="font-bold text-lg md:text-xl text-gray-900 mb-3">O que fica de Marx hoje (p. 153)</h3>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-700 mb-3">
+                                <li>A tecnologia é configurada pela <strong>distribuição de poder</strong>: liderança, cisão entre concepção e execução, sistemas de controle e incentivo, manipulação psicológica dos subordinados.</li>
+                                <li>Vale para qualquer grupo que, como os trabalhadores, não tem acesso direto às decisões que o afetam.</li>
+                            </ul>
+                            <p class="citacao text-base md:text-lg">A contribuição de Marx é “<span class="cit">sua descoberta da dimensão política na tecnologia</span>” <span class="ref">(p. 153)</span> — e não opor política e técnica, valor e fato, ideologia e racionalidade.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 20: Democratização Base -->
-                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="20">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-6 md:mb-8">5. A Democratização da Tecnologia</h2>
-                    <div class="bg-indigo-50 border border-indigo-200 p-4 md:p-8 rounded shadow-sm text-center mb-6 md:mb-8">
-                        <p class="text-xl md:text-2xl text-indigo-900 font-bold italic">"Uma reinvindicação material, e não uma recusa cega da expertise técnica."</p>
-                    </div>
-                    <div class="long-text text-lg md:text-xl text-gray-700">
-                        <p>
-                            Especialistas historicamente ignoraram a segurança ocupacional e a poluição, tratando a vida como "externalidade". 
-                        </p>
-                        <p>
-                            A democratização é o embate popular para forçar a modificação da tecnologia <strong>na prancheta do projeto</strong>, garantindo o direito à voz dos não-especialistas e das vítimas ambientais.
-                        </p>
+                <!-- SLIDE 14: VÍDEO (Marx) -->
+                <div class="slide slide-hidden flex-col w-full max-w-[1300px]" data-index="14" data-parte="1" data-paginas="">
+                    <h2 class="text-xl md:text-3xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-5 md:mb-6 w-full block">Marx e a Organização Consciente da Existência (Entrevista)</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 w-full items-center">
+                        <div class="midia-container lg:col-span-7">
+                            <div class="video-wrapper">
+                                <div id="player-marx" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                                <div class="tempo-overlay"></div>
+                            </div>
+                            <div class="legenda-box" aria-live="polite"><span class="legenda-texto">...</span></div>
+                        </div>
+                        <div class="flex flex-col lg:col-span-5">
+                            <div class="bg-gray-50 p-4 md:p-6 border-l-4 border-red-700 shadow-sm rounded-r-lg mb-4">
+                                <p class="text-sm md:text-base font-bold text-gray-900 mb-1">Contexto — pergunta de Tony, em paráfrase:</p>
+                                <p class="text-base md:text-lg italic text-gray-700 mb-4">Críticos descartam Marx pela “teleologia”, como se o socialismo fosse mecanicamente inevitável. É isso?</p>
+                                <p class="text-sm md:text-base font-bold text-red-900 mb-1">Andrew Feenberg (tradução livre, condensada):</p>
+                                <p class="text-base md:text-lg font-serif italic text-gray-800 leading-relaxed">“O problema básico de Marx é passar de uma fase em que as leis naturais da economia prevalecem sobre os seres humanos para um sistema em que as pessoas organizam a própria existência de forma livre e consciente.”</p>
+                            </div>
+                            <button class="btn-play bg-red-700 text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-lg shadow-md hover:bg-red-800 w-full transition"
+                                    data-target="player-marx" data-clipe="marx" data-rotulo="Reproduzir trecho (1:08:54–1:09:29)">Reproduzir trecho (1:08:54–1:09:29)</button>
+                            <p class="text-xs md:text-sm text-gray-600 mt-2">Ponte com o slide 13: a dominação “impessoal” só muda com outras estruturas (pp. 152–153).</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 21: Traços da Ação Pública -->
-                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="21">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-6 md:mb-8">Traços Formais da Intervenção Popular</h2>
-                    <ul class="space-y-4 md:space-y-6 text-base md:text-xl">
-                        <li class="bg-white p-4 md:p-6 rounded-lg border shadow-sm flex items-start md:items-center">
-                            <span class="text-indigo-700 text-2xl md:text-4xl font-bold mr-4 md:mr-6 mt-1 md:mt-0">1.</span>
-                            <div><strong>Ação Pontual:</strong> Protestos impulsionados por escândalos e mortes, que inflamam a indignação do público latente.</div>
+                <!-- SLIDE 15: Três proposições -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="15" data-parte="1" data-paginas="pp. 153–156">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-500 pb-2 mb-4 md:mb-5">3. A Tecnologia na Teoria Política: Três Proposições</h2>
+                    <p class="text-sm md:text-base text-gray-700 mb-4">Nos séculos XIX e XX, os especialistas serviram às estruturas administrativas: as disciplinas técnicas minimizaram perigos, e temas cientificamente insolúveis foram enviesados a favor das indústrias (Fressoz; Bensaude-Vincent). Hoje esse legado é discutido em público: “<span class="cit">O debate político sobre tecnologia é, portanto, inevitável.</span>” <span class="ref">(p. 154)</span></p>
+                    <ul class="space-y-3 text-sm md:text-lg mb-4">
+                        <li class="p-3 md:p-4 bg-white shadow rounded border-l-8 border-blue-500"><strong>1. Não determinismo:</strong> o desenvolvimento tecnológico não obedece a “imperativos” essencialistas; é socialmente construído.</li>
+                        <li class="p-3 md:p-4 bg-white shadow rounded border-l-8 border-red-700"><strong>2. Convergência do sistema:</strong> no capitalismo e no comunismo “real”, a tecnologia reproduz o poder de capitalistas e gestores.</li>
+                        <li class="p-3 md:p-4 bg-white shadow rounded border-l-8 border-green-500"><strong>3. Racionalidade:</strong> as escolhas técnicas são geralmente feitas em bases “racionais” — critérios de eficiência e conhecimentos das disciplinas técnicas.</li>
+                    </ul>
+                    <div class="bg-stone-100 border border-stone-300 rounded-lg p-4 text-sm md:text-base text-gray-800 space-y-2">
+                        <p><strong>1 × 2:</strong> se sistemas diferentes convergem para o controle autoritário, a técnica não seria um imperativo? E, se não é, por que ondas de inovação produzem estruturas de controle semelhantes? (p. 155)</p>
+                        <p><strong>3 × 1:</strong> as disciplinas racionais se parecem em toda parte — seria a racionalidade a causa da convergência? Marxistas costumam culpar a irracionalidade, capitalista ou burocrática (p. 156).</p>
+                        <p class="text-gray-600">“Racional” aqui = baseado em evidências e logicamente elaborado; nada a ver com “razão pura” (p. 156).</p>
+                    </div>
+                </div>
+
+                <!-- SLIDE 16: A solução -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="16" data-parte="1" data-paginas="pp. 156–159">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-500 pb-2 mb-5 md:mb-6">A Saída: Difusão, Desqualificação e Racionalidade Condicionada</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base">
+                        <div class="bg-white border rounded-lg shadow-sm p-4">
+                            <h3 class="font-bold text-base md:text-lg mb-1">Por que os sistemas convergem? (p. 157)</h3>
+                            <p class="text-gray-700">Os soviéticos não criaram tecnologia nem gestão próprias: adotaram as do capitalismo ocidental. A tecnologia funcionou como “<span class="cit">vetor de difusão cultural</span>” (Fleron, 1977): as influências sociais viajam dentro das próprias disciplinas e artefatos.</p>
+                        </div>
+                        <div class="bg-white border rounded-lg shadow-sm p-4">
+                            <h3 class="font-bold text-base md:text-lg mb-1">De onde vem o desfecho autoritário? (p. 157)</h3>
+                            <p class="text-gray-700">Da <span class="marx-highlight">desqualificação</span> do trabalho. A tecnologia “<span class="cit">materializa o conteúdo intelectual da produção, anteriormente depositado nas mentes dos artesãos</span>”; as máquinas barateiam, padronizam e comandam o trabalho e tiram dos trabalhadores o recurso cultural de disputar o poder (Noble, 1984).</p>
+                        </div>
+                        <div class="bg-blue-50 border-l-8 border-blue-700 rounded-lg shadow p-4">
+                            <h3 class="font-bold text-base md:text-lg mb-1 text-blue-900">A causa social (p. 158)</h3>
+                            <p class="text-gray-800">Não é ideologia nem interesse, mas considerações técnicas “<span class="cit">racionais e, ainda assim, condicionadas pelos termos da competição e do controle capitalistas</span>”.</p>
+                        </div>
+                        <div class="bg-white border rounded-lg shadow-sm p-4">
+                            <h3 class="font-bold text-base md:text-lg mb-1">Weber, Lukács, Frankfurt (pp. 158–159)</h3>
+                            <p class="text-gray-700">Racionalização e desencantamento: a máquina perde associações simbólicas, “a forma é ditada pela função”, e só a eficiência sobrevive como norma. Risco: o determinismo, como no próprio Weber. Por isso “<span class="cit">um novo conceito de poder se faz necessário</span>” <span class="ref">(p. 159)</span>.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 17: Autonomia operacional I -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="17" data-parte="1" data-paginas="pp. 159–160">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-orange-600 pb-2 mb-4 md:mb-5">4. A Autonomia Operacional: de Marx aos Tipos Ideais</h2>
+                    <p class="text-sm md:text-lg text-gray-700 mb-3">Em <em>O capital</em> (cap. 13), a cooperação aumenta a produtividade e, em grande escala, exige liderança formal. A administração ganha a função de coordenar — e o poder de se apropriar do valor criado pela cooperação e de ditar projetos de máquinas que perpetuam seu controle (p. 159).</p>
+                    <p class="citacao text-base md:text-xl mb-5">“<span class="cit">Assim, Marx não atribui a gestão autoritária à tecnologia, mas sim o contrário.</span>” <span class="ref">(p. 159)</span></p>
+                    <p class="text-sm md:text-base font-medium text-gray-700 mb-3">Três “tipos ideais” de controle — na vida real, as formas mistas são mais comuns (p. 160):</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm md:text-base">
+                        <div class="bg-white border-t-8 border-orange-600 p-4 rounded shadow-md">
+                            <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-1">A partir de cima</h3>
+                            <p class="text-gray-700">Impõe a coordenação sem responsabilidade recíproca para com os subordinados.</p>
+                        </div>
+                        <div class="bg-white border-t-8 border-green-600 p-4 rounded shadow-md">
+                            <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-1">Democrático (da base)</h3>
+                            <p class="text-gray-700">Os subordinados escolhem o coordenador de sua própria atividade.</p>
+                        </div>
+                        <div class="bg-white border-t-8 border-blue-600 p-4 rounded shadow-md">
+                            <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-1">Colegiado</h3>
+                            <p class="text-gray-700">Não discutido por Marx: subordinados com habilidades complexas preservam autonomia e o direito formal de assessorar quem os coordena.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 18: Autonomia operacional II -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="18" data-parte="1" data-paginas="pp. 160–161">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-orange-600 pb-2 mb-4 md:mb-5">Política, Operações, Controle: o que é Autonomia Operacional</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm md:text-base mb-4">
+                        <div class="bg-orange-50 rounded p-3"><strong>Política:</strong> o propósito primordial da organização.</div>
+                        <div class="bg-orange-50 rounded p-3"><strong>Operações:</strong> a implementação dos meios que servem a esse propósito.</div>
+                        <div class="bg-orange-50 rounded p-3"><strong>Controle:</strong> os procedimentos que põem as operações em conformidade com a política.</div>
+                    </div>
+                    <p class="text-sm md:text-lg text-gray-700 mb-3">Na empresa capitalista, a política só reproduz a norma da eficiência: a propriedade não tem obrigações além do sucesso financeiro — nem com trabalhadores, nem com a comunidade. Sócios e conselhos abrem mão da autoridade em favor da administração, desde que as metas financeiras sejam atingidas: é a <strong>autonomia operacional</strong> da gestão (pp. 160–161).</p>
+                    <p class="citacao text-base md:text-lg mb-4">Uma característica formal, que “<span class="cit">especifica procedimentos sem especificar um objetivo substantivo particular</span>” <span class="ref">(p. 161)</span></p>
+                    <div class="bg-white border-l-8 border-red-700 rounded-lg shadow p-4 text-sm md:text-lg text-gray-700">
+                        A missão da empresa é o <span class="marx-highlight">valor de troca</span>; os <span class="marx-highlight">valores de uso</span> são subproduto. A eficiência parece neutra, mas “<span class="cit">a neutralidade do capitalismo não é absoluta, mas relativa à divisão do trabalho</span>” <span class="ref">(p. 161)</span> — com consequências para o projeto das máquinas.
+                    </div>
+                </div>
+
+                <!-- SLIDE 19: Escolas e neoliberalismo -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="19" data-parte="1" data-paginas="pp. 161–163">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-orange-600 pb-2 mb-4 md:mb-5">Escolas e a Lógica Neoliberal</h2>
+                    <p class="text-sm md:text-lg text-gray-700 mb-4">Instituições públicas precisam de uma política substantiva que as legitime — na escola, a educação segundo algum padrão. Mas os meios parecem neutros: como o capitalista diante do valor de uso, burocratas e professores podem seguir procedimentos-padrão indiferentes ao valor que norteia seu trabalho. O grau dessa indiferença depende do sistema de controle (pp. 161–162).</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base mb-4">
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <h3 class="font-bold text-base md:text-lg text-blue-900 mb-1">Antes: controle colegiado</h3>
+                            <p class="text-gray-700">Confiança na experiência docente para julgar os alunos; reuniões entre administração e representantes dos professores; compromisso amplo com o valor da educação (pp. 162–163).</p>
+                        </div>
+                        <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                            <h3 class="font-bold text-base md:text-lg text-orange-900 mb-1">No neoliberalismo</h3>
+                            <p class="text-gray-700">A educação vira medidas quantitativas — provas, rankings — que “<span class="cit">simulam os objetivos financeiros</span>”; a gestão colegiada dá lugar à autonomia operacional de uma burocracia (p. 163).</p>
+                        </div>
+                    </div>
+                    <p class="citacao text-base md:text-xl mb-3">“<span class="cit">A desmoralização resultante disso é notória.</span>” <span class="ref">(p. 163)</span></p>
+                    <p class="text-sm md:text-base text-gray-700">O padrão se espalha: os indivíduos ficam submetidos ao “<span class="cit">poder impessoal dos sistemas racionais</span>” e reagem de modo construtivo ou, quando a resistência se contamina de irracionalidade, destrutivo e até autodestrutivo (p. 163).</p>
+                </div>
+
+                <!-- SLIDE 20: Consequências + síntese da Parte 1 -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="20" data-parte="1" data-paginas="pp. 163–165">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-orange-600 pb-2 mb-4 md:mb-5">Consequências da Autonomia Operacional</h2>
+                    <p class="text-sm md:text-base text-gray-700 mb-4">Decidir sem consultar os afetados é injusto e nocivo aos seus interesses concretos: quem comanda enxerga poucas soluções viáveis; outras seriam viáveis sob controle a partir da base (pp. 163–164). No pós-fordismo a lógica fica: um padrão que centraliza o poder numa elite administrativa (p. 164).</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base mb-4">
+                        <div class="bg-gray-100 p-4 md:p-5 rounded-lg shadow-sm border-t-4 border-gray-900">
+                            <h3 class="text-lg md:text-xl font-bold mb-2">Internet (pp. 164–165)</h3>
+                            <p class="text-gray-700">A centralização em grandes corporações gerou inovações para coletar dados pessoais: vigilância e publicidade direcionada. As plataformas intensificam a autonomia operacional e reduziram a livre expressão, em grande parte, a mecanismo de propaganda. Defensores da privacidade pedem a volta à estrutura descentralizada anterior a Google, Amazon e Facebook.</p>
+                        </div>
+                        <div class="bg-gray-100 p-4 md:p-5 rounded-lg shadow-sm border-t-4 border-green-700">
+                            <h3 class="text-lg md:text-xl font-bold mb-2">Comunidades (p. 165)</h3>
+                            <p class="text-gray-700">Quando a gestão pode ignorar externalidades, soluções eficientes têm consequências desastrosas para o entorno. Consultada, a comunidade provavelmente escolheria soluções menos poluidoras; na prática, recorre à justiça.</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 text-white rounded-lg p-4 md:p-6">
+                        <p class="text-xs md:text-sm uppercase tracking-wider text-gray-300 font-bold mb-2">Síntese da Parte 1</p>
+                        <p class="font-serif italic text-base md:text-xl">“<span class="cit">a tomada de decisões baseada em critérios de racionalidade e eficiência não é, de fato, neutra</span>” <span class="ref !text-blue-200">(p. 165)</span></p>
+                        <p class="text-sm md:text-base text-gray-300 mt-2">E a democratização não é só procedimento: está ligada a fins substantivos. Como transformar essa racionalidade? → Parte 2, com Gissele.</p>
+                    </div>
+                </div>
+
+<!-- ===================================================================== -->
+<!-- PARTE 2 · GISSELE — slides 21 a 38 · texto pp. 165–185 (PDF pp. 20–40) -->
+<!-- ===================================================================== -->
+
+                <!-- SLIDE 21: Abertura da Parte 2 -->
+                <div class="slide slide-hidden flex-col items-center text-center w-full max-w-5xl" data-index="21" data-parte="2" data-paginas="">
+                    <p class="text-xs md:text-sm uppercase tracking-[0.2em] text-violet-700 font-bold mb-2">Parte 2 · Gissele Quirino Herculano</p>
+                    <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6">Da Crítica à Transformação</h2>
+                    <div class="bg-gray-50 border rounded-xl p-5 md:p-7 w-full text-left mb-5">
+                        <p class="text-sm md:text-base uppercase tracking-wider text-gray-500 font-bold mb-1">O que a Parte 1 mostrou</p>
+                        <p class="text-base md:text-xl text-gray-800">A técnica é racional, mas sua racionalidade é condicionada pelo poder: a <strong>autonomia operacional</strong> de quem a gere.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full text-left text-sm md:text-base mb-5">
+                        <div class="bg-white border-t-4 border-indigo-600 rounded-lg shadow p-4"><strong>5. A democratização</strong><br><span class="text-gray-500">pp. 165–176</span></div>
+                        <div class="bg-white border-t-4 border-purple-700 rounded-lg shadow p-4"><strong>6. A teoria da instrumentalização</strong><br><span class="text-gray-500">pp. 176–183</span></div>
+                        <div class="bg-white border-t-4 border-stone-600 rounded-lg shadow p-4"><strong>7. Consequências</strong><br><span class="text-gray-500">pp. 184–185</span></div>
+                    </div>
+                    <p class="text-base md:text-lg text-gray-700 italic">Como os afetados pela técnica entram no seu projeto? E como pensar um objeto que é, ao mesmo tempo, mecanismo causal e fato social?</p>
+                </div>
+
+                <!-- SLIDE 22: Democratização: conteúdo e procedimento -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="22" data-parte="2" data-paginas="pp. 165–166">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-4 md:mb-5">5. A Democratização: Conteúdo e Procedimento</h2>
+                    <p class="text-sm md:text-lg text-gray-700 mb-4">Por enfatizar a autonomia operacional, o construtivismo crítico se ocupa da dinâmica do poder no tecnossistema. Ambientalismo e privacidade não são as únicas questões, mas têm enorme repercussão (pp. 165–166).</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base mb-5">
+                        <div class="bg-white border-t-4 border-indigo-600 rounded-lg shadow p-4 md:p-5">
+                            <h3 class="font-bold text-lg md:text-xl mb-2">No conteúdo</h3>
+                            <p class="text-gray-700">Na esfera pública, a experiência negativa com a técnica é articulada criticamente; os excluídos buscam reverter os danos de projetos anteriores. Ex.: a poluição, desprezada na maior parte da história industrial — hoje opinião pública e regulação obrigam as empresas a cuidar da saúde das comunidades (p. 166).</p>
+                        </div>
+                        <div class="bg-white border-t-4 border-indigo-900 rounded-lg shadow p-4 md:p-5">
+                            <h3 class="font-bold text-lg md:text-xl mb-2">No procedimento</h3>
+                            <p class="text-gray-700">Cada nova restrição às empresas diminui em algum grau sua <strong>autonomia operacional</strong>. No limite, o sistema empresarial é forçado a servir melhor aos interesses públicos substantivos (p. 166).</p>
+                        </div>
+                    </div>
+                    <p class="citacao text-base md:text-xl">“<span class="cit">No extremo, essa consequência procedimental geraria um sistema técnico genuinamente democrático.</span>” <span class="ref">(p. 166)</span></p>
+                </div>
+
+                <!-- SLIDE 23: Especialistas e democracia -->
+                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="23" data-parte="2" data-paginas="pp. 166–168">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-4 md:mb-5">Especialistas, Expertise e Democracia</h2>
+                    <ul class="list-disc pl-6 space-y-2 text-sm md:text-lg text-gray-700 mb-4">
+                        <li>As asserções dos especialistas não podem ser desconsideradas; mas, como todos, eles erram e subestimam danos e potencialidades do que projetam (p. 166).</li>
+                        <li>Empregados por empresas, aplicam o conhecimento sob critérios do empregador — e a empresa não tem responsabilidade, além do lucro, que não seja imposta por lei ou regulação (p. 167).</li>
+                        <li>A exclusão de trabalhadores e comunidades molda os próprios projetos e disciplinas. Por isso a solução não está em “<span class="cit">uma ênfase exclusiva nas responsabilidades éticas e interesses dos projetistas técnicos</span>” <span class="ref">(p. 167)</span>.</li>
+                    </ul>
+                    <div class="bg-indigo-50 border border-indigo-200 p-4 md:p-6 rounded shadow-sm mb-4">
+                        <p class="text-sm md:text-base font-bold text-indigo-900 mb-2">A demanda por democratização é…</p>
+                        <p class="font-serif italic text-base md:text-xl text-indigo-900">“<span class="cit">uma reivindicação em favor da ampliação e do reconhecimento formal das contribuições de não especialistas</span>” <span class="ref">(p. 167)</span></p>
+                        <p class="text-sm md:text-base text-indigo-800 mt-2">— e não uma recusa da importância da expertise.</p>
+                    </div>
+                    <p class="text-sm md:text-base text-gray-600">Coletivos democráticos também tomam péssimas decisões; mas a experiência histórica com ditadura e democracia nos faz preferir a segunda. A democratização técnica aplica essa preferência ao tecnossistema (pp. 167–168).</p>
+                </div>
+
+                <!-- SLIDE 24: Como o público intervém -->
+                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="24" data-parte="2" data-paginas="pp. 168–169">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-4 md:mb-5">Como o Público Intervém: Três Traços</h2>
+                    <p class="text-sm md:text-base text-gray-700 mb-4">Quase sempre <em>a posteriori</em>, com a tecnologia já em uso: consumidores reclamam ou boicotam; trabalhadores exigem proteção; hackers modificam sistemas; comunidades responsabilizam judicialmente empresas e agências; manifestantes defendem novas políticas, como na energia (p. 168).</p>
+                    <ul class="space-y-3 text-sm md:text-base mb-4">
+                        <li class="bg-white p-3 md:p-4 rounded-lg border shadow-sm flex items-start">
+                            <span class="text-indigo-700 text-2xl md:text-3xl font-bold mr-4">1.</span>
+                            <div><strong>Caráter pontual:</strong> uma questão técnica específica co-constrói um público interessado. A política eleitoral raramente trata de técnica e se organiza por jurisdições que não coincidem com as redes técnicas; essas redes criam <strong>públicos latentes</strong>, ativados por escândalo, crise ou mudança de opinião — passeatas, boicotes, ações judiciais, mensagens a representantes (p. 169).</div>
                         </li>
-                        <li class="bg-white p-4 md:p-6 rounded-lg border shadow-sm flex items-start md:items-center">
-                            <span class="text-indigo-700 text-2xl md:text-4xl font-bold mr-4 md:mr-6 mt-1 md:mt-0">2.</span>
-                            <div><strong>Discursividade Híbrida:</strong> O jargão científico estrito colidindo violentamente com o senso comum (a ética da vida).</div>
+                        <li class="bg-white p-3 md:p-4 rounded-lg border shadow-sm flex items-start">
+                            <span class="text-indigo-700 text-2xl md:text-3xl font-bold mr-4">2.</span>
+                            <div><strong>Discursividade:</strong> as demandas são formuladas numa linguagem híbrida, que combina ciência e técnica com linguagem comum (pp. 168–169).</div>
                         </li>
-                        <li class="bg-white p-4 md:p-6 rounded-lg border shadow-sm flex items-start md:items-center">
-                            <span class="text-indigo-700 text-2xl md:text-4xl font-bold mr-4 md:mr-6 mt-1 md:mt-0">3.</span>
-                            <div><strong>Ruptura do Código:</strong> As críticas não buscam só indenizações; forçam os engenheiros a "reinventar" a própria máquina a longo prazo.</div>
+                        <li class="bg-white p-3 md:p-4 rounded-lg border shadow-sm flex items-start">
+                            <span class="text-indigo-700 text-2xl md:text-3xl font-bold mr-4">3.</span>
+                            <div><strong>Diálogo inovador:</strong> exigem que especialistas alterem o projeto técnico de acordo com o conhecimento técnico pertinente (p. 168).</div>
                         </li>
                     </ul>
+                    <p class="citacao text-sm md:text-lg">Resultado: uma superação (<em>Aufhebung</em>) — novo projeto, interesses mais amplos. É a mudança no “código técnico”, “<span class="cit">o tipo ideal que descreve a interseção das exigências sociais e técnicas</span>” <span class="ref">(p. 169)</span></p>
                 </div>
 
-                <!-- SLIDE 22: VÍDEO CIÊNCIA -->
-                <div class="slide slide-hidden flex-col w-full max-w-[1300px]" data-index="22">
-                    <h2 class="text-xl md:text-3xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-6 md:mb-8 w-full block">A Racionalidade e a Ciência (Entrevista)</h2>
+                <!-- SLIDE 25: Linguagem aristotélica -->
+                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="25" data-parte="2" data-paginas="pp. 169–171">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-4 md:mb-5">A Linguagem “Aristotélica” do Senso Comum</h2>
+                    <p class="text-sm md:text-lg text-gray-700 mb-3">Em Aristóteles, as coisas têm propriedades essenciais estáveis e <strong>potencialidades</strong> que se atualizam no seu desenvolvimento. O senso comum moderno continua largamente aristotélico: na linguagem cotidiana, valores e fatos coexistem, e ela é teleológica (pp. 169–170).</p>
+                    <p class="text-sm md:text-lg text-gray-700 mb-3">A percepção pública dos danos ambientais usa noções não científicas, mas intuitivamente óbvias — a “saúde” de um rio ou de uma floresta. Para a ciência estrita, não há razão para preferir uma coisa à outra; a experiência concreta opera por outros princípios (p. 170):</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 text-xs md:text-sm mb-4">
+                        <div class="bg-indigo-50 rounded p-3 text-center">Apreciação estética da natureza</div>
+                        <div class="bg-indigo-50 rounded p-3 text-center">Compaixão por criaturas semelhantes a nós</div>
+                        <div class="bg-indigo-50 rounded p-3 text-center">Prudência ao intervir em processos naturais</div>
+                        <div class="bg-indigo-50 rounded p-3 text-center">Preocupação com o futuro dos nossos filhos</div>
+                    </div>
+                    <p class="text-sm md:text-base text-gray-700 mb-3">Esses apelos são “desontologizados” e traduzidos em soluções técnico-científicas: a harmonia com a natureza vira norma empírica, sem metafísica. Não há condição natural a restaurar (pp. 170–171).</p>
+                    <p class="citacao text-base md:text-xl">“<span class="cit">O sentido reside para além da natureza, não no retorno a ela.</span>” <span class="ref">(p. 171)</span></p>
+                </div>
+
+                <!-- SLIDE 26: VÍDEO (ciência e potencialidades) -->
+                <div class="slide slide-hidden flex-col w-full max-w-[1300px]" data-index="26" data-parte="2" data-paginas="">
+                    <h2 class="text-xl md:text-3xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-5 md:mb-6 w-full block">Ciência, Limites e Potencialidades (Entrevista)</h2>
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 w-full items-center">
                         <div class="midia-container lg:col-span-7">
                             <div class="video-wrapper">
-                                <div id="player-2" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                                <div id="player-potencial" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                                <div class="tempo-overlay"></div>
                             </div>
-                            <div class="legenda-box"><span class="legenda-texto">...</span></div>
+                            <div class="legenda-box" aria-live="polite"><span class="legenda-texto">...</span></div>
                         </div>
                         <div class="flex flex-col lg:col-span-5">
-                            <div class="bg-gray-50 p-4 md:p-6 border-l-4 border-indigo-600 shadow-sm rounded-r-lg mb-4 md:mb-6">
-                                <p class="text-base md:text-lg font-bold text-gray-900 mb-1 md:mb-2">Tony (One Dime Radio):</p>
-                                <p class="text-base md:text-lg italic text-gray-700 mb-4 md:mb-6">"Qual é essa compreensão cotidiana do mundo nas sociedades capitalistas que a Escola de Frankfurt denuncia?"</p>
-                                <p class="text-base md:text-lg font-bold text-indigo-900 mb-1 md:mb-2">Andrew Feenberg:</p>
-                                <p class="text-base md:text-lg font-serif italic text-gray-800 leading-relaxed text-justify">"Não é que Marcuse diga que a ciência é errada... mas ela tem limitações gravíssimas se você a aplicar de forma puramente matemática e unidimensional à complexidade do mundo cotidiano."</p>
+                            <div class="bg-gray-50 p-4 md:p-5 border-l-4 border-indigo-600 shadow-sm rounded-r-lg mb-4">
+                                <p class="text-sm md:text-base font-bold text-indigo-900 mb-1">Trecho 1 — Feenberg (tradução livre):</p>
+                                <p class="text-base md:text-lg font-serif italic text-gray-800 leading-relaxed mb-3">“Não é que Marcuse diga que a ciência é errada: ela tem limitações — e elas importam muito quando aplicadas cegamente ao mundo cotidiano.”</p>
+                                <p class="text-sm md:text-base font-bold text-purple-900 mb-1">Trecho 2 — Feenberg (tradução livre):</p>
+                                <p class="text-base md:text-lg font-serif italic text-gray-800 leading-relaxed">“Na ciência de Aristóteles, os objetos tinham potencialidades: a característica normativa, aquilo para o qual a coisa tende e quer se desenvolver.”</p>
                             </div>
-                            <button class="btn-play bg-indigo-600 text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-lg shadow-md hover:bg-indigo-700 w-full transition" 
-                                    data-target="player-2" data-start="385" data-end="413">Reproduzir Trecho</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SLIDE 23: Objeto de Fronteira -->
-                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="23">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-6 md:mb-8">Tradução Dialética e "Objeto de Fronteira"</h2>
-                    <p class="text-lg md:text-xl text-gray-700 mb-6">A dialética da democratização no escândalo hídrico de Flint (EUA):</p>
-                    
-                    <div class="flex flex-col md:flex-row justify-between gap-4 md:gap-6 mb-6 md:mb-8">
-                        <div class="w-full md:w-1/2 p-5 md:p-6 bg-white border rounded shadow-sm">
-                            <h3 class="text-xl md:text-2xl font-bold text-blue-800 mb-2">Racionalidade Técnica:</h3>
-                            <p class="text-base md:text-lg text-gray-600">O chumbo nos canos era um objeto de gestão. Custos logísticos e pesos atômicos baseados em orçamentos frios.</p>
-                        </div>
-                        <div class="w-full md:w-1/2 p-5 md:p-6 bg-white border rounded shadow-sm">
-                            <h3 class="text-xl md:text-2xl font-bold text-red-800 mb-2">O Fato Traduzido (As Mães):</h3>
-                            <p class="text-base md:text-lg text-gray-600">O chumbo é prova empírica do <span class="marx-highlight">racismo estrutural e abandono de classe</span> que danificou o sistema nervoso de uma geração.</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-indigo-50 border p-4 md:p-6 rounded-lg shadow-sm text-center">
-                        <p class="text-xl md:text-2xl font-bold text-indigo-900 mb-2">A Concretização (A Superação)</p>
-                        <p class="text-base md:text-xl text-indigo-800">A luta resulta num projeto físico reconfigurado que soluciona os paradoxos do poder.</p>
-                    </div>
-                </div>
-
-                <!-- SLIDE 24: Teoria da Instrumentalização -->
-                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="24">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-6 md:mb-8">6. Teoria da Instrumentalização</h2>
-                    <div class="long-text text-lg md:text-xl text-gray-700">
-                        <p>
-                            Feenberg une as perspectivas: como unificar a visão causal da Engenharia com os valores de uso da Sociologia?
-                        </p>
-                        <div class="bg-white p-4 md:p-6 border-l-8 border-purple-600 shadow my-6 md:my-8 rounded">
-                            <p class="text-xl md:text-2xl font-bold text-purple-900">A Tecnologia possui uma "Teoria de Duplo Aspecto".</p>
-                        </div>
-                        <p>
-                            Para a máquina existir, a técnica sofre simultaneamente uma brutal simplificação física da natureza combinada a uma imediata atribuição de significado ditada pela cultura.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- SLIDE 25: Funcionalização Causal e Cultural -->
-                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="25">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-6 md:mb-8">Os Dois Lados da Máquina</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 w-full mt-2 md:mt-4 h-full">
-                        <div class="bg-white border-t-8 border-red-600 shadow-lg p-6 md:p-8 rounded-b-xl">
-                            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">Funcionalização Causal</h3>
-                            <p class="text-gray-700 text-base md:text-lg leading-relaxed">
-                                <span class="font-bold">Descontextualização e Redução.</span><br>
-                                Domínio frio da causalidade para extração. O objeto natural é arrancado e destituído do que não gera valor.<br><br>
-                                <em>Ex: A motosserra rasgando o caule para extração crua.</em>
-                            </p>
-                        </div>
-                        <div class="bg-white border-t-8 border-purple-600 shadow-lg p-6 md:p-8 rounded-b-xl">
-                            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">Funcionalização Cultural</h3>
-                            <p class="text-gray-700 text-base md:text-lg leading-relaxed">
-                                <span class="font-bold">Recontextualização Sociotécnica.</span><br>
-                                Inserção e ordenação humana baseada nas exigências da divisão do trabalho e lucro.<br><br>
-                                <em>Ex: O tronco vira a "tábua" viável para a linha de montagem da habitação.</em>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SLIDE 26: VÍDEO ARISTÓTELES -->
-                <div class="slide slide-hidden flex-col w-full max-w-[1300px]" data-index="26">
-                    <h2 class="text-xl md:text-3xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-6 md:mb-8 w-full block">Potencialidades Críticas do Senso Comum</h2>
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 w-full items-center">
-                        <div class="midia-container lg:col-span-7">
-                            <div class="video-wrapper">
-                                <div id="player-3" class="w-full h-full"><div class="placeholder-box">O vídeo será carregado aqui.</div></div>
+                            <div class="flex flex-col gap-3">
+                                <button class="btn-play bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-indigo-700 w-full transition"
+                                        data-target="player-potencial" data-clipe="ciencia" data-rotulo="Trecho 1 · A ciência e seus limites (6:25–6:53)">Trecho 1 · A ciência e seus limites (6:25–6:53)</button>
+                                <button class="btn-play bg-purple-700 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-purple-800 w-full transition"
+                                        data-target="player-potencial" data-clipe="aristoteles" data-rotulo="Trecho 2 · Aristóteles e as potencialidades (7:03–7:23)">Trecho 2 · Aristóteles e as potencialidades (7:03–7:23)</button>
                             </div>
-                            <div class="legenda-box"><span class="legenda-texto">...</span></div>
-                        </div>
-                        <div class="flex flex-col lg:col-span-5">
-                            <div class="bg-gray-50 p-4 md:p-6 border-l-4 border-purple-700 shadow-sm rounded-r-lg mb-4 md:mb-6">
-                                <p class="text-base md:text-lg font-bold text-gray-900 mb-1 md:mb-2">Tony (One Dime Radio):</p>
-                                <p class="text-base md:text-lg italic text-gray-700 mb-4 md:mb-6">"Por que a linguagem cotidiana contrasta tanto com as deduções científicas frias de positividade?"</p>
-                                <p class="text-base md:text-lg font-bold text-purple-900 mb-1 md:mb-2">Andrew Feenberg:</p>
-                                <p class="text-base md:text-lg font-serif italic text-gray-800 leading-relaxed text-justify">"Porque o povo usa o pensamento no sentido de Aristóteles... para a sociedade, ao olhar os seres (uma criança, uma floresta), eles são dotados de 'potencialidades', daquela característica normativa, do devir ético que clama por se desenvolver na vida."</p>
-                            </div>
-                            <button class="btn-play bg-purple-700 text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-lg shadow-md hover:bg-purple-800 w-full transition" 
-                                    data-target="player-3" data-start="423" data-end="443">Reproduzir Trecho</button>
+                            <p class="text-xs md:text-sm text-gray-600 mt-2">Ponte com o texto: as “verdades existenciais” da natureza, ao lado das “verdades matemáticas”, segundo Marcuse (citado na p. 172).</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- SLIDE 27: A Agência dos Não-Humanos -->
-                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="27">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-600 pb-2 mb-6 md:mb-8">A Agência das Coisas</h2>
-                    <p class="text-lg md:text-xl text-gray-700 mb-6">As "coisas" interagem com a humanidade em três frentes vitais:</p>
-                    <div class="bg-gray-50 p-6 md:p-8 border border-gray-200 rounded-xl shadow-sm text-base md:text-xl space-y-4 md:space-y-6">
-                        <p><strong>1. Co-Construção da Identidade:</strong> "A técnica forja o sujeito. O operário se torna classe operária ao submeter-se à fábrica".</p>
-                        <p><strong>2. Configuração de Mundo:</strong> A infraestrutura estabelece os limites lógicos da civilização.</p>
-                        <p><strong>3. Os Antiprogramas (A Fúria da Natureza):</strong> O capital cria externalidades (aquecimento global) que reagem violentamente e ameaçam a existência humana.</p>
-                    </div>
-                </div>
-
-                <!-- SLIDE 28: A Ameaça Intencional -->
-                <div class="slide slide-hidden flex-col items-center justify-center text-center w-full max-w-4xl" data-index="28">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-red-700 pb-2 mb-6 md:mb-8">A Engrenagem Autoritária</h2>
-                    <div class="bg-white p-6 md:p-10 border border-gray-300 rounded-xl shadow-lg w-full">
-                        <p class="text-xl md:text-3xl text-gray-900 leading-relaxed font-bold font-serif italic text-center">
-                            "A administração corporativa moderna é desenhada <span class="marx-highlight">intencionalmente</span> para suprimir a ação crítica. Reduzindo todos a recursos controláveis rumo à alienação pacífica."
-                        </p>
-                    </div>
-                </div>
-
-                <!-- SLIDE 29: Erros Cognitivos vs Estruturas -->
-                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="29">
-                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-500 pb-2 mb-6 md:mb-8">7. Consequências Filosófico-Políticas</h2>
-                    <div class="long-text text-lg md:text-xl text-gray-700">
-                        <div class="bg-stone-100 p-4 md:p-6 rounded shadow-sm border-l-4 border-stone-700 mb-4 md:mb-6">
-                            <p class="font-bold text-gray-900">Culpar "erros cognitivos universais" pela crise ecológica é uma armadilha covarde, pois inocenta a macroestrutura do Capital.</p>
+                <!-- SLIDE 27: Flint -->
+                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="27" data-parte="2" data-paginas="pp. 171–172">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-4 md:mb-5">Flint: o Chumbo como Objeto de Fronteira</h2>
+                    <p class="text-sm md:text-lg text-gray-700 mb-4">A barreira entre senso comum e ciência não é absoluta. Na crise da água de Flint (Michigan), o chumbo foi identificado pela combinação de <strong>observação direta</strong> — cor e odor da água — com os <strong>testes de um cientista</strong> que ajudou a comunidade e deu à “água suja” uma causa e um nome (p. 171).</p>
+                    <div class="flex flex-col md:flex-row gap-4 mb-4 text-sm md:text-base">
+                        <div class="w-full md:w-1/2 p-4 md:p-5 bg-white border rounded shadow-sm">
+                            <h3 class="text-lg md:text-xl font-bold text-blue-800 mb-2">Vida científica</h3>
+                            <p class="text-gray-700">Um elemento da tabela periódica, com peso atômico e valência — talvez também na opinião do próprio cientista (p. 171).</p>
                         </div>
-                        <p>
-                            A crise tóxica não é fruto da "mente humana em geral", é exigência matemática da taxa de expansão de capital. Os manifestantes climáticos exigem <strong>a alteração do código técnico da indústria</strong>, submetendo o mercado à força da vida.
-                        </p>
+                        <div class="w-full md:w-1/2 p-4 md:p-5 bg-white border rounded shadow-sm">
+                            <h3 class="text-lg md:text-xl font-bold text-red-800 mb-2">Vida “aristotélica”</h3>
+                            <p class="text-gray-700">Uma ameaça ao desenvolvimento humano “normal”: ao potencial dos cérebros em desenvolvimento das crianças da cidade (pp. 171–172).</p>
+                        </div>
+                    </div>
+                    <p class="citacao text-base md:text-xl mb-4">Para a comunidade, “<span class="cit">o chumbo era um intruso ameaçador e uma evidência de discriminação racial</span>” <span class="ref">(p. 171)</span></p>
+                    <p class="text-sm md:text-base text-gray-700">É uma ampliação do conceito de <strong>“objeto de fronteira”</strong> (Star &amp; Griesemer, 1989). Na teoria crítica, Marcuse: além das “verdades matemáticas”, há as “verdades existenciais” da natureza. O movimento climático segue a mesma trilha: as pessoas leem sua experiência com o clima também à luz de estudos científicos, apesar da propaganda anticiência da indústria (p. 172).</p>
+                </div>
+
+                <!-- SLIDE 28: Conceitos-ponte e tradução -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="28" data-parte="2" data-paginas="pp. 172–173">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-4 md:mb-5">Conceitos-Ponte e Tradução</h2>
+                    <p class="text-sm md:text-lg text-gray-700 mb-4">Entre leigos e especialistas, constroem-se pontes em torno de conceitos como <strong>“saúde”</strong> e <strong>“segurança”</strong>. Seu efeito é “<span class="cit">traduzir valores em fatos; demandas formuladas discursivamente, em especificações técnicas</span>” <span class="ref">(p. 172)</span>.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-3 text-xs md:text-sm mb-2">
+                        <div class="bg-white border-t-4 border-indigo-400 rounded shadow p-3"><strong>1. Experiência</strong><br>O público vive o dano.</div>
+                        <div class="bg-white border-t-4 border-indigo-500 rounded shadow p-3"><strong>2. Linguagem cotidiana</strong><br>Traduz conceitos técnicos para articular o descontentamento.</div>
+                        <div class="bg-white border-t-4 border-indigo-600 rounded shadow p-3"><strong>3. Conceitos-ponte</strong><br>“Saúde”, “segurança” tornam a queixa compreensível.</div>
+                        <div class="bg-white border-t-4 border-indigo-700 rounded shadow p-3"><strong>4. Especialistas</strong><br>Traduzem em especificações técnicas.</div>
+                        <div class="bg-white border-t-4 border-indigo-900 rounded shadow p-3"><strong>5. Artefato modificado</strong><br>…e uma nova experiência começa.</div>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-500 mb-4 text-center">O percurso completo conduz o desenvolvimento técnico adiante, uma iteração após a outra (p. 173). Iteração: o resultado de uma ação vira objeto de uma nova ação (N.T. 22).</p>
+                    <p class="text-sm md:text-lg text-gray-700">As intervenções públicas são “<span class="cit">metades incompletas</span>” de um diálogo que precisa acontecer entre o público e os especialistas (pp. 172–173). O que parece “irracional” para a racionalidade técnico-científica dominante entra no projeto técnico e conforma um futuro racional (p. 172).</p>
+                </div>
+
+                <!-- SLIDE 29: Antivacina e inconsciente tecnológico -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="29" data-parte="2" data-paginas="pp. 173–174">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-4 md:mb-5">Antivacina, Flint e o “Inconsciente Tecnológico”</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base mb-4">
+                        <div class="bg-white border-t-4 border-red-600 rounded-lg shadow p-4 md:p-5">
+                            <h3 class="font-bold text-lg md:text-xl mb-2">A objeção (p. 173)</h3>
+                            <p class="text-gray-700 mb-2">“O público não teria qualificação.” De fato, há ideias perigosas, como o movimento antivacina: a rejeição da ciência ameaça a democracia, que exige um público capaz de interagir produtivamente com os especialistas.</p>
+                            <p class="text-gray-700">Não é preciso submissão cega — mas as contestações “<span class="cit">devem apontar problemas reais passíveis de solução, e não rejeitar a racionalidade</span>” <span class="ref">(p. 173)</span>.</p>
+                        </div>
+                        <div class="bg-white border-t-4 border-green-700 rounded-lg shadow p-4 md:p-5">
+                            <h3 class="font-bold text-lg md:text-xl mb-2">A resposta (p. 174)</h3>
+                            <p class="text-gray-700 mb-2">Flint está em sintonia com intervenções muito mais amplas: o ambientalismo mudou a indústria e segue impulsionando mudanças, sobretudo na energia.</p>
+                            <p class="text-gray-700">Muitas mudanças viraram procedimento técnico padrão e sua origem em protestos foi esquecida: o “<span class="cit">inconsciente tecnológico</span>” oculta os vestígios dos movimentos.</p>
+                        </div>
+                    </div>
+                    <p class="nota-nossa !text-sm md:!text-base">Moral (p. 174): os fenômenos mais visíveis, como o antivacina, não representam o conjunto. Especialistas e disciplinas não são perfeitos — precisam de correções periódicas.</p>
+                </div>
+
+                <!-- SLIDE 30: Objeções e concretização -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="30" data-parte="2" data-paginas="pp. 174–176">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-indigo-600 pb-2 mb-4 md:mb-5">Duas Objeções — e a Concretização</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base mb-4">
+                        <div class="bg-white border-t-4 border-gray-800 rounded-lg shadow p-4 md:p-5">
+                            <h3 class="font-bold text-lg md:text-xl mb-2">1. O poder seria “binário”? (pp. 174–175)</h3>
+                            <p class="text-gray-700 mb-2">Objeção: a teoria exagera a divisão entre gestores e especialistas, de um lado, e subordinados e leigos, de outro; se dialogam, o poder seria irrelevante.</p>
+                            <p class="text-gray-700">Resposta: isso ignora o <strong>legado da autonomia operacional</strong> — tradições técnicas de um mundo que silenciava trabalhadores e comunidades — e empresas que hoje lucram com ela: <strong>Exxon, Purdue, Volkswagen, Boeing</strong> (petróleo, farmacêutica, automóveis e aviação; N.T. 23).</p>
+                        </div>
+                        <div class="bg-white border-t-4 border-indigo-600 rounded-lg shadow p-4 md:p-5">
+                            <h3 class="font-bold text-lg md:text-xl mb-2">2. O modelo do embate político? (p. 175)</h3>
+                            <p class="text-gray-700 mb-2">De fato, nem debate interminável nem concessões caracterizam a técnica. Ocorre algo mais interessante: a <strong>concretização</strong> (Simondon) — inovações que combinam objetivos de grupos com agendas diferentes num novo projeto e num novo código técnico.</p>
+                            <p class="citacao !text-sm md:!text-base">Ex.: “<span class="cit">o carro elétrico combina as demandas aparentemente opostas de ambientalistas e passageiros</span>” <span class="ref">(p. 175)</span></p>
+                        </div>
+                    </div>
+                    <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4 text-sm md:text-lg text-gray-800">
+                        Mas a política não é irrelevante: às vezes o diálogo só sai do papel com depoimentos políticos contundentes, que querem comunicar e gerar inovação — não triunfar nem barganhar. Os obstáculos do capitalismo a essa comunicação não devem ser subestimados. <span class="font-serif italic">“<span class="cit">Daí o papel essencial da política.</span>”</span> <span class="ref">(p. 176)</span>
                     </div>
                 </div>
 
-                <!-- SLIDE 30: Fechamento Magnífico -->
-                <div class="slide slide-hidden flex-col items-center justify-center text-center w-full max-w-5xl" data-index="30">
-                    <h2 class="text-3xl md:text-5xl font-bold mb-6 md:mb-10 text-gray-900">Considerações Finais</h2>
+                <!-- SLIDE 31: Teoria da instrumentalização -->
+                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="31" data-parte="2" data-paginas="pp. 176–177">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-4 md:mb-5">6. A Teoria da Instrumentalização</h2>
+                    <p class="text-sm md:text-lg text-gray-700 mb-3">Um dispositivo formalmente enviesado não se explica por uma descrição internalista, centrada em mecanismos e funções: falta a relação com o contexto social — que pesa no projeto e tem dimensão política (p. 176).</p>
+                    <p class="citacao text-base md:text-lg mb-2">O objeto técnico pode ser concebido como “<span class="cit">uma mônada, cujo projeto técnico reflete o mundo do qual participa</span>” <span class="ref">(p. 176)</span></p>
+                    <p class="text-xs md:text-sm text-gray-600 mb-4">Como deduzimos a altura média das pessoas de épocas remotas pela altura de suas cadeiras e mesas.</p>
+                    <p class="text-sm md:text-lg text-gray-700 mb-4">O problema: especificações mecânicas rígidas versus o material flexível das convenções e valores. “<span class="cit">Os departamentos de engenharia e de filosofia não se comunicam!</span>” <span class="ref">(p. 177)</span></p>
+                    <div class="bg-white p-4 md:p-5 border-l-8 border-purple-600 shadow rounded text-sm md:text-lg">
+                        <p class="font-bold text-purple-900 mb-2">Duas proposições a reconciliar (p. 177)</p>
+                        <p class="mb-1"><strong>1.</strong> O pensamento, a ação e os artefatos técnicos envolvem o <strong>controle da natureza por mecanismos causais</strong>.</p>
+                        <p><strong>2.</strong> O pensamento, a ação e os artefatos técnicos <strong>refletem significados e valores sociais e culturais</strong>.</p>
+                    </div>
+                </div>
+
+                <!-- SLIDE 32: Duplo aspecto -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="32" data-parte="2" data-paginas="pp. 177–179">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-4 md:mb-5">O Duplo Aspecto da Tecnologia</h2>
+                    <p class="text-sm md:text-base text-gray-700 mb-4">Lembra a teoria ator-rede: a “associação” simplifica o objeto para isolar propriedades causais; a “delegação” incorpora as normas que dão significado e o <em>script</em> do usuário (Callon, 1987; Latour, 1992). Feenberg identifica as operações envolvidas: uma fenomenologia da ação técnica — a teoria do “duplo aspecto” (pp. 177–178).</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 w-full mb-4">
+                        <div class="bg-white border-t-8 border-red-600 shadow-lg p-5 md:p-6 rounded-b-xl text-sm md:text-base">
+                            <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-1">Instrumentalização primária</h3>
+                            <p class="text-xs md:text-sm font-bold text-red-700 mb-2">Hoje: “funcionalização causal”</p>
+                            <p class="text-gray-700 mb-2"><strong>Descontextualização</strong> (separar o objeto natural do seu ambiente) e <strong>redução</strong> (remover o prescindível). Ex.: serrar a árvore e tirar galhos e casca (p. 178).</p>
+                            <p class="text-gray-600">É a “instrumentalidade” criticada por Frankfurt: essencial à produção técnica e com potencial violento — mas não se sustenta sozinha.</p>
+                        </div>
+                        <div class="bg-white border-t-8 border-purple-600 shadow-lg p-5 md:p-6 rounded-b-xl text-sm md:text-base">
+                            <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-1">Instrumentalização secundária</h3>
+                            <p class="text-xs md:text-sm font-bold text-purple-700 mb-2">Hoje: “funcionalização cultural”</p>
+                            <p class="text-gray-700 mb-2"><strong>Recontextualização</strong> na rede sociotécnica e <strong>atribuição de significado social</strong>. Ex.: escolher quais árvores derrubar e definir a largura e a espessura que qualificam as peças como “tábuas” (pp. 178–179).</p>
+                            <p class="text-gray-600">É aqui que o conteúdo social dá sentido técnico às operações primárias.</p>
+                        </div>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-600">Ganho: trazer a crítica frankfurtiana da razão instrumental para o estudo empírico da tecnologia (p. 178).</p>
+                </div>
+
+                <!-- SLIDE 33: Autocorreção -->
+                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="33" data-parte="2" data-paginas="pp. 179–180">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-4 md:mb-5">A Autocorreção: Aspectos, Não Etapas</h2>
+                    <p class="citacao text-lg md:text-2xl mb-5">“<span class="cit">as duas instrumentalizações não são processos separados, mas aspectos de um mesmo processo</span>” <span class="ref">(p. 179)</span></p>
+                    <ul class="list-disc pl-6 space-y-2 text-sm md:text-lg text-gray-700 mb-5">
+                        <li>Na tábua, as exigências legais e materiais do sistema de construção estão presentes <strong>desde o início</strong>: as operações primárias são determinadas pelas secundárias (p. 179).</li>
+                        <li>Origem do equívoco: ele afirmara que o capitalismo <em>eliminara</em> as instrumentalizações secundárias; na verdade, elimina muitas das tradicionais e as <strong>substitui por novas</strong> (p. 179).</li>
+                        <li>“Primário” e “secundário” foram lidos como sequência temporal. Tentou corrigir em <em>Transforming technology</em> (2002); em <em>Tecnossistema</em> (2019c) trocou os termos por <strong>funcionalização causal</strong> e <strong>funcionalização cultural</strong> (p. 180).</li>
+                    </ul>
+                    <p class="citacao text-base md:text-lg">“<span class="cit">Ainda não estou certo de que isso resolverá a questão.</span>” <span class="ref">(p. 180)</span></p>
+                </div>
+
+                <!-- SLIDE 34: Binarismo e viés -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="34" data-parte="2" data-paginas="pp. 180–182">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-purple-700 pb-2 mb-4 md:mb-5">O Binarismo Técnico/Social e o Viés</h2>
+                    <p class="text-sm md:text-lg text-gray-700 mb-3">O erro, diz Feenberg, foi ignorar o senso comum instrumentalista ocidental: causas teriam base na natureza; significados sociais seriam meras convenções. Daí a máquina que funciona igual em Nova York e em Pequim (p. 180). Essa aparente universalidade alimenta tanto argumentos tecnocráticos quanto críticas distópicas — a “jaula de aço” de Weber (N.T. 24) (pp. 180–181).</p>
+                    <p class="citacao text-base md:text-xl mb-2">“<span class="cit">Esse próprio binarismo tem uma causa social.</span>” <span class="ref">(p. 181)</span></p>
+                    <p class="text-sm md:text-base text-gray-700 mb-4">O mastro totêmico e a televisão são meios de comunicação; só a TV pode ser descrita como mecanismo causal sem referência à sua inserção social — efeito das disciplinas técnicas modernas, uma realidade institucional mal entendida quando se ignora o viés (p. 181).</p>
+                    <p class="text-sm md:text-base font-bold text-purple-900 mb-2">Como os valores entram nas especificações técnicas (pp. 181–182):</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base">
+                        <div class="bg-purple-50 rounded-lg p-4"><strong>Sedimentados:</strong> as disciplinas carregam valores de épocas passadas — não declarados como valores, mas incorporados a aspectos subdeterminados.</div>
+                        <div class="bg-purple-50 rounded-lg p-4"><strong>Explícitos:</strong> desideratos atuais para o projeto — do marketing, de engenheiros, de manifestantes e até de professores universitários; alguns entram em projetos reformulados.</div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 35: Agência das coisas -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="35" data-parte="2" data-paginas="pp. 182–183">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-600 pb-2 mb-4 md:mb-5">A Agência das Coisas — e sua Restrição Intencional</h2>
+                    <p class="text-sm md:text-base text-gray-700 mb-4">Crítica: a teoria não deixaria espaço para a agência dos “não humanos”. Resposta: ela reconhece essa agência, mas também a especificidade do técnico — a primazia do humano numa relação de manipulação, distanciada, sem a reciprocidade das relações humanas (p. 182).</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 text-sm md:text-base mb-4">
+                        <div class="bg-gray-50 border rounded-lg p-4">
+                            <h3 class="font-bold mb-1">1. Identidade</h3>
+                            <p class="text-gray-700">Sujeito e objeto se co-constroem: “<span class="cit">O carpinteiro se faz carpinteiro por meio das práticas e das ferramentas do ofício.</span>” <span class="ref">(p. 182)</span></p>
+                        </div>
+                        <div class="bg-gray-50 border rounded-lg p-4">
+                            <h3 class="font-bold mb-1">2. Mundo</h3>
+                            <p class="text-gray-700">A tecnologia disponível configura o mundo do sujeito e o que significa ser sujeito nele (pp. 182–183).</p>
+                        </div>
+                        <div class="bg-gray-50 border rounded-lg p-4">
+                            <h3 class="font-bold mb-1">3. Retorno</h3>
+                            <p class="text-gray-700">Consequências não intencionais, como a poluição, voltam para atormentar o ator: “antiprogramas”, confrontados pela resistência pública numa “relação de retroalimentação” (p. 183).</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 text-white rounded-lg p-4 md:p-6 text-sm md:text-lg">
+                        O foco de Feenberg está em outro lugar: a autonomia operacional explica a generalização do controle técnico dos seres humanos. A maior parte da administração e da tecnologia modernas é projetada para suprimir a ação de humanos e coisas, visando “<span class="cit">reduzi-los a objetos para o controle técnico</span>” — a passividade é uma “<span class="cit">condição pretendida</span>” <span class="ref !text-blue-200">(p. 183)</span>.
+                    </div>
+                </div>
+
+                <!-- SLIDE 36: Consequências -->
+                <div class="slide slide-hidden flex-col w-full max-w-6xl" data-index="36" data-parte="2" data-paginas="pp. 184–185">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-stone-500 pb-2 mb-4 md:mb-5">7. Consequências: Crenças ou Estruturas?</h2>
+                    <p class="text-sm md:text-lg text-gray-700 mb-3">O estudo da tecnologia é hoje politicamente relevante. Muito do debate refuta erros cognitivos — a natureza “conquistada”, a “grande divisão” entre humanos e natureza. É útil, mas olhar só para as crenças joga a responsabilidade sobre a espécie humana (p. 184).</p>
+                    <p class="citacao text-base md:text-xl mb-5">“<span class="cit">Os erros cognitivos não explicam as estruturas de poder</span>” <span class="ref">(p. 184)</span> <span class="not-italic font-sans text-gray-600 text-sm md:text-base">— responsáveis pela crise civilizacional em que vivemos.</span></p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base">
+                        <div class="bg-white border-t-4 border-green-700 rounded-lg shadow p-4 md:p-5">
+                            <h3 class="font-bold text-lg md:text-xl mb-2">A juventude e o clima (p. 184)</h3>
+                            <p class="text-gray-700">O movimento desencadeou uma subjetividade radical, voltada a potencialidades e ao longo prazo, com outra noção de tempo e de política. Os manifestantes exigem um <strong>novo código técnico da indústria</strong> e mudanças estruturais — não reformas pontuais compatíveis com a permanência do neoliberalismo.</p>
+                        </div>
+                        <div class="bg-white border-t-4 border-stone-600 rounded-lg shadow p-4 md:p-5">
+                            <h3 class="font-bold text-lg md:text-xl mb-2">Um desafio inédito (pp. 184–185)</h3>
+                            <p class="text-gray-700">Como diante do movimento trabalhista no século XX, o capitalismo é chamado a se adaptar. A regulação já corroeu sua margem de manobra, mas ele nunca enfrentou a exigência de reformar por inteiro uma tecnologia basilar como o sistema energético — agora, todo o sistema precisa mudar “do dia para a noite”.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 37: Considerações finais -->
+                <div class="slide slide-hidden flex-col items-center justify-center text-center w-full max-w-5xl" data-index="37" data-parte="2" data-paginas="p. 185">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-5 md:mb-6 text-gray-900">Considerações Finais</h2>
+                    <p class="text-base md:text-xl text-gray-700 mb-6 max-w-4xl">A reflexão filosófica sobre a tecnologia deve instruir o pensamento político; as velhas divisões disciplinares, que deixavam a técnica aos tecnólogos, não fazem mais sentido. A questão central é a natureza da racionalidade que se manifesta na tecnologia que sustenta o mundo social (p. 185).</p>
                     <div class="bg-gray-900 text-white p-8 md:p-12 rounded-xl w-full shadow-2xl">
-                        <p class="text-2xl md:text-4xl font-serif italic leading-relaxed text-center font-light">
-                            "A Filosofia não pode mais se abster. Expor as estruturas de dominação escondidas sob o manto do código tecnológico é a principal tarefa militante em nossos dias."
-                        </p>
+                        <p class="text-2xl md:text-4xl font-serif italic leading-relaxed text-center font-light">“<span class="cit">Descobrir o viés dessa racionalidade corresponde à tarefa crítica do estudo da tecnologia em nossos dias.</span>”</p>
+                        <p class="mt-4 text-sm md:text-base font-bold text-blue-200">Andrew Feenberg (p. 185)</p>
                     </div>
+                </div>
+
+                <!-- SLIDE 38: Debate (os dois) -->
+                <div class="slide slide-hidden flex-col w-full max-w-5xl" data-index="38" data-parte="ambos" data-paginas="">
+                    <h2 class="text-2xl md:text-4xl font-bold text-gray-800 border-b-2 border-gray-800 pb-2 mb-5 md:mb-6">Questões para o Debate</h2>
+                    <ol class="space-y-3 md:space-y-4 text-sm md:text-lg">
+                        <li class="bg-white p-4 rounded-lg border shadow-sm"><strong>1. Escolas e universidades:</strong> onde vemos o controle colegiado ceder a métricas que simulam objetivos financeiros (p. 163)?</li>
+                        <li class="bg-white p-4 rounded-lg border shadow-sm"><strong>2. Plataformas digitais:</strong> o que seria um novo código técnico para a Internet — e quem tem força para reivindicá-lo (pp. 164–165)?</li>
+                        <li class="bg-white p-4 rounded-lg border shadow-sm"><strong>3. Minas Gerais:</strong> nos rompimentos de barragens de rejeitos (Mariana, 2015; Brumadinho, 2019), que públicos latentes se tornaram manifestos e que conceitos-ponte — “saúde”, “segurança” — entraram em disputa (pp. 169, 172)?</li>
+                        <li class="bg-white p-4 rounded-lg border shadow-sm"><strong>4. Limites:</strong> onde passa a fronteira entre a contestação democrática legítima (Flint) e a rejeição da ciência (antivacina) (pp. 173–174)?</li>
+                    </ol>
+                    <p class="text-center text-base md:text-lg text-gray-600 mt-6">Obrigado! — Jean e Gissele</p>
                 </div>
 
             </div>
 
-            <!-- CONTROLES FIXOS INFERIORES: z-50 e relative adicionados -->
+            <!-- CONTROLES FIXOS INFERIORES -->
             <div class="bg-gray-100 p-3 md:p-5 flex justify-between items-center border-t border-gray-300 z-50 relative w-full shrink-0">
-                <button id="btn-prev" class="px-4 md:px-8 py-3 md:py-3 bg-white border border-gray-400 rounded shadow hover:bg-gray-200 font-bold w-28 md:w-32 text-sm md:text-base">Anterior</button>
-                <div class="text-gray-500 text-xs md:text-sm hidden md:block text-center flex-1">Use as setas (← e →) do teclado para navegar</div>
-                <button id="btn-next" class="px-4 md:px-8 py-3 md:py-3 bg-gray-900 text-white rounded shadow hover:bg-gray-800 font-bold w-28 md:w-32 text-sm md:text-base">Próximo</button>
+                <button id="btn-prev" class="px-4 md:px-8 py-3 bg-white border border-gray-400 rounded shadow hover:bg-gray-200 font-bold w-28 md:w-32 text-sm md:text-base disabled:opacity-40">Anterior</button>
+                <div class="text-gray-500 text-xs md:text-sm hidden md:block text-center flex-1 px-3">← → ou PageUp/PageDown navegam · + e − ajustam o tamanho · T mostra o tempo do vídeo</div>
+                <button id="btn-next" class="px-4 md:px-8 py-3 bg-gray-900 text-white rounded shadow hover:bg-gray-800 font-bold w-28 md:w-32 text-sm md:text-base disabled:opacity-40">Próximo</button>
             </div>
-            
         </div>
     </div>
 
-    <!-- JAVASCRIPT: API do YouTube + Lógica da Apresentação + Gestos Touch -->
+    <div id="aviso" role="status"></div>
+
+    <!-- JAVASCRIPT: API do YouTube + navegação + legendas sincronizadas + calibração -->
     <script>
-        let isApiReady = false;
-        
-        function onYouTubeIframeAPIReady() {
-            isApiReady = true;
+        // ================= CONFIGURAÇÃO DOS VÍDEOS =================
+        // Todos os trechos vêm do mesmo vídeo. Tempos em segundos do vídeo.
+        const VIDEO_ID = 'Z9Ur0yMg7dQ';
+
+        const CLIPES = {
+            marcuse: { inicio: 67, fim: 135, legendas: [
+                { inicio: 67,  fim: 77,  texto: "Eu queria estudar filosofia continental. Nos anos 60, quando eu estava na faculdade, não era fácil." },
+                { inicio: 77,  fim: 89,  texto: "A filosofia americana era quase toda analítica. Um amigo me disse: “Você devia olhar a Universidade da Califórnia (San Diego)”." },
+                { inicio: 89,  fim: 101, texto: "Eu disse: “Por quê?”. Ele respondeu: “Lá tem o Marcuse... um cara que escreve sobre Marx e Freud”." },
+                { inicio: 101, fim: 110, texto: "Eu respondi: “Bem, qualquer cara louco o suficiente para fazer isso é louco o suficiente pra mim”." },
+                { inicio: 110, fim: 119, texto: "Imediatamente enviei minha inscrição, e eles me aceitaram. Fui pra San Diego estudar com esse cara louco." },
+                { inicio: 119, fim: 135, texto: "A primeira coisa que fiz foi pedir a ele um curso de leitura sobre “Ser e Tempo”, de Heidegger. Foi assim que nossa relação começou." }
+            ]},
+            heidegger: { inicio: 7482, fim: 7576, legendas: [
+                { inicio: 7482, fim: 7490, texto: "Ele [Marcuse] tinha um sentimento muito ruim sobre Heidegger, que se tornara um nazista..." },
+                { inicio: 7490, fim: 7500, texto: "...e que se recusou a se emendar do seu erro. Marcuse poderia ter perdoado o erro, mas não a recusa em pedir perdão." },
+                { inicio: 7500, fim: 7511, texto: "Depois da guerra houve uma troca de cartas. Marcuse, dos EUA, mandou suprimentos para ajudá-lo na Alemanha e pediu que ele admitisse ter cometido um erro." },
+                { inicio: 7511, fim: 7528, texto: "Heidegger respondeu com desculpas, dizendo: “O que os alemães fizeram não foi diferente do que os aliados fizeram com os alemães que viviam na Polônia...”" },
+                { inicio: 7528, fim: 7538, texto: "Marcuse escreveu de volta e disse: “Nenhum filósofo pode se permitir dizer uma coisa dessas”." },
+                { inicio: 7538, fim: 7576, texto: "Esse foi o fim. Ele nunca mais contatou Heidegger. É uma questão moral e histórica muito complicada." }
+            ]},
+            marx: { inicio: 4134, fim: 4169, legendas: [
+                { inicio: 4134, fim: 4140, texto: "O problema básico com o qual Marx está lidando é como passar de uma fase da História para outra..." },
+                { inicio: 4140, fim: 4148, texto: "...e como passar de uma fase onde as leis naturais da economia prevalecem sobre os seres humanos..." },
+                { inicio: 4148, fim: 4157, texto: "...para um novo sistema no qual eles podem organizar sua própria existência de forma livre e consciente." },
+                { inicio: 4157, fim: 4169, texto: "Onde não estão sujeitos à Natureza ou às leis econômicas, mas organizam a vida de maneira melhor. Isso requer consciência." }
+            ]},
+            ciencia: { inicio: 385, fim: 413, legendas: [
+                { inicio: 385, fim: 390, texto: "Não é que Marcuse esteja dizendo que a ciência é errada. Ele não é contra a ciência." },
+                { inicio: 390, fim: 400, texto: "É uma maneira de ver o mundo pela qual entendemos muitas coisas importantes, mas ela tem limitações." },
+                { inicio: 400, fim: 413, texto: "E essas limitações importam muito se você as retirar do laboratório e aplicar cegamente ao mundo cotidiano." }
+            ]},
+            aristoteles: { inicio: 423, fim: 443, legendas: [
+                { inicio: 423, fim: 433, texto: "Aristóteles foi o primeiro a criar a ciência. Na ciência dele, objetos tinham potencialidades." },
+                { inicio: 433, fim: 443, texto: "Potencialidades são a característica normativa. Aquele aspecto em direção ao qual a coisa tende e quer se desenvolver." }
+            ]}
+        };
+
+        // ================= ESTADO =================
+        let apiPronta = false;
+        const players = {};   // id do player -> YT.Player
+        const prontos = {};   // id do player -> true quando onReady disparou
+        const filas = {};     // id do player -> callbacks esperando onReady
+        let ativo = null;     // { boxId, id, clipe, btn, legendaEl, terminado }
+        let intervalo = null;
+        let mostrarTempo = false;
+
+        function lerArmazenado(chave, padrao) {
+            try { const v = localStorage.getItem(chave); return v === null ? padrao : v; } catch (e) { return padrao; }
+        }
+        function salvarArmazenado(chave, valor) {
+            try { localStorage.setItem(chave, String(valor)); } catch (e) { /* armazenamento indisponível: segue sem salvar */ }
         }
 
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const slides = document.querySelectorAll('.slide');
-            const btnPrev = document.getElementById('btn-prev');
-            const btnNext = document.getElementById('btn-next');
-            const contador = document.getElementById('slide-contador');
-            const progresso = document.getElementById('barra-progresso');
-            const botoesPlay = document.querySelectorAll('.btn-play');
-            
-            let current = 0;
-            let targetEnd = null;
-            let currentLegendaText = null;
-            let currentBtn = null;
-            
-            let players = {}; 
-            let activePlayer = null;
-            let checkTimeInterval = null;
-
-            const legendas = [
-                { start: 67, end: 77, text: "Eu queria estudar filosofia continental. Nos anos 60, quando eu estava na faculdade, não era fácil." },
-                { start: 77, end: 89, text: "A filosofia americana era quase toda analítica. Um amigo me disse: 'Você devia olhar a Universidade da Califórnia (San Diego)'" },
-                { start: 89, end: 101, text: "Eu disse 'Por quê?'. Ele respondeu: 'Lá tem Marcuse... um cara que escreve sobre Marx e Freud'." },
-                { start: 101, end: 110, text: "Eu respondi: 'Bem, qualquer cara louco o suficiente para fazer isso, é louco o suficiente pra mim'." },
-                { start: 110, end: 119, text: "Imediatamente enviei minha inscrição, e eles me aceitaram. Fui pra San Diego estudar com esse cara louco." },
-                { start: 119, end: 135, text: "A primeira coisa que fiz foi pedir a ele um curso de leitura sobre o 'Ser e Tempo' de Heidegger. Foi assim que nossa relação começou." },
-                
-                { start: 7482, end: 7490, text: "Ele [Marcuse] tinha um sentimento muito ruim sobre Heidegger, que se tornara um Nazista..." },
-                { start: 7490, end: 7500, text: "...e que se recusou a se emendar do seu erro. Marcuse poderia ter perdoado o erro, mas não se ele se recusasse a pedir perdão." },
-                { start: 7500, end: 7511, text: "Depois da guerra houve uma troca de cartas. Marcuse, dos EUA, mandou suprimentos para ajudá-lo na Alemanha e pediu para que ele admitisse que cometeu um erro." },
-                { start: 7511, end: 7528, text: "Heidegger respondeu com desculpas dizendo: 'O que os alemães fizeram não foi diferente do que os aliados fizeram com os alemães que viviam na Polônia...' " },
-                { start: 7528, end: 7538, text: "Marcuse escreveu de volta e disse: 'Nenhum filósofo pode se permitir dizer uma coisa dessas'." },
-                { start: 7538, end: 7576, text: "Esse foi o fim. Ele nunca mais contatou Heidegger. É uma questão moral e histórica muito complicada." },
-                
-                { start: 4134, end: 4140, text: "O problema básico com o qual Marx está lidando é como passar de uma fase da História para outra..." },
-                { start: 4140, end: 4148, text: "...e como passar de uma fase onde as leis naturais da economia prevalecem sobre os seres humanos..." },
-                { start: 4148, end: 4157, text: "...para um novo sistema no qual eles podem organizar sua própria existência de forma livre e consciente." },
-                { start: 4157, end: 4169, text: "Onde não estão sujeitos à Natureza ou às leis econômicas, mas organizam a vida de maneira melhor. Isso requer consciência." },
-
-                { start: 385, end: 390, text: "Não é que Marcuse esteja dizendo que a ciência é errada. Ele não é contra a ciência." },
-                { start: 390, end: 400, text: "É uma maneira de ver o mundo pela qual entendemos muitas coisas importantes, mas ela tem limitações." },
-                { start: 400, end: 413, text: "E essas limitações importam muito se você as retirar do laboratório e aplicar cegamente ao mundo cotidiano." },
-
-                { start: 423, end: 433, text: "Aristóteles foi o primeiro a criar a ciência. Na ciência dele, objetos tinham potencialidades." },
-                { start: 433, end: 443, text: "Potencialidades são a característica normativa. Aquele aspecto em direção ao qual a coisa tende e quer se desenvolver." }
-            ];
-
-            function stopCheckTimeInterval() {
-                if (checkTimeInterval) {
-                    clearInterval(checkTimeInterval);
-                    checkTimeInterval = null;
-                }
-            }
-
-            function checkTime() {
-                if (!activePlayer || typeof activePlayer.getCurrentTime !== 'function') return;
-                
-                const tempo = activePlayer.getCurrentTime();
-                
-                if (targetEnd && tempo >= targetEnd) {
-                    activePlayer.pauseVideo();
-                    if(currentBtn) currentBtn.innerText = "Reproduzir Trecho";
-                    if(currentLegendaText) currentLegendaText.innerText = "Fim do trecho.";
-                    targetEnd = null;
-                    stopCheckTimeInterval();
-                    return;
-                }
-                
-                if (currentLegendaText) {
-                    const achou = legendas.find(l => tempo >= l.start && tempo <= l.end);
-                    currentLegendaText.innerText = achou ? achou.text : "...";
-                }
-            }
-
-            function atualizaSlides() {
-                if (activePlayer && typeof activePlayer.pauseVideo === 'function') {
-                    if (activePlayer.getPlayerState() === YT.PlayerState.PLAYING) {
-                        activePlayer.pauseVideo();
-                    }
-                }
-                
-                stopCheckTimeInterval();
-                targetEnd = null;
-                
-                if(currentBtn) currentBtn.innerText = "Reproduzir Trecho";
-                if(currentLegendaText) currentLegendaText.innerText = "...";
-
-                slides.forEach((s, index) => {
-                    if(index === current) {
-                        s.classList.remove('slide-hidden');
-                        s.classList.add('slide-visible');
-                    } else {
-                        s.classList.remove('slide-visible');
-                        s.classList.add('slide-hidden');
-                    }
-                });
-
-                contador.innerText = (current + 1) + " / " + slides.length;
-                progresso.style.width = (((current + 1) / slides.length) * 100) + "%";
-                btnPrev.disabled = current === 0;
-                btnNext.disabled = current === slides.length - 1;
-            }
-
-            btnPrev.addEventListener('click', () => { if(current > 0) { current--; atualizaSlides(); } });
-            btnNext.addEventListener('click', () => { if(current < slides.length - 1) { current++; atualizaSlides(); } });
-            
-            // Navegação por teclado
-            window.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowRight' && current < slides.length - 1) { current++; atualizaSlides(); }
-                if (e.key === 'ArrowLeft' && current > 0) { current--; atualizaSlides(); }
-            });
-
-            // ----------------------------------------------------
-            // NOVA LÓGICA DE SWIPE (DESLIZAR A TELA) PARA CELULARES
-            // ----------------------------------------------------
-            let touchStartX = 0;
-            let touchStartY = 0;
-
-            window.addEventListener('touchstart', e => {
-                touchStartX = e.changedTouches[0].screenX;
-                touchStartY = e.changedTouches[0].screenY;
-            });
-
-            window.addEventListener('touchend', e => {
-                let touchEndX = e.changedTouches[0].screenX;
-                let touchEndY = e.changedTouches[0].screenY;
-                
-                let diffX = Math.abs(touchEndX - touchStartX);
-                let diffY = Math.abs(touchEndY - touchStartY);
-
-                // Só muda de slide se o movimento for mais horizontal do que vertical e tiver mais de 50px
-                // Isso evita mudar de slide sem querer enquanto se rola o texto para baixo
-                if (diffX > diffY && diffX > 50) {
-                    if (touchEndX < touchStartX) {
-                        // Deslizou para a Esquerda -> Próximo Slide
-                        if (current < slides.length - 1) { current++; atualizaSlides(); }
-                    } else {
-                        // Deslizou para a Direita -> Slide Anterior
-                        if (current > 0) { current--; atualizaSlides(); }
-                    }
-                }
-            });
-
-            // Lógica do Player
-            botoesPlay.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (!isApiReady) {
-                        alert("O YouTube ainda está a carregar, aguarde um segundo.");
-                        return;
-                    }
-
-                    const boxId = btn.getAttribute('data-target');
-                    const start = parseFloat(btn.getAttribute('data-start'));
-                    targetEnd = parseFloat(btn.getAttribute('data-end'));
-                    
-                    const wrapperElement = document.getElementById(boxId);
-                    currentLegendaText = wrapperElement.closest('.midia-container').querySelector('.legenda-texto');
-
-                    if (currentBtn === btn && players[boxId]) {
-                        activePlayer = players[boxId];
-                        if (activePlayer.getPlayerState() === YT.PlayerState.PLAYING) {
-                            activePlayer.pauseVideo();
-                            btn.innerText = "Continuar Vídeo";
-                            stopCheckTimeInterval();
-                            return;
-                        } else {
-                            activePlayer.playVideo();
-                            btn.innerText = "Pausar Vídeo";
-                            stopCheckTimeInterval();
-                            checkTimeInterval = setInterval(checkTime, 250);
-                            return;
-                        }
-                    }
-
-                    if (currentBtn && currentBtn !== btn) {
-                        currentBtn.innerText = "Reproduzir Trecho";
-                        if (activePlayer && typeof activePlayer.pauseVideo === 'function') {
-                            activePlayer.pauseVideo();
-                        }
-                    }
-
-                    currentBtn = btn;
-
-                    if (!players[boxId]) {
-                        btn.innerText = "Carregando...";
-                        
-                        const placeholder = wrapperElement.parentElement.querySelector('.placeholder-box');
-                        if(placeholder) placeholder.style.display = 'none';
-
-                        players[boxId] = new YT.Player(boxId, {
-                            height: '100%',
-                            width: '100%',
-                            videoId: 'Z9Ur0yMg7dQ',
-                            playerVars: {
-                                'playsinline': 1,
-                                'controls': 0,
-                                'rel': 0,
-                                'modestbranding': 1,
-                                'start': Math.floor(start) 
-                            },
-                            events: {
-                                'onReady': function(event) {
-                                    activePlayer = event.target;
-                                    activePlayer.playVideo();
-                                    btn.innerText = "Pausar Vídeo";
-                                    stopCheckTimeInterval();
-                                    checkTimeInterval = setInterval(checkTime, 250);
-                                },
-                                'onStateChange': function(event) {
-                                    if (event.data == YT.PlayerState.PAUSED && currentBtn === btn) {
-                                        btn.innerText = "Continuar Vídeo";
-                                    } else if (event.data == YT.PlayerState.PLAYING && currentBtn === btn) {
-                                        btn.innerText = "Pausar Vídeo";
-                                    }
-                                }
-                            }
-                        });
-                    } else {
-                        activePlayer = players[boxId];
-                        activePlayer.seekTo(start, true);
-                        activePlayer.playVideo();
-                        btn.innerText = "Pausar Vídeo";
-                        stopCheckTimeInterval();
-                        checkTimeInterval = setInterval(checkTime, 250);
-                    }
-                });
-            });
-
-            atualizaSlides();
+        // Ajuste fino por trecho (em segundos), salvo neste navegador
+        const ajustes = {};
+        Object.keys(CLIPES).forEach(function (id) {
+            const v = parseFloat(lerArmazenado('feenberg-ajuste-' + id, '0'));
+            ajustes[id] = isNaN(v) ? 0 : v;
         });
+
+        // ================= ELEMENTOS =================
+        const slides = Array.from(document.querySelectorAll('.slide'));
+        const container = document.getElementById('slides-container');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const contador = document.getElementById('slide-contador');
+        const progresso = document.getElementById('barra-progresso');
+        const chipParte = document.getElementById('chip-parte');
+        const chipPaginas = document.getElementById('chip-paginas');
+        const aviso = document.getElementById('aviso');
+        let atual = 0;
+        let timerAviso = null;
+
+        function avisar(msg) {
+            aviso.textContent = msg;
+            aviso.classList.add('visivel');
+            clearTimeout(timerAviso);
+            timerAviso = setTimeout(function () { aviso.classList.remove('visivel'); }, 1800);
+        }
+
+        function fmtTempo(t) {
+            const h = Math.floor(t / 3600);
+            const m = Math.floor((t % 3600) / 60);
+            const s = (t % 60).toFixed(1).padStart(4, '0');
+            return h > 0 ? h + ':' + String(m).padStart(2, '0') + ':' + s : m + ':' + s;
+        }
+        function fmtAjuste(v) {
+            return (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2).replace('.', ',') + ' s';
+        }
+
+        // ================= NAVEGAÇÃO =================
+        function irPara(n) {
+            if (n < 0 || n >= slides.length || n === atual) return;
+            atual = n;
+            atualizaSlides();
+        }
+
+        function atualizaSlides() {
+            pararTudo();
+            slides.forEach(function (s, i) {
+                s.classList.toggle('slide-visible', i === atual);
+                s.classList.toggle('slide-hidden', i !== atual);
+            });
+            aplicarEscala();
+            container.scrollTop = 0;
+
+            contador.textContent = (atual + 1) + ' / ' + slides.length;
+            progresso.style.width = (((atual + 1) / slides.length) * 100) + '%';
+            btnPrev.disabled = atual === 0;
+            btnNext.disabled = atual === slides.length - 1;
+
+            const s = slides[atual];
+            const parte = s.dataset.parte;
+            chipParte.classList.remove('chip-p1', 'chip-p2', 'chip-ambos');
+            if (parte === '2') { chipParte.textContent = 'Parte 2 · Gissele'; chipParte.classList.add('chip-p2'); }
+            else if (parte === 'ambos') { chipParte.textContent = 'Jean e Gissele'; chipParte.classList.add('chip-ambos'); }
+            else { chipParte.textContent = 'Parte 1 · Jean'; chipParte.classList.add('chip-p1'); }
+
+            const pg = s.dataset.paginas || '';
+            chipPaginas.textContent = pg ? 'Texto: ' + pg : '';
+            chipPaginas.style.visibility = pg ? 'visible' : 'hidden';
+
+            atualizarOverlaysParados();
+            preCarregarSlideAtual();
+        }
+
+        btnPrev.addEventListener('click', function () { irPara(atual - 1); });
+        btnNext.addEventListener('click', function () { irPara(atual + 1); });
+
+        window.addEventListener('keydown', function (e) {
+            if (e.altKey || e.ctrlKey || e.metaKey) return;
+            const k = e.key;
+            if (k === 'ArrowRight' || k === 'PageDown') { e.preventDefault(); irPara(atual + 1); }
+            else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); irPara(atual - 1); }
+            else if (k === 'Home') { e.preventDefault(); irPara(0); }
+            else if (k === 'End') { e.preventDefault(); irPara(slides.length - 1); }
+            else if (k === '+' || k === '=') { mudarZoom(0.1); }
+            else if (k === '-' || k === '_') { mudarZoom(-0.1); }
+            else if (k === '0') { definirZoom(1); }
+            else if (k === 't' || k === 'T') { alternarModoTempo(); }
+            else if (mostrarTempo && (k === ',' || k === '.')) { ajustarTrecho(k === '.' ? 0.25 : -0.25); }
+            else if (mostrarTempo && (k === 'z' || k === 'Z')) { zerarTrecho(); }
+        });
+
+        // Deslizar a tela (celular): só muda de slide se o gesto for mais horizontal que vertical
+        let touchStartX = 0, touchStartY = 0;
+        window.addEventListener('touchstart', function (e) {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+        window.addEventListener('touchend', function (e) {
+            const dx = e.changedTouches[0].screenX - touchStartX;
+            const dy = e.changedTouches[0].screenY - touchStartY;
+            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+                if (dx < 0) irPara(atual + 1); else irPara(atual - 1);
+            }
+        }, { passive: true });
+
+        // ================= AJUSTE À TELA + TAMANHO MANUAL (+ / − / 0) =================
+        // Cada slide é ampliado ou reduzido (75% a 130%) para ocupar a área visível sem rolagem.
+        // As teclas + e − multiplicam esse ajuste; 0 volta ao padrão. No celular, só o ajuste manual.
+        let zoom = parseFloat(lerArmazenado('feenberg-zoom', '1'));
+        if (isNaN(zoom)) zoom = 1;
+
+        function cabeNaTela() {
+            return container.scrollHeight - container.clientHeight <= 1 &&
+                   container.scrollWidth - container.clientWidth <= 1;
+        }
+        function aplicarEscala() {
+            const s = slides[atual];
+            if (window.innerWidth < 768) { s.style.zoom = String(zoom); return; }
+            let lo = 0.75, hi = 1.3;
+            s.style.zoom = String(zoom * hi);
+            if (cabeNaTela()) return;
+            for (let i = 0; i < 7; i++) {
+                const meio = (lo + hi) / 2;
+                s.style.zoom = String(zoom * meio);
+                if (cabeNaTela()) lo = meio; else hi = meio;
+            }
+            s.style.zoom = String(zoom * lo);
+        }
+        function definirZoom(z) {
+            zoom = Math.min(1.6, Math.max(0.6, Math.round(z * 10) / 10));
+            salvarArmazenado('feenberg-zoom', zoom);
+            aplicarEscala();
+            avisar('Tamanho do conteúdo: ' + Math.round(zoom * 100) + '%');
+        }
+        function mudarZoom(d) { definirZoom(zoom + d); }
+        let timerResize = null;
+        window.addEventListener('resize', function () {
+            clearTimeout(timerResize);
+            timerResize = setTimeout(aplicarEscala, 120);
+        });
+
+        // ================= VÍDEOS =================
+        function onYouTubeIframeAPIReady() {
+            apiPronta = true;
+            preCarregarSlideAtual();
+        }
+
+        function rotular(btn, texto) { if (btn) btn.textContent = texto; }
+        function restaurarBotao(btn) { if (btn) btn.textContent = btn.dataset.rotulo; }
+
+        function pararIntervalo() {
+            if (intervalo) { clearInterval(intervalo); intervalo = null; }
+        }
+        function iniciarIntervalo() {
+            pararIntervalo();
+            intervalo = setInterval(tick, 100);
+            tick();
+        }
+
+        function pararTudo() {
+            pararIntervalo();
+            if (ativo) {
+                const p = players[ativo.boxId];
+                try {
+                    if (p && prontos[ativo.boxId] && p.getPlayerState() === YT.PlayerState.PLAYING) p.pauseVideo();
+                } catch (e) { /* player ainda não disponível */ }
+                restaurarBotao(ativo.btn);
+                if (ativo.legendaEl) ativo.legendaEl.textContent = '...';
+                ativo = null;
+            }
+        }
+
+        function preCarregarSlideAtual() {
+            if (!apiPronta) return;
+            const btn = slides[atual].querySelector('.btn-play');
+            if (!btn) return;
+            const id = btn.dataset.clipe;
+            garantirPlayer(btn.dataset.target, CLIPES[id].inicio + ajustes[id], null);
+        }
+
+        function garantirPlayer(boxId, inicio, aoFicarPronto) {
+            if (players[boxId]) {
+                if (!aoFicarPronto) return;
+                if (prontos[boxId]) aoFicarPronto(players[boxId]);
+                else filas[boxId].push(aoFicarPronto);
+                return;
+            }
+            filas[boxId] = aoFicarPronto ? [aoFicarPronto] : [];
+            const el = document.getElementById(boxId);
+            const ph = el ? el.querySelector('.placeholder-box') : null;
+            if (ph) ph.textContent = 'Carregando vídeo...';
+
+            const vars = { playsinline: 1, controls: 0, rel: 0, modestbranding: 1, disablekb: 1, start: Math.max(0, Math.floor(inicio)) };
+            if (location.protocol.indexOf('http') === 0) vars.origin = location.origin;
+
+            players[boxId] = new YT.Player(boxId, {
+                height: '100%',
+                width: '100%',
+                videoId: VIDEO_ID,
+                playerVars: vars,
+                events: {
+                    onReady: function (ev) {
+                        prontos[boxId] = true;
+                        const fila = filas[boxId];
+                        filas[boxId] = [];
+                        fila.forEach(function (fn) { fn(ev.target); });
+                    },
+                    onStateChange: function (ev) { aoMudarEstado(boxId, ev); },
+                    onError: function (ev) { aoErro(boxId, ev); }
+                }
+            });
+        }
+
+        function tocarDoInicio(p) {
+            const inicio = ativo.clipe.inicio + ajustes[ativo.id];
+            ativo.terminado = false;
+            p.seekTo(inicio, true);
+            p.playVideo();
+            rotular(ativo.btn, 'Pausar');
+            iniciarIntervalo();
+        }
+
+        function aoClicarPlay(btn) {
+            if (!apiPronta || typeof YT === 'undefined' || !YT.Player) {
+                avisar('O YouTube ainda está carregando. Tente de novo em alguns segundos.');
+                return;
+            }
+            const boxId = btn.dataset.target;
+            const id = btn.dataset.clipe;
+
+            // Mesmo botão: pausa, continua ou repete
+            if (ativo && ativo.btn === btn && players[boxId] && prontos[boxId]) {
+                const p = players[boxId];
+                if (ativo.terminado) { tocarDoInicio(p); return; }
+                const st = p.getPlayerState();
+                if (st === YT.PlayerState.PLAYING || st === YT.PlayerState.BUFFERING) {
+                    p.pauseVideo();
+                    rotular(btn, 'Continuar trecho');
+                    pararIntervalo();
+                } else {
+                    p.playVideo();
+                    rotular(btn, 'Pausar');
+                    iniciarIntervalo();
+                }
+                return;
+            }
+
+            // Outro trecho estava ativo: pausa e restaura o botão dele
+            if (ativo && ativo.btn !== btn) {
+                const anterior = players[ativo.boxId];
+                try { if (anterior && prontos[ativo.boxId]) anterior.pauseVideo(); } catch (e) { /* ignora */ }
+                restaurarBotao(ativo.btn);
+                pararIntervalo();
+            }
+
+            const legendaEl = btn.closest('.slide').querySelector('.legenda-texto');
+            ativo = { boxId: boxId, id: id, clipe: CLIPES[id], btn: btn, legendaEl: legendaEl, terminado: false };
+            legendaEl.textContent = '...';
+            rotular(btn, 'Carregando...');
+            garantirPlayer(boxId, CLIPES[id].inicio + ajustes[id], function (p) {
+                if (!ativo || ativo.btn !== btn) return; // mudou de slide enquanto carregava
+                tocarDoInicio(p);
+            });
+        }
+
+        document.querySelectorAll('.btn-play').forEach(function (btn) {
+            btn.addEventListener('click', function () { aoClicarPlay(btn); });
+        });
+
+        function tick() {
+            if (!ativo) return;
+            const p = players[ativo.boxId];
+            if (!p || !prontos[ativo.boxId] || typeof p.getCurrentTime !== 'function') return;
+            const t = p.getCurrentTime();
+            const tc = t - ajustes[ativo.id]; // tempo na escala das legendas
+            const clipe = ativo.clipe;
+
+            if (tc >= clipe.fim) {
+                ativo.terminado = true;
+                p.pauseVideo();
+                rotular(ativo.btn, 'Repetir trecho');
+                ativo.legendaEl.textContent = 'Fim do trecho.';
+                pararIntervalo();
+                desenharOverlay(ativo, t, -1);
+                return;
+            }
+            const idx = clipe.legendas.findIndex(function (l) { return tc >= l.inicio && tc < l.fim; });
+            ativo.legendaEl.textContent = idx >= 0 ? clipe.legendas[idx].texto : '...';
+            desenharOverlay(ativo, t, idx);
+        }
+
+        function aoMudarEstado(boxId, ev) {
+            if (!ativo || ativo.boxId !== boxId) return;
+            if (ev.data === YT.PlayerState.PLAYING) {
+                rotular(ativo.btn, 'Pausar');
+                if (!intervalo) iniciarIntervalo();
+            } else if (ev.data === YT.PlayerState.PAUSED && !ativo.terminado) {
+                rotular(ativo.btn, 'Continuar trecho');
+            } else if (ev.data === YT.PlayerState.ENDED) {
+                ativo.terminado = true;
+                rotular(ativo.btn, 'Repetir trecho');
+                pararIntervalo();
+            }
+        }
+
+        function aoErro(boxId, ev) {
+            const motivos = {
+                2: 'parâmetro inválido',
+                5: 'falha do player HTML5',
+                100: 'vídeo não encontrado ou privado',
+                101: 'o dono do vídeo não permite incorporação',
+                150: 'o dono do vídeo não permite incorporação',
+                153: 'configuração do player — abra a página por um servidor, não como arquivo'
+            };
+            const el = document.getElementById(boxId);
+            const slide = el ? el.closest('.slide') : null;
+            const leg = slide ? slide.querySelector('.legenda-texto') : null;
+            if (leg) leg.textContent = 'Não foi possível tocar o vídeo: ' + (motivos[ev.data] || 'erro ' + ev.data) + '.';
+            if (ativo && ativo.boxId === boxId) { restaurarBotao(ativo.btn); pararIntervalo(); ativo = null; }
+        }
+
+        // ================= MODO CALIBRAÇÃO (T) =================
+        // T mostra o tempo exato do vídeo; com ele ligado, "," adianta e "." atrasa
+        // as legendas do trecho em 0,25 s (salvo neste navegador); Z zera o ajuste.
+        function desenharOverlay(a, t, idx) {
+            const ov = a.btn.closest('.slide').querySelector('.tempo-overlay');
+            if (!ov) return;
+            ov.style.display = mostrarTempo ? 'block' : 'none';
+            if (!mostrarTempo) return;
+            const frase = idx >= 0 ? (idx + 1) + '/' + a.clipe.legendas.length : '–';
+            ov.textContent = 'vídeo ' + fmtTempo(t) + ' · frase ' + frase + ' · ajuste ' + fmtAjuste(ajustes[a.id]);
+        }
+
+        function atualizarOverlaysParados() {
+            const s = slides[atual];
+            const ov = s.querySelector('.tempo-overlay');
+            if (!ov) return;
+            ov.style.display = mostrarTempo ? 'block' : 'none';
+            if (!mostrarTempo) return;
+            const ids = Array.from(s.querySelectorAll('.btn-play')).map(function (b) { return b.dataset.clipe; });
+            ov.textContent = 'calibração · ' + ids.map(function (id) { return id + ' ' + fmtAjuste(ajustes[id]); }).join(' · ');
+        }
+
+        function alternarModoTempo() {
+            mostrarTempo = !mostrarTempo;
+            avisar(mostrarTempo ? 'Calibração ligada: “,” adianta e “.” atrasa a legenda (0,25 s); Z zera.' : 'Calibração desligada.');
+            if (ativo) { tick(); } else { atualizarOverlaysParados(); }
+        }
+
+        function trechoAlvo() {
+            if (ativo && slides[atual].contains(ativo.btn)) return ativo.id;
+            const b = slides[atual].querySelector('.btn-play');
+            return b ? b.dataset.clipe : null;
+        }
+
+        function ajustarTrecho(delta) {
+            const id = trechoAlvo();
+            if (!id) return;
+            ajustes[id] = Math.round((ajustes[id] + delta) * 100) / 100;
+            salvarArmazenado('feenberg-ajuste-' + id, ajustes[id]);
+            avisar('Ajuste do trecho “' + id + '”: ' + fmtAjuste(ajustes[id]));
+            if (ativo) { tick(); } else { atualizarOverlaysParados(); }
+        }
+
+        function zerarTrecho() {
+            const id = trechoAlvo();
+            if (!id) return;
+            ajustes[id] = 0;
+            salvarArmazenado('feenberg-ajuste-' + id, 0);
+            avisar('Ajuste do trecho “' + id + '” zerado.');
+            if (ativo) { tick(); } else { atualizarOverlaysParados(); }
+        }
+
+        // ================= INÍCIO =================
+        atualizaSlides();
+
+        // Carrega a API do YouTube por último, com tudo já definido
+        (function () {
+            const tag = document.createElement('script');
+            tag.src = 'https://www.youtube.com/iframe_api';
+            document.head.appendChild(tag);
+        })();
     </script>
 </body>
 </html>
